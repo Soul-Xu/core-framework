@@ -15,5 +15,14 @@ module.exports = {
     "selector-class-pattern": null,
     "keyframes-name-pattern": null,
     'font-family-no-missing-generic-family-keyword': null, // 禁用该规则
+    "selector-pseudo-class-no-unknown": [true, {
+      "ignorePseudoClasses": ["global"]
+    }],
+    "scss/at-rule-no-unknown": [
+      null,
+      {
+        "ignoreAtRules": ["@tailwind"]
+      }
+    ],
   },
 }
