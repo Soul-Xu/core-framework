@@ -1,6 +1,6 @@
 import { G2, P } from '@antv/g2plot';
 import { deepMix, isObject } from '@antv/util';
-import { useEffect } from 'react';
+import React, { useEffect } from "react";
 
 // 自定义图形
 G2.registerShape('interval', 'hill', {
@@ -14,7 +14,7 @@ G2.registerShape('interval', 'hill', {
       ['Z'],
     ];
 
-    path = this.parsePath(path);
+    path = (this as any).parsePath(path);
 
     return container.addShape('path', {
       attrs: {
@@ -32,7 +32,7 @@ const defaultOptions = {
 };
 
 // 2. adaptor 实现
-function adaptor(params) {
+function adaptor(params: any) {
   const { chart, options } = params;
   const { data, xField, yField, columnWidthRatio, columnStyle, theme } = options;
 
@@ -44,7 +44,7 @@ function adaptor(params) {
     .interval()
     .position(`${xField}*${yField}`)
     .shape('hill')
-    .style(`${xField}*${yField}`, (x, y) => {
+    .style(`${xField}*${yField}`, (x: any, y: any) => {
       return typeof columnStyle === 'function' ? columnStyle({ [xField]: x, [yField]: y }) : columnStyle;
     });
 
@@ -95,11 +95,8 @@ const CustomLineDemo: React.FC = () => {
           fillOpacity: 0.3,
         },
       },
-      adaptor,
-      // @ts-expect-error
-
-
-      defaultOptions
+      adaptor,    
+      // defaultOptions
     ); // 引入上述的封装，或者将上述代码发包
     
     hill.render();

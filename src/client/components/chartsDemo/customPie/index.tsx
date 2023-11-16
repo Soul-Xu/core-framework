@@ -1,5 +1,5 @@
-import { Pie, G2 } from '@antv/g2plot';
-import { useEffect } from 'react';
+import { G2, Pie } from '@antv/g2plot';
+import React, { useEffect } from "react";
 
 const data = [
   { type: '分类一', value: 27 },
@@ -22,7 +22,7 @@ G2.registerShape('interval', 'slice-shape', {
     const points: any = cfg.points;
 
     // path 为路径
-    let path = [];
+    let path: any = [];
     // 计算出 高度 / 2 = 半径 r
     const r = (points[2].x - points[1].x) / 2;
     // 开始点 M
@@ -36,7 +36,7 @@ G2.registerShape('interval', 'slice-shape', {
     // 回到开始点
     path.push('Z');
     // 将0-1空间的坐标转换为画布坐标
-    path = this.parsePath(path);
+    path = (this as any).parsePath(path);
     // 半圆翻转
     path[4][5] = 1;
 

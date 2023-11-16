@@ -15,7 +15,7 @@ const axiosInstance = axios.create({
 })
 
 // 添加请求拦截器
-axiosInstance.interceptors.request.use((config) => {
+axiosInstance.interceptors.request.use((config: any) => {
   // 在发送请求之前做些什么
   config.headers['Access-Control-Allow-Origin'] = '*'
   config.headers.withCredentials = true

@@ -1,6 +1,6 @@
 import { Bar } from '@antv/g2plot';
-import { data } from "./constants"
-import { useEffect } from 'react';
+import React, { useEffect } from "react";
+import { data } from "./constants";
 
 const BarDemo: React.FC = () => {
   useEffect(() => {

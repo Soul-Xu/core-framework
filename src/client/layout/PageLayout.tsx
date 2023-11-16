@@ -8,10 +8,7 @@ const classNames = classnames.bind(styles);
 /** image */
 const { Header, Content, Footer, Sider } = Layout;
 
-// @ts-expect-error
-
-
-const PageLayout: React.FC = ({children}) => {
+const PageLayout = ({children}: any) => {
   const router = useRouter()
   const [collapsed, setCollapsed] = useState(false);
   const {

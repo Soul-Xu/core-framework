@@ -1,7 +1,6 @@
 import { ConfigProvider } from "antd"
 import type { AppProps } from "next/app"
-import Head from 'next/head'
-import { Suspense } from "react"
+import React, { Suspense } from "react"
 import { wrapper } from "../store/store"
 import "../styles/global.css"
 
@@ -14,20 +13,9 @@ dayjs.extend(require('dayjs/plugin/utc')); // 可选：如果需要处理 UTC �
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Suspense fallback="loading">
-      <Head>
-        <link rel="icon" href="../public/favicon.ico" />
-        <title>基础开发框架</title>
-      </Head>
-      {/* @ts-expect-error
-
- */}
       <ConfigProvider locale={zhCN}>
-        {/* @ts-expect-error
-
- */}
         <Component {...pageProps} />
       </ConfigProvider>
-      {/* <Component {...pageProps} /> */}
     </Suspense>
   )
 }

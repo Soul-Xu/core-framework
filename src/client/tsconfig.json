@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -14,6 +18,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "noImplicitAny": false,
     // 基础路径
     "baseUrl": ".",
     // 添加别名 , 在项目中即可使用 @components 
@@ -24,8 +29,13 @@
     //   "@styles/*": ["styles/*"]
     // }
     "paths": {
-      "*": ["./*"]
-    },
+      "*": [
+        "./*"
+      ],
+      "react": [
+        "./node_modules/@types/react"
+      ]
+    }
   },
   "include": [
     "types/process.d.ts",
@@ -34,5 +44,7 @@
     "**/*.ts",
     "**/*.tsx"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

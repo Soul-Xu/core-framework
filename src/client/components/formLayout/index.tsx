@@ -11,20 +11,15 @@ import {
   Space,
   Upload
 } from 'antd';
-import classnames from 'classnames/bind';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn'; // 导入中文语言环境
-import style from './index.module.scss';
+import React from "react";
 
 dayjs.locale('zh-cn'); // 设置全局的语言环境为中文
 
 const { RangePicker } = DatePicker;
-const { Option } = Select;
 const { TextArea } = Input
 const { Dragger } = Upload;
-const classNames = classnames.bind(style);
-
-const localeCN = {}
 
 interface ItemProps {
   kind: string, // input、select、datepicker
@@ -52,10 +47,10 @@ const FormLayout = ({
   }
 }: FormLayoutProps) => {
   const getFields = (items: any, cols) => {
-    const children = [];
+    const children: any = [];
     items.map((item: any, index: number) => {
       children.push(
-        <Col 
+        <Col
           span={24 / cols} 
           key={item.key} 
           style={(index) % cols === 0 ? { 
@@ -82,9 +77,6 @@ const FormLayout = ({
               }
               { item.kind === "datepicker" && 
                 <Space direction="vertical">
-                  {/* @ts-expect-error
-
- */}
                   <DatePicker
                     // style={{ width: "228px"}}
                     // 如果需要时间选择器，也可以设置时间格式
@@ -138,7 +130,7 @@ const FormLayout = ({
             const itemRequire = item?.require
             delete item.require
             return (
-              <Row>
+              <Row key={item.key}>
                 <Col span={24} className={item?.classname}>
                   <Form.Item 
                     colon={false}
@@ -161,7 +153,7 @@ const FormLayout = ({
           }
           if (item.kind === 'select') {
             return (
-              <Row>
+              <Row key={item.key}>
                 <Col span={24}>
                   <Form.Item 
                     colon={false}
@@ -179,7 +171,7 @@ const FormLayout = ({
           }
           if (item.kind === 'datepicker') {
             return (
-              <Row>
+              <Row key={item.key}>
                 <Col span={24}>
                   <Form.Item 
                     colon={false}
@@ -187,9 +179,6 @@ const FormLayout = ({
                     key={item.key} 
                     name={item.name} 
                   >
-                    {/* @ts-expect-error
-
- */}
                     <DatePicker {...item} />
                   </Form.Item>
                 </Col>
@@ -206,9 +195,6 @@ const FormLayout = ({
                 name={item.name} 
               >
                 <Upload {...item}>
-                  {/* @ts-expect-error
-
- */}
                   <Button icon={<UploadOutlined />}>{item.title}</Button>
                 </Upload>
               </Form.Item>
@@ -226,9 +212,6 @@ const FormLayout = ({
               >
                 <Dragger>
                   <p className="ant-upload-drag-icon">
-                    {/* @ts-expect-error
-
- */}
                     <InboxOutlined />
                   </p>
                   <p className="ant-upload-hint">{item.title}</p>

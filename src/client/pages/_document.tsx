@@ -1,4 +1,5 @@
 import Document, { Head, Html, Main, NextScript } from 'next/document'
+import React from "react"
 
 class MyDocument extends Document {
   static async getInitialProps(ctx) {
@@ -9,15 +10,12 @@ class MyDocument extends Document {
   render() {
     return (
       <Html>
-        {/* @ts-expect-error
-
- */}
-        <Head />
+        <Head>
+          <link rel="icon" href="../public/favicon.ico" />
+          <title>基础开发框架</title>
+        </Head>
         <body>
           <Main />
-          {/* @ts-expect-error
-
- */}
           <NextScript />
         </body>
       </Html>

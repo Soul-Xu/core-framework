@@ -1,5 +1,6 @@
-import { Table } from 'antd'
+import { Table } from 'antd';
 import classnames from 'classnames/bind';
+import React from "react";
 import style from './index.module.scss';
 
 const classNames = classnames.bind(style);

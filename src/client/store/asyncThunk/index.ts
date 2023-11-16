@@ -1,9 +1,8 @@
-import { settingServe } from "../../http/serve";
-import { Method } from "axios";
 import { AsyncThunk, createAsyncThunk } from "@reduxjs/toolkit";
+import { Method } from "axios";
+import { settingServe } from "../../http/serve";
 import asyncThunkMap, { AsyncThunkMap, AsyncThunkValueObject } from "./config";
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 type Thunk = Record<AsyncThunkMap, (data?: any) => AsyncThunk<any, void, {}>>;
 
 // 自动生成thunk

@@ -2,7 +2,7 @@ import { Button, message } from 'antd';
 import classnames from "classnames/bind";
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useCallback } from "react";
+import React, { useCallback } from 'react';
 import { useDispatch } from "react-redux";
 import { useImmerReducer } from "use-immer";
 import asyncThunk from "../../store/asyncThunk";
@@ -54,10 +54,8 @@ const Login: React.FC = () => {
       username,
       password
     }
-    // @ts-expect-error
 
-
-    const res = await dispatchRedux(asyncThunk.login(params));
+    const res = await dispatchRedux(asyncThunk.login(params) as any);
     const data = res?.payload
     if (data?.code === 0) {
       dispatchRedux(setAuthState({
@@ -69,7 +67,7 @@ const Login: React.FC = () => {
       message.error("登录失败，请重试")
       return
     }
-  }, [password, username])
+  }, [password, username, dispatchRedux, router])
 
   const formObj = {
     name: 'login-form',

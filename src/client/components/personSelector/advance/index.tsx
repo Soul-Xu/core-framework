@@ -1,5 +1,10 @@
-import React, { useState } from 'react';
-import { Cascader, Button, Modal } from 'antd';
+import { Button, Cascader, Modal } from 'antd';
+import React, { useState } from "react";
+
+interface Props {
+  onSelect: (params: any) => void,
+  placeholder: string
+}
 
 // 模拟人员数据
 const personData = [
@@ -33,7 +38,7 @@ const personData = [
   },
 ];
 
-const PersonSelectorAdvance = ({ onSelect, placeholder }) => {
+const PersonSelectorAdvance = ({ onSelect, placeholder }: Props) => {
   const [visible, setVisible] = useState(false);
   const [selectedPerson, setSelectedPerson] = useState([]);
 
@@ -62,7 +67,7 @@ const PersonSelectorAdvance = ({ onSelect, placeholder }) => {
         <Cascader
           options={personData}
           value={selectedPerson}
-          onChange={(value) => setSelectedPerson(value)}
+          onChange={(value: any) => setSelectedPerson(value)}
           placeholder="Select a person"
         />
       </Modal>

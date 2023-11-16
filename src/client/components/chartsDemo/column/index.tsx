@@ -1,6 +1,6 @@
-import { Column } from "@antv/g2plot"
-import { useEffect } from "react";
-import { data } from "./constants"
+import { Column } from "@antv/g2plot";
+import React, { useEffect } from "react";
+import { data } from "./constants";
 
 const ColumnDemo: React.FC = () => {
   useEffect(() => {

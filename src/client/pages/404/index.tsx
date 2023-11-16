@@ -1,5 +1,6 @@
-import styles from "./index.module.scss";
 import classnames from "classnames/bind";
+import React from "react";
+import styles from "./index.module.scss";
 const classNames = classnames.bind(styles);
 
 const customPage = () => {

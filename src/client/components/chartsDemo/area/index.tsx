@@ -1,6 +1,6 @@
-import { Area } from "@antv/g2plot"
-import { useEffect } from "react";
-import { data } from "./constants"
+import { Area } from "@antv/g2plot";
+import React, { useEffect } from "react";
+import { data } from "./constants";
 
 const AreaDemo: React.FC = () => {
   useEffect(() => {

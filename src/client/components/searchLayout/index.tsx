@@ -1,5 +1,6 @@
 import { DatePicker, Form, Input, Radio, Select, Table } from 'antd';
 import classnames from 'classnames/bind';
+import React from "react";
 import style from './index.module.scss';
 
 const { RangePicker } = DatePicker;
@@ -85,7 +86,7 @@ const SearchLayout = ({
           if (item.type === 'datepicker') {
             return (
               <Form.Item label={item.label} key={item.key} name={item.name} className={classNames("form-item")}>
-                {/* @ts-expect-error
+                {/* 
 
  */}
                 <RangePicker
@@ -133,7 +134,7 @@ const SearchLayout = ({
                 total,
                 defaultPageSize: 10,
                 onChange: (page, pageSize) => {
-                  onChangePage(page, pageSize)
+                  onChangePage && onChangePage(page, pageSize)
                 }
               }}
             />

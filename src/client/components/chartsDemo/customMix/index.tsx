@@ -1,6 +1,6 @@
 import { Mix } from '@antv/g2plot';
-import { useEffect } from 'react';
-import { data } from "./constants"
+import React, { useEffect } from "react";
+import { data } from "./constants";
 
 const CustomMixDemo: React.FC = () => {
   useEffect(() => {

@@ -1,6 +1,6 @@
-import { Line } from "@antv/g2plot"
-import { useEffect } from "react";
-import { data } from "./constants"
+import { Line } from "@antv/g2plot";
+import React, { useEffect } from "react";
+import { data } from "./constants";
 
 const LineDemo: React.FC = () => {
   useEffect(() => {

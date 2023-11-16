@@ -24,25 +24,25 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  // @ts-expect-error
+  // 
 
 
   getItem('首页', '0', <HomeOutlined />),
-  // @ts-expect-error
+  // 
 
 
   getItem('图表示例', '1', <AreaChartOutlined />),
-  //  // @ts-expect-error
+  //  // 
 
 
   getItem('搜索示例', '2', <AreaChartOutlined />),
-  // // @ts-expect-error
+  // // 
 
 
   // getItem('证劵运维值班', '3', <LineChartOutlined />),
 ];
 
-const itemsMap = {
+const itemsMap: any = {
   "0": "home",
   "1": "charts",
   "2": "search",
@@ -50,7 +50,7 @@ const itemsMap = {
 }
 
 const transferMaps = (obj: any) => {
-  const res = {}
+  const res: any = {}
   for (const key in obj) {
     res[obj[key]] = key
   }
@@ -66,7 +66,7 @@ const MenuLayout: React.FC = () => {
   useEffect(() => {
     const currentPath = router.pathname.slice(1)
     setSelectKey([`${pathsMap[currentPath]}`])
-  }, [])
+  }, [router.pathname])
 
   const onClick = (menu: any) => {
     setSelectKey([`${menu.key}`])

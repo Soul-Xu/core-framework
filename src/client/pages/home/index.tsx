@@ -1,5 +1,6 @@
 /** 第三方库 */
 import { NextPage } from 'next';
+import React from 'react';
 
 /** 样式 */
 import classnames from "classnames/bind";
@@ -9,16 +10,14 @@ const classNames = classnames.bind(styles);
 
 const Home: NextPage = () => {
   return(
-    // @ts-expect-error
-
-
-    <PageLayout>
-      <section className={classNames("container")}>
-        <div className={classNames("content")}>
-          111
-        </div>
-      </section>
-    </PageLayout>
+    // <PageLayout>
+    //   <section className={classNames("container")}>
+    //     <div className={classNames("content")}>
+    //       111
+    //     </div>
+    //   </section>
+    // </PageLayout>
+    <div>111</div>
   )
 }
 

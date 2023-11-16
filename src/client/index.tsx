@@ -1,6 +1,6 @@
-import type { NextPage } from "next"
-import { useEffect } from "react"
-import { useRouter } from 'next/router'
+import type { NextPage } from "next";
+import { useRouter } from 'next/router';
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const Index: NextPage = () => {
@@ -14,7 +14,7 @@ const Index: NextPage = () => {
     } else {
       router.push('/home')
     }
-  }, [])
+  }, [authState, router])
 
   return (
     <div>

@@ -1,6 +1,6 @@
-import { DualAxes } from "@antv/g2plot"
-import { useEffect } from "react";
-import { data } from "./constants"
+import { DualAxes } from "@antv/g2plot";
+import React, { useEffect } from "react";
+import { data } from "./constants";
 
 const DualAxesDemo: React.FC = () => {
   useEffect(() => {
