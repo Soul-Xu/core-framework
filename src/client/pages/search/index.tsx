@@ -1,12 +1,10 @@
-import React from 'react'
-import { NextPage } from 'next'
-import PageLayout from '../../layout/PageLayout'
-import SearchLayout from '../../components/searchLayout'
 import { ExclamationCircleFilled } from '@ant-design/icons';
-import { useEffect, useState } from "react";
-import { Button, Tag, Modal, message } from "antd";
-import { initialPage } from '../../utils/constants';
+import { Button, Modal, message } from "antd";
 import classnames from 'classnames/bind';
+import { NextPage } from 'next';
+import { useState } from "react";
+import SearchLayout from '../../components/searchLayout';
+import PageLayout from '../../layout/PageLayout';
 import style from './index.module.scss';
 const classNames = classnames.bind(style);
 const { confirm } = Modal;
@@ -122,7 +120,9 @@ const Search: NextPage = () => {
     // 弹出确认框，确保用户确认删除操作
     confirm({
       title: "确认删除",
-      // @ts-ignore
+      // @ts-expect-error
+
+
       icon: <ExclamationCircleFilled />,
       content: `是否确定删除用户 ${record.username}？`,
       onOk() {
@@ -170,9 +170,13 @@ const Search: NextPage = () => {
     ],
     customElements: () => (
       <section>
-        {/* @ts-ignore */}
+        {/* @ts-expect-error
+
+ */}
         <Button className={classNames("btn-action")} onClick={() => console.log("search")} type='primary'>查询</Button>
-        {/* @ts-ignore */}
+        {/* @ts-expect-error
+
+ */}
         <Button className={classNames("btn-action")} onClick={() => console.log("add")}>添加</Button>
       </section>
     )
@@ -191,7 +195,9 @@ const Search: NextPage = () => {
         render: (_: any, record: any) => {
           return (
             <>
-              {/* @ts-ignore */}
+              {/* @ts-expect-error
+
+ */}
               <Button className={classNames("btn-action")} onClick={() => handleDelete(record)}>删除</Button>
             </>
           )
@@ -211,11 +217,15 @@ const Search: NextPage = () => {
 
   return (
     <div>
-      {/* @ts-ignore */}
+      {/* @ts-expect-error
+
+ */}
       <PageLayout>
         <section className={classNames("container")}>
           <div className={classNames("container-content")}>
-            {/* @ts-ignore */}
+            {/* @ts-expect-error
+
+ */}
             <SearchLayout formObj={formObj} tabelObj={tabelObj} />
           </div>
         </section>

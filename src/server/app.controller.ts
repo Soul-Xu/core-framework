@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-ignore
+// @ts-expect-error
+
+
 import { Controller } from '@nestjs/common';
 import { AppService } from './app.service';
 

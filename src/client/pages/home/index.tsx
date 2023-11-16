@@ -1,17 +1,17 @@
 /** 第三方库 */
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from "react-redux";
-import { NextPage } from 'next'
+import { NextPage } from 'next';
 
 /** 样式 */
-import styles from "./index.module.scss";
 import classnames from "classnames/bind";
+import PageLayout from '../../layout/PageLayout';
+import styles from "./index.module.scss";
 const classNames = classnames.bind(styles);
-import PageLayout from '../../layout/PageLayout'
 
 const Home: NextPage = () => {
   return(
-    // @ts-ignore
+    // @ts-expect-error
+
+
     <PageLayout>
       <section className={classNames("container")}>
         <div className={classNames("content")}>

@@ -1,4 +1,4 @@
-import { Form, Input, Select, DatePicker, Radio, Table, Pagination } from 'antd'
+import { DatePicker, Form, Input, Radio, Select, Table } from 'antd';
 import classnames from 'classnames/bind';
 import style from './index.module.scss';
 
@@ -85,7 +85,9 @@ const SearchLayout = ({
           if (item.type === 'datepicker') {
             return (
               <Form.Item label={item.label} key={item.key} name={item.name} className={classNames("form-item")}>
-                {/* @ts-ignore */}
+                {/* @ts-expect-error
+
+ */}
                 <RangePicker
                   onChange={(time: any) => {
                     item.callback(time)

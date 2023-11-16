@@ -1,22 +1,21 @@
-import { ChangeEvent, useCallback, useEffect, useReducer, useState } from "react";
-import Image from 'next/image'
-import { useRouter } from 'next/router'
-import { Button, Checkbox, Form, Input, message } from 'antd';
-import asyncThunk from "../../store/asyncThunk"
-import { useImmerReducer } from "use-immer";
-import { reducer } from "../../utils/reducer";
-import { useDispatch, useSelector } from "react-redux";
-import styles from "./index.module.scss";
+import { Button, message } from 'antd';
 import classnames from "classnames/bind";
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useCallback } from "react";
+import { useDispatch } from "react-redux";
+import { useImmerReducer } from "use-immer";
+import asyncThunk from "../../store/asyncThunk";
+import { reducer } from "../../utils/reducer";
+import styles from "./index.module.scss";
 const classNames = classnames.bind(styles);
 
-import FormLayout from "../../components/formLayout"
-import { authState, setAuthState } from "../../store/modules/authSlice"
-import { setUserInfo } from "../../store/modules/loginSlice";
+import FormLayout from "../../components/formLayout";
+import { setAuthState } from "../../store/modules/authSlice";
 
 /** images */
-import ImgLogo from "public/images/login/anxin.png"
-import ImgCorner from "public/images/login/container_corner.png"
+import ImgLogo from "public/images/login/anxin.png";
+import ImgCorner from "public/images/login/container_corner.png";
 
 type FieldType = {
   username?: string;
@@ -55,7 +54,9 @@ const Login: React.FC = () => {
       username,
       password
     }
-    // @ts-ignore
+    // @ts-expect-error
+
+
     const res = await dispatchRedux(asyncThunk.login(params));
     const data = res?.payload
     if (data?.code === 0) {

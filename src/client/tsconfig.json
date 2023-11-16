@@ -16,14 +16,16 @@
     "incremental": true,
     // 基础路径
     "baseUrl": ".",
-    
     // 添加别名 , 在项目中即可使用 @components 
+    // "paths": {
+    //   "@components/*": ["components/*"],
+    //   "@utils/*": ["utils/*"],
+    //   "@lib/*": ["lib/*"],
+    //   "@styles/*": ["styles/*"]
+    // }
     "paths": {
-      "@components/*": ["components/*"],
-      "@utils/*": ["utils/*"],
-      "@lib/*": ["lib/*"],
-      "@styles/*": ["styles/*"]
-    }
+      "*": ["./*"]
+    },
   },
   "include": [
     "types/process.d.ts",

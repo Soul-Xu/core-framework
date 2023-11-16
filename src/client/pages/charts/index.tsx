@@ -1,10 +1,10 @@
-import React, { useEffect } from "react"
+import { Card, Col, Divider, Row } from "antd"
+import classnames from "classnames/bind"
 import { NextPage } from "next"
 import dynamic from 'next/dynamic'
+import { useEffect } from "react"
 import PageLayout from "../../layout/PageLayout"
-import { Row, Col, Card, Divider } from "antd"
-import styles from "./index.module.scss";
-import classnames from "classnames/bind";
+import styles from "./index.module.scss"
 const classNames = classnames.bind(styles);
 
 /** components */
@@ -43,32 +43,44 @@ const Charts: NextPage = () => {
   }, [])
 
   return(
-    // @ts-ignore
+    // @ts-expect-error
+
+
     <PageLayout>
       <section className={classNames("container")}>
         <h1 className={classNames("container-title")}>图表示例</h1>
         <div className={classNames("container-content")}>
           <h3>基础图表</h3>
-          {/* @ts-ignore */}
+          {/* @ts-expect-error
+
+ */}
           <Divider />
           <section className={classNames("content-demos")}>
-            {/* @ts-ignore */}
+            {/* @ts-expect-error
+
+ */}
             <Row className={classNames("row-demo")}>
               <Col span={8} className={classNames("col-demo")}>
                 <Card title="折线图">
-                  {/* @ts-ignore */}
+                  {/* @ts-expect-error
+
+ */}
                   <LineDemo />
                 </Card>
               </Col>
               <Col span={8} className={classNames("col-demo")}>
                 <Card title="面积图">
-                  {/* @ts-ignore */}
+                  {/* @ts-expect-error
+
+ */}
                   <AreaDemo />
                 </Card>
               </Col>
               <Col span={8} className={classNames("col-demo")}>
                 <Card title="柱状图">
-                  {/* @ts-ignore */}
+                  {/* @ts-expect-error
+
+ */}
                   <ColumnDemo />
                 </Card>
               </Col>
@@ -76,19 +88,25 @@ const Charts: NextPage = () => {
             <Row className={classNames("row-demo")}>
               <Col span={8} className={classNames("col-demo")}>
                 <Card title="条形图">
-                  {/* @ts-ignore */}
+                  {/* @ts-expect-error
+
+ */}
                   <BarDemo />
                 </Card>
               </Col>
               <Col span={8} className={classNames("col-demo")}>
                 <Card title="饼图">
-                  {/* @ts-ignore */}
+                  {/* @ts-expect-error
+
+ */}
                   <PieDemo />
                 </Card>
               </Col>
               <Col span={8} className={classNames("col-demo")}>
                 <Card title="双折线图">
-                  {/* @ts-ignore */}
+                  {/* @ts-expect-error
+
+ */}
                   <DualAxesDemo />
                 </Card>
               </Col>
@@ -103,13 +121,17 @@ const Charts: NextPage = () => {
             <Row className={classNames("row-demo")}>
               <Col span={12} className={classNames("col-demo")}>
                 <Card title="自定义图形">
-                  {/* @ts-ignore */}
+                  {/* @ts-expect-error
+
+ */}
                   <CustomLineDemo />
                 </Card>
               </Col>
               <Col span={12} className={classNames("col-demo")}>
                 <Card title="自定义环形">
-                  {/* @ts-ignore */}
+                  {/* @ts-expect-error
+
+ */}
                   <CustomPieDemo />
                 </Card>
               </Col>
@@ -117,7 +139,9 @@ const Charts: NextPage = () => {
             <Row className={classNames("row-demo")}>
               <Col span={24}>
                 <Card title="图表联动">
-                  {/* @ts-ignore */}
+                  {/* @ts-expect-error
+
+ */}
                   <CustomMixDemo />
                 </Card>
               </Col>

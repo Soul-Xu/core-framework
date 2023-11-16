@@ -3,10 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "release": "standard-version",
     "eslint": "eslint \"**/*.{ts,jsx,tsx}\"",
     "eslint:fix": "eslint \"**/*.{ts,jsx,tsx}\" --fix",
     "stylelint": "stylelint  \"**/*.{css,scss,sass,html}\"",
@@ -49,6 +48,9 @@
     "autoprefixer": "^10.4.16",
     "cross-env": "^7.0.3",
     "dotenv-cli": "^5.1.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "mini-css-extract-plugin": "^2.7.6",
     "node-sass": "^7.0.1",
     "postcss": "^8.4.31",
@@ -58,14 +60,16 @@
     "react-dev-inspector": "^1.8.0",
     "sass-loader": "^13.3.2",
     "simple-progress-webpack-plugin": "^2.0.0",
-    "stylelint": "^15.11.0",
-    "stylelint-config-prettier": "^9.0.5",
-    "stylelint-config-recess-order": "^4.3.0",
-    "stylelint-config-recommended-scss": "^13.1.0",
-    "stylelint-config-standard-scss": "^11.1.0",
-    "stylelint-config-standard-vue": "^1.0.0",
-    "stylelint-order": "^6.0.3",
-    "stylelint-scss": "^5.3.1",
+    "stylelint": "^14.7.1",
+    "stylelint-config-prettier": "^9.0.3",
+    "stylelint-config-prettier-scss": "^0.0.1",
+    "stylelint-config-rational-order": "^0.1.2",
+    "stylelint-config-recess-order": "^3.0.0",
+    "stylelint-config-standard": "^25.0.0",
+    "stylelint-config-standard-scss": "^3.0.0",
+    "stylelint-declaration-block-no-ignored-properties": "^2.5.0",
+    "stylelint-order": "^5.0.0",
+    "stylelint-scss": "^4.2.0",
     "tailwindcss": "^3.3.5",
     "terser-webpack-plugin": "^5.3.3",
     "utility-types": "^3.10.0",
@@ -87,6 +91,14 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "lint-staged": {
+    "./src/**/*.{js, ts, jsx, tsx}": [
+      "eslint ./src/**/*.{js, ts, jsx, tsx} --fix"
+    ],
+    "*.{css, scss, sass, html}": [
+      "stylelint ./src/**/*.{css, scss, sass, html} --fix"
     ]
   }
 }

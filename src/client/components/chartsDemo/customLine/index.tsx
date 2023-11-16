@@ -1,5 +1,5 @@
-import { isObject, deepMix } from '@antv/util';
-import { P, G2 } from '@antv/g2plot';
+import { G2, P } from '@antv/g2plot';
+import { deepMix, isObject } from '@antv/util';
 import { useEffect } from 'react';
 
 // 自定义图形
@@ -96,7 +96,9 @@ const CustomLineDemo: React.FC = () => {
         },
       },
       adaptor,
-      // @ts-ignore
+      // @ts-expect-error
+
+
       defaultOptions
     ); // 引入上述的封装，或者将上述代码发包
     

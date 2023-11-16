@@ -12,9 +12,9 @@
     box-sizing: border-box;
     width: 400px;
     height: 350px;
-    background: rgba(255,255,255);
-    margin: 0 auto;
     padding: 32px 72px;
+    margin: 0 auto;
+    background: rgb(255 255 255);
 
     .form-title {
       width: 268px;
@@ -32,10 +32,10 @@
   :global {
     .ant-form-item-no-colon {
       height: 20px;
-      font-size: 14px;
       font-family: MicrosoftYaHei;
-      color: #242424 !important;
+      font-size: 14px;
       line-height: 20px;
+      color: #242424 !important;
     }
   }
 }

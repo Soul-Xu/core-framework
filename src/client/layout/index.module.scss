@@ -1,20 +1,21 @@
 .sider-content {
   flex: 1 !important;
-  background:#2B5DB0 !important;
   color: #fff;
+  background: #2b5db0 !important;
 
   .sider-form-logo {
-    text-align: center;
     font-size: 0;
+    text-align: center;
   }
 
   :global {
-    .ant-menu, .ant-layout-sider-trigger {
-      background: #2B5DB0 !important;
+    .ant-menu,
+    .ant-layout-sider-trigger {
+      background: #2b5db0 !important;
     }
 
     .ant-menu-item-selected {
-      background: #3C77DC !important;
+      background: #3c77dc !important;
     }
   }
 }

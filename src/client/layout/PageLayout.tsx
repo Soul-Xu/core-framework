@@ -1,17 +1,16 @@
-import Image from "next/image"
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router'
-import { Layout, theme, Breadcrumb } from 'antd';
-import MenuLayout from './MenuLayout';
-import styles from "./index.module.scss"
+import { Layout, theme } from 'antd';
 import classnames from "classnames/bind";
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+import styles from "./index.module.scss";
 const classNames = classnames.bind(styles);
 
 /** image */
-import ImgFormLogo from 'public/images/common/form_logo.png';
 const { Header, Content, Footer, Sider } = Layout;
 
-// @ts-ignore
+// @ts-expect-error
+
+
 const PageLayout: React.FC = ({children}) => {
   const router = useRouter()
   const [collapsed, setCollapsed] = useState(false);

@@ -1,20 +1,11 @@
-import React, { useState, useEffect } from 'react';
 import {
-  HomeOutlined,
-  ApartmentOutlined,
-  ForkOutlined,
-  HistoryOutlined,
-  PartitionOutlined,
-  ScheduleOutlined,
-  TableOutlined,
-  SolutionOutlined,
-  TransactionOutlined,
   AreaChartOutlined,
-  LineChartOutlined
+  HomeOutlined
 } from '@ant-design/icons';
 import { Menu } from 'antd';
-import type { MenuProps, MenuTheme } from 'antd/es/menu';
+import type { MenuProps } from 'antd/es/menu';
 import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -33,13 +24,21 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  // @ts-ignore
+  // @ts-expect-error
+
+
   getItem('首页', '0', <HomeOutlined />),
-  // @ts-ignore
+  // @ts-expect-error
+
+
   getItem('图表示例', '1', <AreaChartOutlined />),
-  //  // @ts-ignore
+  //  // @ts-expect-error
+
+
   getItem('搜索示例', '2', <AreaChartOutlined />),
-  // // @ts-ignore
+  // // @ts-expect-error
+
+
   // getItem('证劵运维值班', '3', <LineChartOutlined />),
 ];
 
@@ -51,8 +50,8 @@ const itemsMap = {
 }
 
 const transferMaps = (obj: any) => {
-  let res = {}
-  for (let key in obj) {
+  const res = {}
+  for (const key in obj) {
     res[obj[key]] = key
   }
   return res

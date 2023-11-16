@@ -1,18 +1,16 @@
-import React from 'react'
-import { NextPage } from 'next'
-import styles from "./index.module.scss";
+import type { DatePickerProps } from 'antd';
+import { Checkbox } from 'antd';
 import classnames from "classnames/bind";
-const classNames = classnames.bind(styles);
+import React from 'react';
 import { useImmerReducer } from "use-immer";
 import { reducer } from "../../utils/reducer";
-import { useDispatch, useSelector } from "react-redux";
-import type { DatePickerProps } from 'antd';
-import { Checkbox } from 'antd'
+import styles from "./index.module.scss";
+const classNames = classnames.bind(styles);
 
 /** components */
-import PageLayout from '../../layout/PageLayout'
 import FormLayout from '../../components/formLayout';
 import TableLayout from '../../components/tableLayout';
+import PageLayout from '../../layout/PageLayout';
 
 const dataList = [
   {
@@ -211,7 +209,9 @@ const Stock:React.FC = () => {
         render: (_: any, record: any) => {
           return (
             <>
-              {/* @ts-ignore */}
+              {/* @ts-expect-error
+
+ */}
               <Checkbox checked={record.confirm} />
             </>
           )
@@ -224,7 +224,9 @@ const Stock:React.FC = () => {
         render: (_: any, record: any) => {
           return (
             <>
-              {/* @ts-ignore */}
+              {/* @ts-expect-error
+
+ */}
               <Checkbox checked={record.reConfirm} />
             </>
           )
@@ -246,15 +248,23 @@ const Stock:React.FC = () => {
 
   return (
     <div>
-      {/* @ts-ignore */}
+      {/* @ts-expect-error
+
+ */}
       <PageLayout>
         <section className={classNames("container")}>
           <div className={classNames("container-content")}>
-            {/* @ts-ignore */}
+            {/* @ts-expect-error
+
+ */}
             <FormLayout formObj={formObjTop} />
-            {/* @ts-ignore */}
+            {/* @ts-expect-error
+
+ */}
             <FormLayout formObj={formObjArea} />
-            {/* @ts-ignore */}
+            {/* @ts-expect-error
+
+ */}
             <TableLayout tabelObj={tableObj} />
           </div>
         </section>

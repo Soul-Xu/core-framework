@@ -1,14 +1,20 @@
-import React, { useState } from 'react'
-import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
-import { 
-  Form, Input, Select, DatePicker, Upload, 
-  Checkbox, Button, Row, Col, Space, 
-  Progress
-} from 'antd'
+import { InboxOutlined, UploadOutlined } from '@ant-design/icons';
+import {
+  Button,
+  Checkbox,
+  Col,
+  DatePicker,
+  Form, Input,
+  Progress,
+  Row,
+  Select,
+  Space,
+  Upload
+} from 'antd';
 import classnames from 'classnames/bind';
-import style from './index.module.scss';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn'; // 导入中文语言环境
+import style from './index.module.scss';
 
 dayjs.locale('zh-cn'); // 设置全局的语言环境为中文
 
@@ -76,7 +82,9 @@ const FormLayout = ({
               }
               { item.kind === "datepicker" && 
                 <Space direction="vertical">
-                  {/* @ts-ignore */}
+                  {/* @ts-expect-error
+
+ */}
                   <DatePicker
                     // style={{ width: "228px"}}
                     // 如果需要时间选择器，也可以设置时间格式
@@ -179,7 +187,9 @@ const FormLayout = ({
                     key={item.key} 
                     name={item.name} 
                   >
-                    {/* @ts-ignore */}
+                    {/* @ts-expect-error
+
+ */}
                     <DatePicker {...item} />
                   </Form.Item>
                 </Col>
@@ -196,7 +206,9 @@ const FormLayout = ({
                 name={item.name} 
               >
                 <Upload {...item}>
-                  {/* @ts-ignore */}
+                  {/* @ts-expect-error
+
+ */}
                   <Button icon={<UploadOutlined />}>{item.title}</Button>
                 </Upload>
               </Form.Item>
@@ -214,7 +226,9 @@ const FormLayout = ({
               >
                 <Dragger>
                   <p className="ant-upload-drag-icon">
-                    {/* @ts-ignore */}
+                    {/* @ts-expect-error
+
+ */}
                     <InboxOutlined />
                   </p>
                   <p className="ant-upload-hint">{item.title}</p>
