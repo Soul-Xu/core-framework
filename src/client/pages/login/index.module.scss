@@ -1,0 +1,41 @@
+.login-container {
+  display: flex;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../../public/images/login/background.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  .login-form {
+    position: relative;
+    box-sizing: border-box;
+    width: 400px;
+    height: 350px;
+    background: rgba(255,255,255);
+    margin: 0 auto;
+    padding: 32px 72px;
+
+    .form-title {
+      width: 268px;
+      font-size: 20px;
+      text-align: center;
+    }
+
+    .form-corner {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
+
+  :global {
+    .ant-form-item-no-colon {
+      height: 20px;
+      font-size: 14px;
+      font-family: MicrosoftYaHei;
+      color: #242424 !important;
+      line-height: 20px;
+    }
+  }
+}

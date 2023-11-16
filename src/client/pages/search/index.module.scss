@@ -1,0 +1,28 @@
+.url-container {
+  overflow-x: auto;
+
+  .url-container-item {
+    width: 100%;
+  }
+}
+
+.btn-action {
+  margin-right: 20px;
+}
+
+.container {
+  padding: 20px 0;
+  height: auto;
+  min-height: 500px;
+  background: #fff;
+
+  .container-title {
+    display: flex;
+    justify-content: center;
+  }
+
+  .container-content {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}

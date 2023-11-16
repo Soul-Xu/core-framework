@@ -1,0 +1,31 @@
+.basic-wrap {
+  color: #ffffff;
+
+  .form-wrap {
+    .form-content {
+      display: flex;
+      flex-direction: row;
+      justify-items: center;
+    }
+
+    .form-item {
+      width: 30%;
+      margin-bottom: 20px;
+      margin-right: 20px;
+    }
+  }
+
+  .table-wrap {
+    color: #ffffff;
+
+    .table-status {
+      margin-bottom: 15px;
+      float: right;
+    }
+  }
+}
+
+// ant design默认样式
+// :global .ant-form-item-control-input-content {
+//   min-width: 100px;
+// }
