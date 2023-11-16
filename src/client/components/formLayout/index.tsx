@@ -61,9 +61,9 @@ const FormLayout = ({
             colon={false}
             required={item?.require} 
             label={item.label} 
-              key={item.key} 
-              name={item.name}
-              rules={item?.rules}
+            key={item.key} 
+            name={item.name}
+            rules={item?.rules}
             >
               { item.kind === "input" && item.type !== "area"&& <Input {...item} /> }
               { item.kind === "input" && item.type === "area" && <TextArea {...item}/> }
@@ -108,6 +108,7 @@ const FormLayout = ({
           labelAlign={labelAlign} 
           id={formObj.name} 
           name={formObj.name} 
+          key={formObj.name}
         >
           <Row>{getFields(items, inRow)}</Row>
         </Form>
@@ -122,6 +123,7 @@ const FormLayout = ({
         labelAlign={labelAlign} 
         id={formObj.name} 
         name={formObj.name} 
+        key={formObj.name}
       >
         { items.length > 0 && items.map((item: any, index: number) => {
           if (item.kind === 'input') {
