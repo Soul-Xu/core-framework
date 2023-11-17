@@ -1,3 +1,6 @@
+/**
+ * 页面布局组件
+ */
 import { Layout, theme } from 'antd';
 import classnames from "classnames/bind";
 import { useRouter } from 'next/router';

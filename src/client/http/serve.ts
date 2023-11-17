@@ -1,4 +1,3 @@
-// import { ServeData } from "@/dto";
 import { Method, AxiosRequestHeaders } from "axios";
 import request from "./index";
 

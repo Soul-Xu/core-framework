@@ -15,6 +15,10 @@ const peopleData = [
 const PersonSelectorBasic = () => {
   const [selectedPerson, setSelectedPerson] = useState(null);
 
+  /**
+   * @description 人员选择器处理函数
+   * @param value 
+   */
   const handlePersonChange = (value) => {
     setSelectedPerson(value);
   };

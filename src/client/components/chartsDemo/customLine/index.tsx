@@ -1,3 +1,6 @@
+/**
+ * @antv/g2plot 自定义折线图
+ */
 import { G2, P } from '@antv/g2plot';
 import { deepMix, isObject } from '@antv/util';
 import React, { useEffect } from "react";

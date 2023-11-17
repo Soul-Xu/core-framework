@@ -1,3 +1,6 @@
+/**
+ * @antv/g2plot 双折线图
+ */
 import { DualAxes } from "@antv/g2plot";
 import React, { useEffect } from "react";
 import { data } from "./constants";

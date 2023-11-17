@@ -1,3 +1,6 @@
+/**
+ * @antv/g2plot 饼图
+ */
 import { Pie } from "@antv/g2plot";
 import React, { useEffect } from "react";
 import { data } from "./constants";

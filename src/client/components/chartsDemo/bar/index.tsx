@@ -1,3 +1,6 @@
+/**
+ * @antv/g2plot 条形图
+ */
 import { Bar } from '@antv/g2plot';
 import React, { useEffect } from "react";
 import { data } from "./constants";

@@ -1,3 +1,6 @@
+/**
+ * 菜单布局组件
+ */
 import {
   AreaChartOutlined,
   HomeOutlined

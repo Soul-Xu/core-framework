@@ -42,15 +42,24 @@ const PersonSelectorAdvance = ({ onSelect, placeholder }: Props) => {
   const [visible, setVisible] = useState(false);
   const [selectedPerson, setSelectedPerson] = useState([]);
 
+  /**
+   * @description 弹窗显隐
+   */
   const handleOpenModal = () => {
     setVisible(true);
   };
 
+  /**
+   * @description 弹窗确认
+   */
   const handleOk = () => {
     setVisible(false);
     onSelect(selectedPerson);
   };
 
+  /**
+   * @description 弹窗取消
+   */
   const handleCancel = () => {
     setVisible(false);
   };

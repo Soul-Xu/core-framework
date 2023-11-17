@@ -1,3 +1,6 @@
+/**
+ * @antv/g2plot 混合图表
+ */
 import { Mix } from '@antv/g2plot';
 import React, { useEffect } from "react";
 import { data } from "./constants";

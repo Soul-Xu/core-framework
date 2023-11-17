@@ -1,11 +1,10 @@
 import type { NextPage } from "next";
 import { useRouter } from 'next/router';
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Login from '../pages/login';
 
 const Index: NextPage = () => {
-  const dispatchRedux = useDispatch();
   const authState = useSelector((state: any) => state.auth.authState)
   const router = useRouter()
 

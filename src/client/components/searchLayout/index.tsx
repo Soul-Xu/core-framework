@@ -1,3 +1,6 @@
+/**
+ * 搜索页开发组件
+ */
 import { DatePicker, Form, Input, Radio, Select, Table } from 'antd';
 import classnames from 'classnames/bind';
 import React from "react";

@@ -1,3 +1,6 @@
+/**
+ * @antv/g2plot 自定义饼图
+ */
 import { G2, Pie } from '@antv/g2plot';
 import React, { useEffect } from "react";
 

@@ -1,18 +1,22 @@
-import { Button, message } from 'antd';
-import classnames from "classnames/bind";
+
+/** external library */
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 import { useDispatch } from "react-redux";
 import { useImmerReducer } from "use-immer";
+import { Button, message } from 'antd';
+/** components */
+import FormLayout from "../../components/formLayout";
+/** store */
+import { setAuthState } from "../../store/modules/authSlice";
+/** utils */
 import asyncThunk from "../../store/asyncThunk";
 import { reducer } from "../../utils/reducer";
+/** css */
+import classnames from "classnames/bind";
 import styles from "./index.module.scss";
 const classNames = classnames.bind(styles);
-
-import FormLayout from "../../components/formLayout";
-import { setAuthState } from "../../store/modules/authSlice";
-
 /** images */
 import ImgLogo from "public/images/login/anxin.png";
 import ImgCorner from "public/images/login/container_corner.png";
@@ -33,14 +37,29 @@ const Login: React.FC = () => {
   const { username, password } = data as any;
   const router = useRouter()
 
+  /**
+   * @description 数据处理函数
+   * @param key data字段
+   * @param value data字段值
+   */
   const setState = (type: string, val: Record<string, any>) => {
     dispatch({ type, payload: val });
   };
 
+  /**
+   * @description input组件onChange函数
+   * @param key 
+   * @param value 
+   */
   const onHandleChange = (key: string, value: string) => {
     setState("update", { [key]: value})
   }
 
+  /**
+   * @description 登录校验
+   * @param key 
+   * @param value 
+   */
   const onLogin = useCallback(async () => {
     if (!username) {
       message.warning("账号不能为空");
@@ -69,6 +88,9 @@ const Login: React.FC = () => {
     }
   }, [password, username, dispatchRedux, router])
 
+  /**
+   * @description 登录表单配置
+   */
   const formObj = {
     name: 'login-form',
     layout: 'vertical',

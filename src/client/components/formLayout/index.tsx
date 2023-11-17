@@ -1,3 +1,6 @@
+/**
+ * 表单开发组件
+ */
 import { InboxOutlined, UploadOutlined } from '@ant-design/icons';
 import {
   Button,
@@ -22,7 +25,7 @@ const { TextArea } = Input
 const { Dragger } = Upload;
 
 interface ItemProps {
-  kind: string, // input、select、datepicker
+  kind: string, // input、select、datepicker、checkout、progress、uploadFile、uploadImage、action
 }
 
 interface IFormObjProps {
@@ -46,6 +49,12 @@ const FormLayout = ({
     customElements: (params: any) => (<></>) // 附加的dom，eg: button
   }
 }: FormLayoutProps) => {
+  /**
+   * 表单分列设置
+   * @param items 表单项目数组
+   * @param cols 每行列数
+   * @returns 
+   */
   const getFields = (items: any, cols) => {
     const children: any = [];
     items.map((item: any, index: number) => {

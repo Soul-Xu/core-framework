@@ -2,6 +2,11 @@ import Document, { Head, Html, Main, NextScript } from 'next/document'
 import React from "react"
 
 class MyDocument extends Document {
+  /**
+   * @description SSR渲染
+   * @param ctx 
+   * @returns 
+   */
   static async getInitialProps(ctx) {
     const initialProps = await Document.getInitialProps(ctx)
     return { ...initialProps }

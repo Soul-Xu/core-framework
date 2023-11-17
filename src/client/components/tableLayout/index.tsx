@@ -1,3 +1,6 @@
+/**
+ * 表格开发组件
+ */
 import { Table } from 'antd';
 import classnames from 'classnames/bind';
 import React from "react";

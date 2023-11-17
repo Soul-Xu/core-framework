@@ -1,3 +1,6 @@
+/**
+ * @antv/g2plot 区域图
+ */
 import { Area } from "@antv/g2plot";
 import React, { useEffect } from "react";
 import { data } from "./constants";
