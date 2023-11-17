@@ -3,7 +3,7 @@ import { Method } from "axios";
 import { settingServe } from "../../http/serve";
 import asyncThunkMap, { AsyncThunkMap, AsyncThunkValueObject } from "./config";
 
-type Thunk = Record<AsyncThunkMap, (data?: any) => AsyncThunk<any, void, {}>>;
+type Thunk = Record<AsyncThunkMap, (data?: any) => AsyncThunk<any, void, any>>;
 
 // 自动生成thunk
 const autoAsyncThunk = (name: string, method: Method, url: string) => {
