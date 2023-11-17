@@ -19,6 +19,7 @@
     "jsx": "preserve",
     "incremental": true,
     "noImplicitAny": false,
+    "declaration": false,
     // 基础路径
     "baseUrl": ".",
     // 添加别名 , 在项目中即可使用 @components 
