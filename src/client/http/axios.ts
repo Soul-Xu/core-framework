@@ -17,7 +17,6 @@ const baseApi = process.env.NEXT_PUBLIC_API_BASE
 const getRequest = async (params) => {
   try {
     const response = await axios.get(params.url, {params: params.query})
-    console.log('axios-get', response)
     return response
   } catch (error) {
     console.error(error)
@@ -28,7 +27,6 @@ const getRequest = async (params) => {
 const postRequest = async (params) => {
   try {
     const response = await axios.post(params.url, {params: params.query})
-    console.log('axios-post', response)
     return response
   } catch (error) {
     console.error(error)
@@ -39,7 +37,6 @@ const postRequest = async (params) => {
 const putRequest = async (params) => {
   try {
     const response = await axios.put(params.url, {params: params.query})
-    console.log('axios-post', response)
     return response
   } catch (error) {
     console.error(error)
@@ -50,7 +47,6 @@ const putRequest = async (params) => {
 const deleteRequest = async (params) => {
   try {
     const response = await axios.delete(params.url, {params: params.query})
-    console.log('axios-post', response)
     return response
   } catch (error) {
     console.error(error)

@@ -1,0 +1,15 @@
+.search-apps {
+  display: flex;
+  margin-bottom: 20px;
+
+  &-input  {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    width: 220px !important;
+    height: 32px;
+    overflow: hidden;
+    border: none;
+    background-color: inherit;
+  }
+}

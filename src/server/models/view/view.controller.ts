@@ -16,10 +16,10 @@ export class ViewController {
   }
 
   // page
-  @Get('home')
-  @ApiTags('Home')
+  @Get('app')
+  @ApiTags('App')
   @ApiResponse({ status: 200, description: '首页' })
-  public async showHome(@Req() req: Request, @Res() res: Response) {
+  public async showApp(@Req() req: Request, @Res() res: Response) {
     await this.viewService.handler(req, res);
   }
 
@@ -27,63 +27,6 @@ export class ViewController {
   @ApiTags('Login')
   @ApiResponse({ status: 200, description: '登录页' })
   public async showLogin(@Req() req: Request, @Res() res: Response) {
-    console.log("login-server")
-    await this.viewService.handler(req, res);
-  }
-
-  @Get('receiveAssign')
-  @ApiTags('ReceiveAssign')
-  @ApiResponse({ status: 200, description: '首页' })
-  public async showReceiveAssign(@Req() req: Request, @Res() res: Response) {
-    await this.viewService.handler(req, res);
-  }
-
-  @Get('diagnosisRecovery')
-  @ApiTags('DiagnosisRecovery')
-  @ApiResponse({ status: 200, description: '首页' })
-  public async showDiagnosisRecovery(@Req() req: Request, @Res() res: Response) {
-    await this.viewService.handler(req, res);
-  }
-
-  @Get('review')
-  @ApiTags('Review')
-  @ApiResponse({ status: 200, description: '首页' })
-  public async showReview(@Req() req: Request, @Res() res: Response) {
-    await this.viewService.handler(req, res);
-  }
-
-  @Get('secondLevelAudit')
-  @ApiTags('SecondLevelAudit')
-  @ApiResponse({ status: 200, description: '首页' })
-  public async showSecondLevelAudit(@Req() req: Request, @Res() res: Response) {
-    await this.viewService.handler(req, res);
-  }
-
-  @Get('eventReportAudit')
-  @ApiTags('EventReportAudit')
-  @ApiResponse({ status: 200, description: '首页' })
-  public async showEventReportAudit(@Req() req: Request, @Res() res: Response) {
-    await this.viewService.handler(req, res);
-  }
-
-  @Get('departmentCounterSign')
-  @ApiTags('DepartmentCounterSign')
-  @ApiResponse({ status: 200, description: '首页' })
-  public async showDepartmentCounterSign(@Req() req: Request, @Res() res: Response) {
-    await this.viewService.handler(req, res);
-  }
-
-  @Get('reportCoordination')
-  @ApiTags('ReportCoordination')
-  @ApiResponse({ status: 200, description: '首页' })
-  public async showReportCoordination(@Req() req: Request, @Res() res: Response) {
-    await this.viewService.handler(req, res);
-  }
-
-  @Get('statement')
-  @ApiTags('Statement')
-  @ApiResponse({ status: 200, description: '首页' })
-  public async showStatement(@Req() req: Request, @Res() res: Response) {
     await this.viewService.handler(req, res);
   }
 
@@ -91,20 +34,6 @@ export class ViewController {
   @ApiTags('Charts')
   @ApiResponse({ status: 200, description: '图表' })
   public async showCharts(@Req() req: Request, @Res() res: Response) {
-    await this.viewService.handler(req, res);
-  }
-
-  @Get('search')
-  @ApiTags('Search')
-  @ApiResponse({ status: 200, description: '搜索页' })
-  public async showSearch(@Req() req: Request, @Res() res: Response) {
-    await this.viewService.handler(req, res);
-  }
-
-  @Get('stock')
-  @ApiTags('Stock')
-  @ApiResponse({ status: 200, description: '证劵运维值班' })
-  public async showStock(@Req() req: Request, @Res() res: Response) {
     await this.viewService.handler(req, res);
   }
 

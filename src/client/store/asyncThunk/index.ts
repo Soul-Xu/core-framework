@@ -8,7 +8,6 @@ type Thunk = Record<AsyncThunkMap, (data?: any) => AsyncThunk<any, void, any>>;
 // 自动生成thunk
 const autoAsyncThunk = (name: string, method: Method, url: string) => {
   return createAsyncThunk(name, async (data?: any) => {
-    console.log("autoAsyncThunk", name, data)
     return await settingServe({ data, method, url });
   });
 };

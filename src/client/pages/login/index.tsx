@@ -81,7 +81,7 @@ const Login: React.FC = () => {
         authState: true
       }))
       message.success("登录成功")
-      router.push("/home")
+      router.push("/app")
     } else {
       message.error("登录失败，请重试")
       return
