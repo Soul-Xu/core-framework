@@ -14,17 +14,16 @@ import styles from "./index.module.scss";
 const classNames = classnames.bind(styles);
 
 const SearchApps = () => {
-
   /**
    * @description: 搜索应用
    * @param: 
    */
   const onSearch = (e: any) => {
     console.log(e)
-  };
+  }
 
   return (
-    <div className="search-apps">
+    <div className={classNames("search-apps")}>
       <Search
         className={classNames("search-apps-input")}
         placeholder="请输入搜索应用名" 

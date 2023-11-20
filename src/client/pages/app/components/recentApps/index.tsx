@@ -1,21 +1,71 @@
 /**
  * 最近应用
  */
-import React from "react";
+/** external library */
+import React, { useState, useEffect } from "react";
+import { 
+  CaretDownOutlined,
+  CaretRightOutlined,
+  ClockCircleOutlined } from "@ant-design/icons";
 
-const RecentApps = () => {
+/** 样式 */
+import classnames from "classnames/bind";
+import styles from "./index.module.scss";
+const classNames = classnames.bind(styles);
+
+/**
+ * interface
+ * @param props 
+ * @returns 
+ */
+
+interface AppProps {
+  id: string | number,
+  icon?: string,
+  name: string,
+
+}
+
+interface Props {
+  appList: Array<AppProps>
+}
+
+const RecentApps = (props: Props) => {
+  const { appList } = props
+  const [isExpend, setIsExpanded] = useState(true)
+
+  useEffect(() => {
+    console.log("recent-apps", appList)
+  }, [])
+
   return (
-    <div className="recent-apps">
-      <div className="recent-apps-header">
-        <div className="recent-apps-header-icon"></div>
-        <div className="recent-apps-header-title">最近使用的应用</div>
-      </div>
-      <div className="recent-apps-body">
-        <div className="recent-apps-body-item">
-          <div className="recent-apps-body-item-icon"></div>
-          <div className="recent-apps-body-item-title">应用名称</div>
+    <div className={classNames("recent-apps")}>
+      <div className={classNames("recent-apps-header")}>
+        <div className={classNames("recent-apps-header-icon")}>
+          <div className={classNames("recent-apps-header-icon-arrow")} onClick={() => setIsExpanded(!isExpend)}>
+            { isExpend ? <CaretDownOutlined /> : <CaretRightOutlined />  }
+          </div>
         </div>
-      </div> 
+        <div className={classNames("recent-apps-header-icon")}>
+          <div className={classNames("recent-apps-header-icon-img")}>
+            <ClockCircleOutlined />
+          </div>
+        </div>
+        <div className={classNames("recent-apps-header-title")}>最近使用</div>
+      </div>
+      { isExpend && (
+        <div className={classNames("recent-apps-list")}>
+          { appList.reverse().map((app: any) => (
+            <div className={classNames("recent-apps-list-item")} key={app.id}>
+              <div className={classNames("recent-apps-list-item-icon")} 
+                style={{ backgroundColor: app.navColor }}> 
+                <img src={app.iconUrl}/>
+              </div>
+              <div className={classNames("recent-apps-list-item-title")}>{app.name}</div>
+            </div>
+          )) }
+        </div>
+      )}
     </div>
   )
 }
