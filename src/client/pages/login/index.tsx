@@ -20,6 +20,8 @@ const classNames = classnames.bind(styles);
 /** images */
 import ImgLogo from "public/images/login/anxin.png";
 import ImgCorner from "public/images/login/container_corner.png";
+// import ImgLogo from "../../public/images/login/anxin.png";
+// import ImgCorner from "../../public/images/login/container_corner.png";
 
 type FieldType = {
   username?: string;

@@ -35,11 +35,11 @@ interface ITableObjProps {
 }
 
 interface TableLayoutProps {
-  tabelObj: ITableObjProps
+  tableObj: ITableObjProps
 }
 
 const TableLayout = ({
-  tabelObj = {
+  tableObj = {
     columns: [],
     datasource: [],
     api: '',
@@ -53,7 +53,7 @@ const TableLayout = ({
   }
 }: TableLayoutProps) => {
   const TableComponent = () => {
-    const { columns, datasource, customElements, pagination, onChangePage } = tabelObj
+    const { columns, datasource, customElements, pagination, onChangePage } = tableObj
     const { page, pageSize, total } = pagination
 
     return (

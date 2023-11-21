@@ -11,7 +11,7 @@ import styles from "./index.module.scss";
 const classNames = classnames.bind(styles);
 
 /** components */
-import AppContainer from '../../layout/container';
+import AppContainer from './components/container';
 import SearchApps from './components/searchApps';
 import RecentApps from './components/recentApps';
 import MyApps from './components/myApps';

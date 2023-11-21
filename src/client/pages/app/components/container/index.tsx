@@ -1,5 +1,6 @@
 /** external library */
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 import { NextPage } from 'next';
 import { 
   AppstoreFilled,
@@ -31,20 +32,43 @@ import classnames from "classnames/bind";
 import styles from "./index.module.scss";
 const classNames = classnames.bind(styles);
 
-
 const items: MenuItem[] = [
   getItem('应用', 'app', <AppstoreFilled />),
-  getItem('我的待办', 'todoList', <CheckCircleOutlined />),
+  getItem('我的待办', 'todo', <CheckCircleOutlined />),
   getItem('集成中心', 'integration', <GoldFilled />),
   getItem('个人中心', 'usercenter', <UserOutlined />),
 ];
+
+const itemsMap: any = {
+  app: "app",
+  todo: "todo",
+  integration: "app",
+  usercenter: "app"
+}
+
+const transferMaps = (obj: any) => {
+  const res = {}
+  for (const key in obj) {
+    res[obj[key]] = key
+  }
+  return res
+}
+
+const pathsMap = transferMaps(itemsMap)
 
 interface PageContainerProps {
   children?: React.ReactNode
 }
 
-const AppContainer: NextPage<PageContainerProps> = ({ children }) => {
+const AppContainer: NextPage<PageContainerProps> = ({ children }: any) => {
   const [collapsed, setCollapsed] = useState(false)
+  const [selectKey, setSelectKey] = useState([''])
+  const router = useRouter()
+
+  const onMenuClick = (menu: any) => {
+    setSelectKey([`${menu.key}`])
+    router.push(`/${itemsMap[menu.key]}`)
+  }
 
   return (
     <Layout>
@@ -67,7 +91,7 @@ const AppContainer: NextPage<PageContainerProps> = ({ children }) => {
             width: collapsed ? "60px" : "200px"
           }}
         >
-          <Menu defaultSelectedKeys={['app']} mode="inline" items={items} />
+          <Menu defaultSelectedKeys={['app']} mode="inline" items={items} onClick={onMenuClick} />
         </Sider>
         <Content
           style={{

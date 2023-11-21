@@ -34,15 +34,45 @@ const demo: Record<string, AsyncThunkValue> = {
   }
 };
 
+// 应用
+const apps: Record<string, AsyncThunkValue> = {
+  // 获取应用列表
+  getApps: {
+    method: "get",
+    url: "/api/getApps"
+  },
+  // 新建应用
+  createApp: {
+    method: "post",
+    url: "/api/createApp"
+  },
+  // 编辑应用
+  updateApp: {
+    method: "post",
+    url: "/api/updateApp"
+  },
+  // 删除应用
+  deleteApp: {
+    method: "delete",
+    url: "/api/deleteApp/:id"
+  }
+};
+
 const asyncThunkMap: Record<string, AsyncThunkValue> = {
   login: {
     method: "post",
     url: "/api/login"
   },
-  ...demo
+  ...demo,
+  ...apps
 };
 
 export type AsyncThunkMap =
-  | "login"
+  | "login" 
+  | "getApps"
+  | "createApp"
+  | "updateApp"
+  | "deleteApp"
+
 
 export default asyncThunkMap;

@@ -18,8 +18,22 @@ export class ViewController {
   // page
   @Get('app')
   @ApiTags('App')
-  @ApiResponse({ status: 200, description: '首页' })
+  @ApiResponse({ status: 200, description: '应用' })
   public async showApp(@Req() req: Request, @Res() res: Response) {
+    await this.viewService.handler(req, res);
+  }
+
+  @Get('app/:id')
+  @ApiTags('App/:id')
+  @ApiResponse({ status: 200, description: '应用' })
+  public async showAppId(@Req() req: Request, @Res() res: Response) {
+    await this.viewService.handler(req, res);
+  }
+
+  @Get('todo')
+  @ApiTags('Todo')
+  @ApiResponse({ status: 200, description: '我的待办' })
+  public async showTodo(@Req() req: Request, @Res() res: Response) {
     await this.viewService.handler(req, res);
   }
 

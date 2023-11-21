@@ -1,0 +1,113 @@
+.header {
+  z-index: 16;
+  display: block;
+  padding: 0 !important;
+  background: #fff;
+  border: none;
+
+  &-container {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    background-color: rgb(0 188 212);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 24%);
+    -webkit-box-align: center;
+
+    &-title {
+      display: flex;
+      justify-content: center;
+      width: 200px;
+      max-width: 200px;
+      margin: 0 2px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    &-tabs {
+      display: flex;
+      cursor: pointer;
+
+      .tabs-container {
+        width: 100px;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+
+        &-label {
+          color: #fff;
+        }
+
+        &-line {
+          display: none;
+        }
+      }
+
+      .tabs-container-select {
+        width: 100px;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        cursor: pointer;
+        background-color: rgb(0 0 0 / 15%);
+
+        &-label {
+          color: #fff;
+        }
+
+        &-line {
+          position: relative;
+          bottom: 10px;
+          display: block;
+          width: 60px;
+          height: 2px;
+          margin: 0 auto;
+          font-size: 16px;
+          color: #fff;
+          text-align: center;
+          background: #fff;
+        }
+      }
+    }
+  }
+}
+
+.container-wrapper {
+  line-height: 1.5rem;
+  color: #333;
+
+  .sider {
+    position: fixed;
+    top: 4rem;
+    bottom: 0;
+    left: 0;
+    height: 100vh;
+    overflow: auto;
+    background: rgb(247 248 252);
+    transition: width 0.2s ease 0s;
+
+    :global {
+      .ant-layout-sider-children,
+      .ant-layout-sider-children .ant-menu,
+      .ant-layout-sider-trigger {
+        background: rgb(247 248 252);
+        transition: width 0.2s ease 0s;
+      }
+
+      .ant-layout-sider-trigger {
+        color: #333;
+      }
+
+      .ant-menu-item .anticon {
+        font-size: 24px;
+      }
+    }
+  }
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: top;
+}

@@ -2,6 +2,7 @@ import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit"
 import { createWrapper } from "next-redux-wrapper"
 import { authSlice } from "./modules/authSlice"
 import { loginSlice } from "./modules/loginSlice"
+import { menuSlice } from "./modules/menuSlice"
 import { templateSlice } from "./modules/templateSlice"
 
 const makeStore = () =>
@@ -9,7 +10,8 @@ const makeStore = () =>
     reducer: {
       template: templateSlice.reducer,
       auth: authSlice.reducer,
-      login: loginSlice.reducer
+      login: loginSlice.reducer,
+      menu: menuSlice.reducer
     },
     devTools: true
   })

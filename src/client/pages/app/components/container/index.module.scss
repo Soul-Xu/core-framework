@@ -1,18 +1,18 @@
 .header {
-  display: block;
   z-index: 16;
+  display: block;
+  padding: 0 !important;
   background: #fff;
   border: none;
-  padding: 0 !important;
 
   &-container {
     display: flex;
-    -webkit-box-align: center;
     align-items: center;
-    background: rgb(255, 255, 255);
     height: 50px;
     padding-left: 24px;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 3px;
+    background: rgb(255 255 255);
+    box-shadow: rgb(0 0 0 / 16%) 0 1px 3px;
+    -webkit-box-align: center;
 
     &-logo {
       display: inline-block;
@@ -25,29 +25,29 @@
 }
 
 .container-wrapper {
-  color: #333;
   line-height: 1.5rem;
+  color: #333;
 
   .sider {
-    background: rgb(247, 248, 252);
-    transition: width 0.2s ease 0s;
-    overflow: auto;
-    height: 100vh;
     position: fixed;
-    left: 0;
     top: 4rem;
     bottom: 0;
+    left: 0;
+    height: 100vh;
+    overflow: auto;
+    background: rgb(247 248 252);
+    transition: width 0.2s ease 0s;
 
     :global {
       .ant-layout-sider-children,
       .ant-layout-sider-children .ant-menu,
       .ant-layout-sider-trigger {
-        background: rgb(247, 248, 252);
+        background: rgb(247 248 252);
         transition: width 0.2s ease 0s;
       }
 
       .ant-layout-sider-trigger {
-        color: #333
+        color: #333;
       }
 
       .ant-menu-item .anticon {
@@ -60,6 +60,6 @@
 .ellipsis {
   overflow: hidden;
   text-overflow: ellipsis;
-  vertical-align: top;
   white-space: nowrap;
+  vertical-align: top;
 }
