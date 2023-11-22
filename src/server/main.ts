@@ -6,6 +6,7 @@ import { generateDocument } from './core/swagger/index';
 import { AppModule } from './app.module';
 import { logger } from './core/middleware/logger.middleware';
 import { HttpExceptionFilter } from 'src/server/core/filter/http-exception.filter';
+import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,6 +15,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalInterceptors(new LoggingInterceptor());
+  app.use(cookieParser());
   // app.useGlobalGuards(new RolesGuard());
   // 设置全局日志
   app.use(logger);

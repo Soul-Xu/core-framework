@@ -3,9 +3,14 @@
  */
 /** 第三方库 */
 import { NextPage } from 'next';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from "react-redux";
+import { useImmerReducer } from "use-immer";
+/** utils */
+import asyncThunk from "../../store/asyncThunk";
 
-/** 样式 */
+/** css */
 import classnames from "classnames/bind";
 import styles from "./index.module.scss";
 const classNames = classnames.bind(styles);
@@ -76,6 +81,39 @@ const appList = [
   }
 ]
 const App: NextPage = () => {
+  const router = useRouter()
+  const dispatchRedux = useDispatch();
+  const cookie = useSelector((state: any) => state.common.cookie)
+
+  /**
+   * @description 获取当前应用列表
+   * @param page: 当前页，pageSize: 每页显示数量，sort: 排序方式
+   */
+  const getAppList = async () => {
+
+    const params = {
+      page: 1,
+      pageSize: 20,
+      sort: {
+        fdDisplayOrder: "desc"
+      }
+    }
+
+    const res = await dispatchRedux(asyncThunk.getApps(params) as any)
+    const data = res.payload
+    console.log("applist-res", data)
+    if (data.code === 401 && data.message === "请先登录后再操作!") {
+      // setTimeout(() => {
+      //   router.push("/login")
+      // }, 3000)
+    }
+  }
+
+  useEffect(() => {
+    getAppList()
+    console.log("app-11111", cookie)
+  }, [])
+
   return (
     <>
       <AppContainer>

@@ -38,23 +38,23 @@ const demo: Record<string, AsyncThunkValue> = {
 const apps: Record<string, AsyncThunkValue> = {
   // 获取应用列表
   getApps: {
-    method: "get",
-    url: "/api/getApps"
+    method: "post",
+    url: "/api/apps/getApps"
   },
   // 新建应用
   createApp: {
     method: "post",
-    url: "/api/createApp"
+    url: "/api/apps/createApp"
   },
   // 编辑应用
   updateApp: {
     method: "post",
-    url: "/api/updateApp"
+    url: "/api/apps/updateApp/:id"
   },
   // 删除应用
   deleteApp: {
     method: "delete",
-    url: "/api/deleteApp/:id"
+    url: "/api/apps/deleteApp/:id"
   }
 };
 

@@ -27,6 +27,7 @@ const getRequest = async (params) => {
 const postRequest = async (params) => {
   try {
     const response = await axios.post(params.url, {params: params.query})
+    console.log("post", response)
     return response
   } catch (error) {
     console.error(error)

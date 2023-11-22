@@ -6,7 +6,7 @@ import { NextPage } from 'next';
 import React from 'react';
 /** components */
 import TodoContainer from './components/container';
-import TableLayout from 'components/tableLayout';
+import TableLayout from '../../components/tableLayout';
 
 const pagination = {
   page: 0,

@@ -9,6 +9,7 @@ const Index: NextPage = () => {
   const router = useRouter()
 
   useEffect(() => {
+    console.log("client-index")
     if (!authState) {
       router.push("/login")
     } else {

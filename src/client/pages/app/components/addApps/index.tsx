@@ -23,12 +23,23 @@ interface Props {
 }
 
 const AddApps = (props: Props) => {
+  // const form = useForm()
   const dispatchRedux = useDispatch();
   const { open, onCancel } = props
-  const [appName, setAppName] = useState("")
+  const [fdAppNam, setFdAppNam] = useState("")
+  const [fdIcon, setFdIcon] = useState("")
+  const [fdUrl, setFdUrl] = useState("")
 
   const onChangeAppName = (e: any) => {
-    setAppName(e.target.value)
+    setFdAppNam(e.target.value)
+  }
+
+  const onChangeIcon = (e: any) => {
+    setFdIcon(e.target.value)
+  }
+
+  const onChangeIconUrl = (e: any) => {
+    setFdUrl(e.target.value)
   }
 
   /**
@@ -36,28 +47,20 @@ const AddApps = (props: Props) => {
    * @param
    */
   const onOk = async () => {
-    console.log("新建应用确认逻辑", appName)
+    console.log("新建应用确认逻辑")
 
     const params = {
-      appName
+      fdAppNam: fdAppNam,
+      fdIcon: fdIcon,
+      fdUrl: fdUrl
     }
 
+    console.log("create-app", params)
     const res = await dispatchRedux(asyncThunk.createApp(params) as any);
 
-    console.log("create", appName)
+    console.log("create-app-res", res)
     onCancel()
-    // setAppName("")
   }
-
-  /**
-   * @description 控制弹窗显示和隐藏时输入框内容
-   * @param
-   */
-  // useEffect(() => {
-  //   if (!open) {
-  //     setAppName("")
-  //   }
-  // }, [open])
 
   return (
     <Modal 
@@ -69,8 +72,14 @@ const AddApps = (props: Props) => {
       okText="提交"
     >
       <Form name="addApps" style={{ marginTop: "30px" }}>
-        <Form.Item label="应用名称" name="appName">
+        <Form.Item label="应用名称" name="fdAppNam">
           <Input placeholder="请输入应用名称" onChange={onChangeAppName} />
+        </Form.Item>
+        <Form.Item label="图标名称" name="fdIcon">
+          <Input placeholder="请输入图标名称" onChange={onChangeIcon} />
+        </Form.Item>
+        <Form.Item label="图标地址" name="fdUrl">
+          <Input placeholder="请输入图标地址" onChange={onChangeIconUrl} />
         </Form.Item>
       </Form>
     </Modal>

@@ -72,6 +72,8 @@ const TabsContent4 = () => {
       </Sider>
       <Content
         style={{
+          width: collapsed ? "calc(100vw - 80px)" : "calc(100vw - 200px)",
+          height: "100vh",
           padding: 24,
           margin: 0,
           marginLeft: collapsed ? "80px" : "200px",

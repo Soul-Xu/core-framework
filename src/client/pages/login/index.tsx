@@ -1,8 +1,8 @@
 
 /** external library */
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
+import { useRouter } from 'next/router';
 import { useDispatch } from "react-redux";
 import { useImmerReducer } from "use-immer";
 import { Button, message } from 'antd';
@@ -10,9 +10,12 @@ import { Button, message } from 'antd';
 import FormLayout from "../../components/formLayout";
 /** store */
 import { setAuthState } from "../../store/modules/authSlice";
+import { setUserInfo } from "../../store/modules/loginSlice"
+import { setCookie } from '../../store/modules/commonSlice';
 /** utils */
 import asyncThunk from "../../store/asyncThunk";
 import { reducer } from "../../utils/reducer";
+import axios from 'axios';
 /** css */
 import classnames from "classnames/bind";
 import styles from "./index.module.scss";
@@ -20,8 +23,6 @@ const classNames = classnames.bind(styles);
 /** images */
 import ImgLogo from "public/images/login/anxin.png";
 import ImgCorner from "public/images/login/container_corner.png";
-// import ImgLogo from "../../public/images/login/anxin.png";
-// import ImgCorner from "../../public/images/login/container_corner.png";
 
 type FieldType = {
   username?: string;
@@ -34,10 +35,10 @@ const initialState = {
 }
 
 const Login: React.FC = () => {
+  const router = useRouter()
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
   const { username, password } = data as any;
-  const router = useRouter()
 
   /**
    * @description 数据处理函数
@@ -78,10 +79,18 @@ const Login: React.FC = () => {
 
     const res = await dispatchRedux(asyncThunk.login(params) as any);
     const data = res?.payload
+  
     if (data?.code === 0) {
       dispatchRedux(setAuthState({
         authState: true
       }))
+      dispatchRedux(setCookie({
+        cookie: data.cookie
+      }))
+      dispatchRedux(setUserInfo({
+        userInfo: data.data
+      }))
+      console.log("res-cookie", data.cookie)
       message.success("登录成功")
       router.push("/app")
     } else {
@@ -115,12 +124,12 @@ const Login: React.FC = () => {
         },
         // formItemLayout,
         label: '账号',
-        labelStyle: {
-          height: "20px",
-          fontSize: "14px",
-          color: "#242424",
-          lineHeight: "20px"
-        },
+        // labelStyle: {
+        //   height: "20px",
+        //   fontSize: "14px",
+        //   color: "#242424",
+        //   lineHeight: "20px"
+        // },
         // name: 'username',
         placeholder: '请输入账号',
         onChange: (e: any) => {
@@ -142,12 +151,12 @@ const Login: React.FC = () => {
           border: "1px solid #B4B9C2"
         },
         label: '密码',
-        labelStyle: {
-          height: "20px",
-          fontSize: "14px",
-          color: "#242424",
-          lineHeight: "20px"
-        },
+        // labelStyle: {
+        //   height: "20px",
+        //   fontSize: "14px",
+        //   color: "#242424",
+        //   lineHeight: "20px"
+        // },
         name: 'password',
         placeholder: '请输入密码',
         onChange: (e: any) => {
@@ -166,10 +175,11 @@ const Login: React.FC = () => {
     <section className={classNames("login-container")}>
       <div className={classNames("login-form")}>
         <div className={classNames("form-title")}>
-          <Image src={ImgLogo} alt="安信证劵" width={132} height={48} />
+          {/* <Image src={ImgLogo} alt="安信证劵" priority width={132} height={48} /> */}
+          <Image src={"/public/images/login/anxin.png"} alt="安信证劵" priority width={132} height={48} />
         </div>
         <div className={classNames("form-corner")}>
-          <Image src={ImgCorner} alt="二维码" width={56} height={56} />
+          <Image src={ImgCorner} alt="二维码" priority width={56} height={56} />
         </div>
         <div className={classNames("form-content")}>
           <FormLayout formObj={formObj} />

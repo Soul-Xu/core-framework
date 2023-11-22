@@ -15,6 +15,7 @@ import type { MenuProps, TabsProps } from 'antd';
 import { Breadcrumb, Layout, Menu, Tabs } from 'antd';
 const { Header, Content, Sider } = Layout;
 type MenuItem = Required<MenuProps>['items'][number];
+import AreaDemo from '../../../../../components/chartsDemo/area';
 
 function getItem(
   label: React.ReactNode,
@@ -71,6 +72,8 @@ const TabsContent2 = () => {
       </Sider>
       <Content
         style={{
+          width: collapsed ? "calc(100vw - 80px)" : "calc(100vw - 200px)",
+          height: "100vh",
           padding: 24,
           margin: 0,
           marginLeft: collapsed ? "80px" : "200px",
@@ -78,7 +81,7 @@ const TabsContent2 = () => {
           background: "#fff",
         }}
       >
-        tab2
+        <AreaDemo />
       </Content>
     </>
   )
