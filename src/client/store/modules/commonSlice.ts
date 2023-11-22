@@ -17,7 +17,7 @@ export const commonSlice = createSlice({
   reducers: {
     // Action to set the authentication status
     setCookie(state, action) {
-      state.cookie = action.payload
+      state.cookie = action.payload.cookie
     },
   }
 })

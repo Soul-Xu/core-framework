@@ -2,5 +2,6 @@
 # . "$(dirname -- "$0")/_/husky.sh"
 
 # cd src/client
+# npm install --force
 # npm run lint
 # npm run build

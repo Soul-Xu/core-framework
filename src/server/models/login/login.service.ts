@@ -1,5 +1,4 @@
-import { Injectable,  Request, 
-  Response } from '@nestjs/common';
+import { Injectable,  Request, Response } from '@nestjs/common';
 import axios from 'axios';
 import { baseApi } from 'src/server/config';
 
@@ -13,7 +12,7 @@ export class LoginService {
       rememberMe: false
     }
     const res = await axios.post(`${baseApi}/login`, params)
-    // console.log("222222222222222222-setCookie", res.headers['set-cookie'])
+    console.log("222222222222222222-setCookie", res.headers['set-cookie'])
 
     // 获取cookie的值
     const setCookie = res.headers['set-cookie'][0]

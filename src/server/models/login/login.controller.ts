@@ -7,7 +7,8 @@ import {
   Param,
   Delete,
   Request, 
-  Response
+  Response,
+  Headers
 } from '@nestjs/common';
 import { LoginService } from './login.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -18,8 +19,8 @@ export class LoginController {
   constructor(private readonly loginService: LoginService ) {}
 
   @Post()
-  async login(@Body() body: any) { 
-    console.log("")
+  async login(@Body() body: any, @Headers() headers) { 
+    console.log("login-aaaaaa", headers)
     return this.loginService.login(body);
   }
 }

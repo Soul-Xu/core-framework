@@ -20,9 +20,6 @@ import axios from 'axios';
 import classnames from "classnames/bind";
 import styles from "./index.module.scss";
 const classNames = classnames.bind(styles);
-/** images */
-import ImgLogo from "public/images/login/anxin.png";
-import ImgCorner from "public/images/login/container_corner.png";
 
 type FieldType = {
   username?: string;
@@ -174,12 +171,9 @@ const Login: React.FC = () => {
   return (
     <section className={classNames("login-container")}>
       <div className={classNames("login-form")}>
-        <div className={classNames("form-title")}>
-          {/* <Image src={ImgLogo} alt="安信证劵" priority width={132} height={48} /> */}
-          <Image src={"/public/images/login/anxin.png"} alt="安信证劵" priority width={132} height={48} />
-        </div>
-        <div className={classNames("form-corner")}>
-          <Image src={ImgCorner} alt="二维码" priority width={56} height={56} />
+        <div className={classNames("form-container")}>
+          <div className={classNames("form-title")}></div>
+          <div className={classNames("form-corner")}></div>
         </div>
         <div className={classNames("form-content")}>
           <FormLayout formObj={formObj} />

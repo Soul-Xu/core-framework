@@ -16,16 +16,31 @@
     margin: 0 auto;
     background: rgb(255 255 255);
 
-    .form-title {
-      width: 268px;
-      font-size: 20px;
-      text-align: center;
-    }
+    .form-container {
+      display: flex;
+      width: 134px;
+      height: 60px;
 
-    .form-corner {
-      position: absolute;
-      top: 0;
-      right: 0;
+      .form-title {
+        position: relative;
+        left: 50%;
+        width: 134px;
+        height: 48px;
+        background-image: url("../../public/images/login/anxin.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+  
+      .form-corner {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 56px;
+        height: 56px;
+        background-image: url("../../public/images/login/container_corner.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
     }
   }
 
