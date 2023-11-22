@@ -10,12 +10,16 @@ import {
   CheckCircleOutlined,
   GoldFilled,
   UserOutlined,
+  PlusOutlined
  } from '@ant-design/icons';
 import type { MenuProps, TabsProps } from 'antd';
-import { Breadcrumb, Layout, Menu, Tabs } from 'antd';
+import { Breadcrumb, Layout, Menu, Tabs, Row, Col } from 'antd';
 const { Header, Content, Sider } = Layout;
 type MenuItem = Required<MenuProps>['items'][number];
-import AreaDemo from '../../../../../components/chartsDemo/area';
+
+/** components */
+import AddMenus from '../addMenus';
+import SearchDemo from '../demos/search';
 
 function getItem(
   label: React.ReactNode,
@@ -36,22 +40,44 @@ import classnames from "classnames/bind";
 import styles from "./index.module.scss";
 const classNames = classnames.bind(styles);
 
-
-const items: MenuItem[] = [
-  getItem('供应商', 'app', <AppstoreFilled />),
-  getItem('供应商报价', 'todo', <CheckCircleOutlined />),
-  getItem('采购订单', 'integration', <GoldFilled />),
-  getItem('采购订单明细', 'usercenter', <UserOutlined />),
-];
-
 const TabsContent2 = () => {
   const [collapsed, setCollapsed] = useState(false)
   const [selectKey, setSelectKey] = useState([''])
+  const [showAddModal, setShowAddModal] = useState(false)
 
   const onMenuClick = (menu: any) => {
     setSelectKey([`${menu.key}`])
     // router.push(`/${itemsMap[menu.key]}`)
   }
+
+  /**
+   * @description 控制新建tab弹窗
+   * @param
+   */
+  const onShowAddModal = (type: string) => {
+    type === "show" &&  setShowAddModal(true)
+    type === "hide" && setShowAddModal(false)
+  }
+
+  const items: MenuItem[] = [
+    getItem('供应商', 'app', <AppstoreFilled />),
+    getItem('供应商报价', 'todo', <CheckCircleOutlined />),
+    getItem('采购订单', 'integration', <GoldFilled />),
+    getItem('采购订单明细', 'usercenter', <UserOutlined />),
+    getItem(
+      <div 
+        style={{ paddingLeft: "8px", color: "#beb2b2" }}
+        onClick={() => onShowAddModal("show")}
+      >新建菜单</div>, 
+      'add',
+      <div 
+        style={{ paddingLeft: "6px", width: "14px", height: "14px", color: "#beb2b2" }}
+        onClick={() => onShowAddModal("show")}
+      >
+        <PlusOutlined />
+      </div> 
+    ),
+  ];
 
   return (
     <>
@@ -81,8 +107,28 @@ const TabsContent2 = () => {
           background: "#fff",
         }}
       >
-        <AreaDemo />
+        <SearchDemo />
+        <div className={classNames("demo")}>
+          <div className={classNames("demo-title")}>代码示例</div>
+          <Row>
+            <Col span="12">
+              <div className={classNames("demo-demo1")}></div>
+            </Col>
+            <Col span="12">
+              <div className={classNames("demo-demo3")}></div>
+            </Col>
+          </Row>
+          <Row>
+            <Col span="12">
+              <div className={classNames("demo-demo2")}></div>
+            </Col>
+            <Col span="12">
+              <div className={classNames("demo-demo4")}></div>
+            </Col>
+          </Row>
+        </div>
       </Content>
+      <AddMenus open={showAddModal} onCancel={() => onShowAddModal("hide")} />
     </>
   )
 }

@@ -2,8 +2,6 @@ import axios, { AxiosRequestConfig } from "axios";
 import { mergeDeepRight, type } from "ramda";
 import { message as toast } from "antd";
 
-// import storage from "@/utils/storage";
-
 interface AxiosReqConfig extends AxiosRequestConfig {
   noNeedLogin?: boolean;
   timestamp?: number;
@@ -28,38 +26,21 @@ const closeLoading = (timestamp: number | undefined) => {
 
 // 请求
 const request = (url: string, req: Record<string, any> = {}, conf: AxiosReqConfig = {}) => {
-  // const token = storage.get("token");
-  // if (!token && !conf.noNeedLogin) {
-  //   goLogin("未登录请登录");
-  //   return;
-  // }
-
-  // if (!conf.noNeedLogin) {
-  //   const timestamp = Date.now();
-  //   conf.timestamp = timestamp;
-  //   toast.loading({
-  //     content: "fetching",
-  //     duration: 0,
-  //     key: timestamp
-  //   });
-  //   loadingKey.push(timestamp);
-  // }
-
   const isLocal = process.env.NODE_ENV === "development";
   let rewriteUrl = url;
   if (!isLocal) {
     rewriteUrl = rewriteUrl.replace("/api", "");
   }
-
+  const cookie = localStorage.getItem("cookie")
+  console.log("request-cookie", cookie)
   const defConf: AxiosReqConfig = {
     url: rewriteUrl,
     method: "post", // 默认GET
     baseURL: isLocal ? "/" : process.env.REACT_APP_API,
     headers: {
       "Content-Type": "application/json; charset=utf-8",
-      // "X-Forwarded-For": storage.get("ip") || "",
-      // "T": token,
       "Access-Control-Allow-Origin": "*",
+      "Cookie": cookie,
       withCredentials: true,
       crossDomain: true
     },

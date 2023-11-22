@@ -25,3 +25,46 @@
     }
   }
 }
+
+.demo {
+  // display: flex;
+
+  &-title {
+    color: #000;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+  &-demo1 {
+    width: 650px;
+    height: 500px;
+    background-image: url("../../../../../public/images/demo/search-demo1.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  &-demo2 {
+    width: 650px;
+    height: 500px;
+    background-image: url("../../../../../public/images/demo/search-demo2.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  &-demo3 {
+    width: 650px;
+    height: 500px;
+    background-image: url("../../../../../public/images/demo/search-demo3.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  &-demo4 {
+    width: 650px;
+    height: 500px;
+    background-image: url("../../../../../public/images/demo/search-demo4.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}

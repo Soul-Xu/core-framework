@@ -20,6 +20,7 @@ import AppContainer from './components/container';
 import SearchApps from './components/searchApps';
 import RecentApps from './components/recentApps';
 import MyApps from './components/myApps';
+import { RedEnvelopeOutlined, TagOutlined } from '@ant-design/icons';
 
 const appList = [
   {
@@ -33,7 +34,7 @@ const appList = [
     groupIds: [],
     icon: "sys_1_worksheet",
     iconColor: "#D81029",
-    iconUrl: "https://fp1.mingdaoyun.cn/customIcon/sys_1_worksheet.svg",
+    iconUrl: <RedEnvelopeOutlined />,
     id: "687eeb02-3894-424d-971e-38e4118838e4",
     isGoods: false,
     isGoodsStatus: true,
@@ -62,7 +63,7 @@ const appList = [
     groupIds: [],
     icon: "8_2_bookmark_ribbon",
     iconColor: "#00BCD4",
-    iconUrl: "https://fp1.mingdaoyun.cn/customIcon/8_2_bookmark_ribbon.svg",
+    iconUrl: <TagOutlined />,
     id: "62b121c8-a5da-4733-ad21-678e5a97efcd",
     isGoods: false,
     isGoodsStatus: true,
@@ -111,7 +112,6 @@ const App: NextPage = () => {
 
   useEffect(() => {
     getAppList()
-    console.log("app-11111", cookie)
   }, [])
 
   return (

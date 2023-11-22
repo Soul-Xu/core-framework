@@ -7,7 +7,7 @@ import {
   Param,
   Delete,
   HttpStatus,
-} from '@nestjs/common';
+  Headers} from '@nestjs/common';
 import { AppsService } from './apps.service';
 import { GetAppsDto } from './dto/getApps.dto'; 
 import { CreateAppDto } from './dto/createApp.dto';
@@ -20,7 +20,8 @@ export class AppsController {
   constructor(private readonly appsService: AppsService) {}
 
   @Post("/getApps")
-  getApps(@Body() body: GetAppsDto) {
+  getApps(@Body() body: GetAppsDto, @Headers() headers: any) {
+    console.log("getList-aaaaaa", headers)
     console.log("getList-controller", body)
     return this.appsService.getApps(body);
   }

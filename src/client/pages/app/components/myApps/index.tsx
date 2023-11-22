@@ -2,13 +2,14 @@
  * 我的应用
  */
 /** external library */
+import Image from "next/image";
 import Link from "next/link"
 import React, { useState, useEffect } from "react";
 import { 
   CaretDownOutlined,
   CaretRightOutlined,
   AppstoreOutlined,
-  PlusOutlined
+  TagOutlined
 } from "@ant-design/icons";
 
 /** components */
@@ -72,7 +73,7 @@ const MyApps = (props: Props) => {
             <div className={classNames("recent-apps-list-item")} key={app.id}>
               <div className={classNames("recent-apps-list-item-icon")} 
                 style={{ backgroundColor: app.navColor, color: app.iconColor }}> 
-                <img src={app.iconUrl}/>
+                {app.iconUrl}
               </div>
               <div className={classNames("recent-apps-list-item-title")}>{app.name}</div>
             </div>

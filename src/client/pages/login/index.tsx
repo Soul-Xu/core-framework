@@ -81,12 +81,13 @@ const Login: React.FC = () => {
       dispatchRedux(setAuthState({
         authState: true
       }))
-      dispatchRedux(setCookie({
-        cookie: data.cookie
-      }))
+      // dispatchRedux(setCookie({
+      //   cookie: data.cookie
+      // }))
       dispatchRedux(setUserInfo({
         userInfo: data.data
       }))
+      localStorage.setItem("cookie", data.cookie)
       console.log("res-cookie", data.cookie)
       message.success("登录成功")
       router.push("/app")
@@ -119,15 +120,7 @@ const Login: React.FC = () => {
           borderRadius: "2px",
           border: "1px solid #B4B9C2"
         },
-        // formItemLayout,
         label: '账号',
-        // labelStyle: {
-        //   height: "20px",
-        //   fontSize: "14px",
-        //   color: "#242424",
-        //   lineHeight: "20px"
-        // },
-        // name: 'username',
         placeholder: '请输入账号',
         onChange: (e: any) => {
           onHandleChange("username", e.target.value.trim())
@@ -148,12 +141,6 @@ const Login: React.FC = () => {
           border: "1px solid #B4B9C2"
         },
         label: '密码',
-        // labelStyle: {
-        //   height: "20px",
-        //   fontSize: "14px",
-        //   color: "#242424",
-        //   lineHeight: "20px"
-        // },
         name: 'password',
         placeholder: '请输入密码',
         onChange: (e: any) => {

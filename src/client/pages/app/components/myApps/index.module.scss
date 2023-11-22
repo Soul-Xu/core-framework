@@ -86,9 +86,12 @@
         cursor: pointer;
         border-radius: 50%;
 
-        img {
-          width: 48px;
-          height: 48px;
+        span {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 40px;
+          color: #fff;
         }
       }
 

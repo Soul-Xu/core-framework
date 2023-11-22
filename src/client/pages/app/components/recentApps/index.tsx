@@ -2,6 +2,7 @@
  * 最近应用
  */
 /** external library */
+import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import { 
   CaretDownOutlined,
@@ -59,7 +60,7 @@ const RecentApps = (props: Props) => {
             <div className={classNames("recent-apps-list-item")} key={app.id}>
               <div className={classNames("recent-apps-list-item-icon")} 
                 style={{ backgroundColor: app.navColor }}> 
-                <img src={app.iconUrl}/>
+                {app.iconUrl}
               </div>
               <div className={classNames("recent-apps-list-item-title")}>{app.name}</div>
             </div>

@@ -13,17 +13,20 @@ export interface SettingServe {
 }
 
 export const settingServe = async (agrs: SettingServe) => {
+  console.log("111111111-client-headers", agrs)
+  const cookie = localStorage.getItem("cookie")
   const res = await request(
     agrs.url,
     agrs.data,
     {
       method: agrs.method,
-      headers: Object.assign({}, agrs.headers)
+      headers: Object.assign({
+        "cookie": cookie
+      }, agrs.headers)
     }
   )?.catch((e) => {
     console.log(300, e);
     throw Error(e);
   });
-
   return res;
 };
