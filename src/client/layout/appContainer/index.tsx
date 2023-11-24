@@ -1,5 +1,5 @@
 /** external library */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { NextPage } from 'next';
 import { 
@@ -36,14 +36,14 @@ const items: MenuItem[] = [
   getItem('应用', 'app', <AppstoreFilled />),
   getItem('我的待办', 'todo', <CheckCircleOutlined />),
   getItem('集成中心', 'integration', <GoldFilled />),
-  getItem('个人中心', 'usercenter', <UserOutlined />),
+  getItem('个人中心', 'personalCenter', <UserOutlined />),
 ];
 
 const itemsMap: any = {
   app: "app",
   todo: "todo",
   integration: "app",
-  usercenter: "app"
+  personalCenter: "personalCenter"
 }
 
 const transferMaps = (obj: any) => {
@@ -63,18 +63,24 @@ interface PageContainerProps {
 const AppContainer: NextPage<PageContainerProps> = ({ children }: any) => {
   const [collapsed, setCollapsed] = useState(false)
   const [selectKey, setSelectKey] = useState([''])
-  const router = useRouter()
+  const router:any = useRouter()
 
   const onMenuClick = (menu: any) => {
+    console.log("menu-change", menu.key, pathsMap[menu.key])
     setSelectKey([`${menu.key}`])
-    router.push(`/${itemsMap[menu.key]}`)
+    router.push(`/${menu.key}`)
   }
+
+  useEffect(() => {
+    const currentPath = router.pathname.split("/")[1]
+    setSelectKey([`${currentPath}`])
+  }, [])
 
   return (
     <Layout>
       <Header className={classNames("header")}>
         <div className={classNames("header-container")}>
-          <div className={classNames("header-container-logo", "ellipsis")}>云速易连</div>
+          <div className={classNames("header-container-logo")}></div>
         </div>
       </Header>
       <Layout className={classNames("container-wrapper")}>
@@ -91,7 +97,7 @@ const AppContainer: NextPage<PageContainerProps> = ({ children }: any) => {
             width: collapsed ? "60px" : "200px"
           }}
         >
-          <Menu defaultSelectedKeys={['app']} mode="inline" items={items} onClick={onMenuClick} />
+          <Menu selectedKeys={selectKey} defaultSelectedKeys={['app']} mode="inline" items={items} onClick={onMenuClick} />
         </Sider>
         <Content
           style={{

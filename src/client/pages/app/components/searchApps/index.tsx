@@ -1,10 +1,13 @@
 /**
  * 搜索应用组件
  */
-import { AudioOutlined } from '@ant-design/icons';
-import React from 'react';
-import { Input } from 'antd';
+import React, { useState } from 'react';
+import { Input, Tooltip, Drawer } from 'antd';
+import { ControlOutlined } from '@ant-design/icons';
 const { Search } = Input;
+
+/** components */
+import SettingApps from "../settingApps"
 
 /** 
  * css 
@@ -14,6 +17,8 @@ import styles from "./index.module.scss";
 const classNames = classnames.bind(styles);
 
 const SearchApps = () => {
+  const [setting, setSetting] = useState(false);
+
   /**
    * @description: 搜索应用
    * @param: 
@@ -21,6 +26,14 @@ const SearchApps = () => {
   const onSearch = (e: any) => {
     console.log(e)
   }
+
+  const showDrawer = () => {
+    setSetting(true);
+  };
+
+  const onClose = () => {
+    setSetting(false);
+  };
 
   return (
     <div className={classNames("search-apps")}>
@@ -30,6 +43,22 @@ const SearchApps = () => {
         allowClear 
         onSearch={onSearch}
         />
+      <div 
+        className={classNames("search-apps-setting")}
+        onClick={showDrawer}
+      >
+        <Tooltip placement="bottom" title={"自定义应用"}>
+          <ControlOutlined />
+        </Tooltip>
+      </div>
+      {
+        setting && (
+          <>
+            {/* @ts-ignore */}
+            <SettingApps open={setting} onClose={onClose} />
+          </>
+        )
+      }
     </div>
   )
 }

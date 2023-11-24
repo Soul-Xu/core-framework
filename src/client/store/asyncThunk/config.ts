@@ -39,29 +39,29 @@ const apps: Record<string, AsyncThunkValue> = {
   // 获取应用列表
   getApps: {
     method: "post",
-    url: "/api/apps/getApps"
+    url: "/apis/apps/getApps"
   },
   // 新建应用
   createApp: {
     method: "post",
-    url: "/api/apps/createApp"
+    url: "/apis/apps/createApp"
   },
   // 编辑应用
   updateApp: {
     method: "post",
-    url: "/api/apps/updateApp/:id"
+    url: "/apis/apps/updateApp/:id"
   },
   // 删除应用
   deleteApp: {
     method: "delete",
-    url: "/api/apps/deleteApp/:id"
+    url: "/apis/apps/deleteApp/:id"
   }
 };
 
 const asyncThunkMap: Record<string, AsyncThunkValue> = {
   login: {
     method: "post",
-    url: "/api/login"
+    url: "/apis/login"
   },
   ...demo,
   ...apps

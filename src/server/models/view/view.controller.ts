@@ -37,6 +37,13 @@ export class ViewController {
     await this.viewService.handler(req, res);
   }
 
+  @Get('personalCenter')
+  @ApiTags('PersonalCenter')
+  @ApiResponse({ status: 200, description: '个人中心' })
+  public async showPersonalCenter(@Req() req: Request, @Res() res: Response) {
+    await this.viewService.handler(req, res);
+  }
+
   @Get('login')
   @ApiTags('Login')
   @ApiResponse({ status: 200, description: '登录页' })

@@ -17,6 +17,10 @@ const axiosInstance = axios.create({
 // 添加请求拦截器
 axiosInstance.interceptors.request.use((config: any) => {
   // 在发送请求之前做些什么
+  const cookie = localStorage.getItem("cookie")
+  console.log("request-cookie-11111111111", cookie)
+  console.log("request-11111111111", config)
+  config.headers['Authorization'] = cookie
   config.headers['Access-Control-Allow-Origin'] = '*'
   config.headers.withCredentials = true
   config.headers.crossDomain = true

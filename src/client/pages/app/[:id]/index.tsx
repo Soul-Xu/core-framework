@@ -6,7 +6,7 @@ import { NextPage } from 'next';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 /** component */
-import AppIdContainer from './components/container';
+import ProjectContainer from '../../../layout/projectContainer';
 import TabsContent1 from './components/tab1';
 import TabsContent2 from './components/tab2';
 import TabsContent3 from './components/tab3';
@@ -30,9 +30,9 @@ const AppById = () => {
 
   return (
     <>
-      <AppIdContainer>
+      <ProjectContainer>
         <div>{renderTab(tab)}</div>
-      </AppIdContainer>
+      </ProjectContainer>
     </>
   )
 }

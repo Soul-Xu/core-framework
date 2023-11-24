@@ -15,6 +15,7 @@ const FormDemo = () => {
     name: 'basic-form1',
     layout: "horizontal",
     labelAlign: "right",
+    inRow: 1,
     items: [
       {
         kind: 'input',
@@ -57,7 +58,7 @@ const FormDemo = () => {
 
   const formObj2 = {
     name: 'basic-form2',
-    inRow: 3,
+    inRow: 4,
     layout: "horizontal",
     labelAlign: "right",
     items: [

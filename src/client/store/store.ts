@@ -3,6 +3,7 @@ import { createWrapper } from "next-redux-wrapper"
 import { authSlice } from "./modules/authSlice"
 import { loginSlice } from "./modules/loginSlice"
 import { menuSlice } from "./modules/menuSlice"
+import { appsSlice } from "./modules/appsSlice"
 import { commonSlice } from "./modules/commonSlice"
 import { templateSlice } from "./modules/templateSlice"
 
@@ -13,7 +14,8 @@ const makeStore = () =>
       auth: authSlice.reducer,
       login: loginSlice.reducer,
       common: commonSlice.reducer,
-      menu: menuSlice.reducer
+      menu: menuSlice.reducer,
+      apps: appsSlice.reducer
     },
     devTools: true
   })

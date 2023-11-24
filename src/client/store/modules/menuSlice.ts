@@ -36,10 +36,7 @@ export const menuSlice = createSlice({
       state.tabs = action.payload
     },
     setTab(state, action) {
-      console.log("store", state, action, action.payload)
-      console.log("before", state.tab)
       state.tab = action.payload.tab
-      console.log("after", state.tab)
     }
   }
 })

@@ -18,7 +18,6 @@ export class LoginService {
     const setCookie = res.headers['set-cookie'][0]
     // 获取JSESSIONID值
     const jsessionId = setCookie.split(";")[0]
-    console.log("222222222222222222-Cookie", jsessionId)
 
     const data = res.data
     if (data.code === 200 && data.success) {

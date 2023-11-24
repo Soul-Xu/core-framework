@@ -1,0 +1,10 @@
+.setting-container {
+  &-item {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .item-title {
+    font-size: 16px;
+  }
+}

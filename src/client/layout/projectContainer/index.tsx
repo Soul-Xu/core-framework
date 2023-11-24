@@ -4,24 +4,25 @@ import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from "react-redux";
 import { NextPage } from 'next';
 import axios from "axios"
-import { setTab } from '../../../../../store/modules/menuSlice'
+import { setTab } from '../../store/modules/menuSlice'
 import type { TabsProps } from 'antd';
 import { Layout, Tabs } from 'antd';
 const { Header } = Layout;
 /** components */
-import AddTabs from "../addTabs"
+import AddTabs from "../../pages/app/[:id]/components/addTabs"
 
 /** css */
 import classnames from "classnames/bind";
 import styles from "./index.module.scss";
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, LeftCircleOutlined } from '@ant-design/icons';
 const classNames = classnames.bind(styles);
 
 interface PageContainerProps {
   children?: React.ReactNode
 }
 
-const AppIdContainer: NextPage<PageContainerProps> = ({ children }: any) => {
+const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
+  const router = useRouter()
   const dispatchRedux = useDispatch();
   const tab = useSelector((state: any) => state.menu.tab)
   const [selectTab, setSelectTab] = useState("1")
@@ -45,6 +46,10 @@ const AppIdContainer: NextPage<PageContainerProps> = ({ children }: any) => {
 
     console.log("tabs-11111111", res)
   } 
+
+  const onGoBack = () => {
+    router.push("/app")
+  }
 
   const tabItems: TabsProps['items'] = [
     {
@@ -93,7 +98,14 @@ const AppIdContainer: NextPage<PageContainerProps> = ({ children }: any) => {
     <Layout>
       <Header className={classNames("header")} style={{ position: "fixed", top: "0", width: "100vw" }}>
         <div className={classNames("header-container")}>
-          <div className={classNames("header-container-title", "ellipsis")}>体验项目</div>
+          <div className={classNames("header-container-title", "ellipsis")}>
+            <div className={classNames("header-container-title-back")}
+              onClick={onGoBack}
+            >
+              <LeftCircleOutlined />
+            </div>
+            <span>体验项目</span>
+          </div>
           <div className={classNames("header-container-tabs")}>
             {
               tabItems.map((item: any) => {
@@ -119,4 +131,4 @@ const AppIdContainer: NextPage<PageContainerProps> = ({ children }: any) => {
   );
 };
 
-export default AppIdContainer;
+export default ProjectContainer;

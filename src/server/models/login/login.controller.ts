@@ -13,14 +13,13 @@ import {
 import { LoginService } from './login.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
-@Controller('/api/login')
+@Controller('/apis/login')
 @ApiTags('Login')
 export class LoginController {
   constructor(private readonly loginService: LoginService ) {}
 
   @Post()
   async login(@Body() body: any, @Headers() headers) { 
-    console.log("login-aaaaaa", headers)
     return this.loginService.login(body);
   }
 }

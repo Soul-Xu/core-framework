@@ -16,6 +16,7 @@ import { setCookie } from '../../store/modules/commonSlice';
 import asyncThunk from "../../store/asyncThunk";
 import { reducer } from "../../utils/reducer";
 import axios from 'axios';
+import { baseApi } from '../../config';
 /** css */
 import classnames from "classnames/bind";
 import styles from "./index.module.scss";
@@ -74,21 +75,26 @@ const Login: React.FC = () => {
       password
     }
 
-    const res = await dispatchRedux(asyncThunk.login(params) as any);
+    // const res = await dispatchRedux(asyncThunk.login(params) as any);
+
+    const res:any = await axios.request({
+      url: `${baseApi}/login`,
+      method: "post",
+      data: params
+    })
+
+    console.log("res-login-axios", res)
+
     const data = res?.payload
   
     if (data?.code === 0) {
       dispatchRedux(setAuthState({
         authState: true
       }))
-      // dispatchRedux(setCookie({
-      //   cookie: data.cookie
-      // }))
       dispatchRedux(setUserInfo({
         userInfo: data.data
       }))
       localStorage.setItem("cookie", data.cookie)
-      console.log("res-cookie", data.cookie)
       message.success("登录成功")
       router.push("/app")
     } else {

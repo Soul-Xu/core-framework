@@ -40,7 +40,7 @@ const request = (url: string, req: Record<string, any> = {}, conf: AxiosReqConfi
     headers: {
       "Content-Type": "application/json; charset=utf-8",
       "Access-Control-Allow-Origin": "*",
-      "Cookie": cookie,
+      "Authorization": cookie,
       withCredentials: true,
       crossDomain: true
     },

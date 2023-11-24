@@ -16,7 +16,7 @@ import styles from "./index.module.scss";
 const classNames = classnames.bind(styles);
 
 /** components */
-import AppContainer from './components/container';
+import AppContainer from '../../layout/appContainer';
 import SearchApps from './components/searchApps';
 import RecentApps from './components/recentApps';
 import MyApps from './components/myApps';
@@ -84,14 +84,14 @@ const appList = [
 const App: NextPage = () => {
   const router = useRouter()
   const dispatchRedux = useDispatch();
-  const cookie = useSelector((state: any) => state.common.cookie)
+  const appsConfig = useSelector((state: any) => state.apps.appsConfig)
+  const { showCurrent, showMine } = appsConfig
 
   /**
    * @description 获取当前应用列表
    * @param page: 当前页，pageSize: 每页显示数量，sort: 排序方式
    */
   const getAppList = async () => {
-
     const params = {
       page: 1,
       pageSize: 20,
@@ -111,16 +111,17 @@ const App: NextPage = () => {
   }
 
   useEffect(() => {
-    getAppList()
-  }, [])
+    // getAppList()
+    console.log("apps", appsConfig)
+  }, [showCurrent, showMine])
 
   return (
     <>
       <AppContainer>
         <div className={classNames("container")}>
           <SearchApps />
-          <RecentApps appList={appList}/>
-          <MyApps appList={appList} />
+          { showCurrent && <RecentApps appList={appList}/> }
+          { showMine && <MyApps appList={appList} /> }
         </div>
       </AppContainer>
     </>

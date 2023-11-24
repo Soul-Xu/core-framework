@@ -22,9 +22,9 @@ async function bootstrap() {
   // 创建swagger文档
   generateDocument(app);
 
-  // await app.listen(3015)
-  await app.listen(3015, () => {
-    console.log(`项目运行在http:localhost:3015/api/docs`);
+  // await app.listen(3000)
+  await app.listen(3000, () => {
+    console.log(`项目运行在http:localhost:3000/api/docs`);
   });
 }
 bootstrap();

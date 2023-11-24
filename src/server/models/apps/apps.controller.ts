@@ -28,7 +28,6 @@ export class AppsController {
 
   @Post("/createApp")
   createApp(@Body() body: CreateAppDto) {
-    console.log("sssss-body-createApp", body)
     return this.appsService.createApp(body);
   }
 

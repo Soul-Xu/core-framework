@@ -41,7 +41,6 @@ export class AppsService {
       }
     })
     const data = res.data
-    console.log("server-app-list-11111", data)
     return 'This action adds a new template';
   }
 
