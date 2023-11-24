@@ -112,7 +112,6 @@ const App: NextPage = () => {
 
   useEffect(() => {
     // getAppList()
-    console.log("apps", appsConfig)
   }, [showCurrent, showMine])
 
   return (

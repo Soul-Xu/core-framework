@@ -26,7 +26,7 @@ export const loginSlice = createSlice({
   reducers: {
     // Action to set the authentication status
     setUserInfo(state, action) {
-      state.userInfo = action.payload
+      state.userInfo = action.payload.userInfo
     },
   }
 })

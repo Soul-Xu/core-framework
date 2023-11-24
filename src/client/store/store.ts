@@ -5,6 +5,7 @@ import { loginSlice } from "./modules/loginSlice"
 import { menuSlice } from "./modules/menuSlice"
 import { appsSlice } from "./modules/appsSlice"
 import { commonSlice } from "./modules/commonSlice"
+import { settingSlice } from "./modules/settingSlice"
 import { templateSlice } from "./modules/templateSlice"
 
 const makeStore = () =>
@@ -15,7 +16,8 @@ const makeStore = () =>
       login: loginSlice.reducer,
       common: commonSlice.reducer,
       menu: menuSlice.reducer,
-      apps: appsSlice.reducer
+      apps: appsSlice.reducer,
+      setting: settingSlice.reducer
     },
     devTools: true
   })

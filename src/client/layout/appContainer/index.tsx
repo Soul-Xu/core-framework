@@ -7,6 +7,7 @@ import {
   CheckCircleOutlined,
   GoldFilled,
   UserOutlined,
+  SettingOutlined
  } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu } from 'antd';
@@ -37,13 +38,15 @@ const items: MenuItem[] = [
   getItem('我的待办', 'todo', <CheckCircleOutlined />),
   getItem('集成中心', 'integration', <GoldFilled />),
   getItem('个人中心', 'personalCenter', <UserOutlined />),
+  getItem('系统设置', 'systemSetting', <SettingOutlined />),
 ];
 
 const itemsMap: any = {
   app: "app",
   todo: "todo",
   integration: "app",
-  personalCenter: "personalCenter"
+  personalCenter: "personalCenter",
+  systemSetting: "systemSetting"
 }
 
 const transferMaps = (obj: any) => {
@@ -66,7 +69,6 @@ const AppContainer: NextPage<PageContainerProps> = ({ children }: any) => {
   const router:any = useRouter()
 
   const onMenuClick = (menu: any) => {
-    console.log("menu-change", menu.key, pathsMap[menu.key])
     setSelectKey([`${menu.key}`])
     router.push(`/${menu.key}`)
   }

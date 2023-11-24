@@ -1,0 +1,24 @@
+.container {
+  .module {
+    .title {
+      font-size: 20px;
+      font-weight: 600;
+    }
+  
+    .setting-content {
+      display: flex;
+      flex-wrap: wrap;
+  
+      &-card {
+        width: 25%;
+        min-width: 240px;
+        margin-right: 20px;
+        margin-bottom: 20px;
+      }
+  
+      &-switch {
+        text-align: right;
+      }
+    }
+  }
+}

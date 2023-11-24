@@ -75,13 +75,13 @@ const Login: React.FC = () => {
       password
     }
 
-    // const res = await dispatchRedux(asyncThunk.login(params) as any);
+    const res = await dispatchRedux(asyncThunk.login(params) as any);
 
-    const res:any = await axios.request({
-      url: `${baseApi}/login`,
-      method: "post",
-      data: params
-    })
+    // const res:any = await axios.request({
+    //   url: `${baseApi}/login`,
+    //   method: "post",
+    //   data: params
+    // })
 
     console.log("res-login-axios", res)
 
