@@ -37,7 +37,7 @@ const RecentApps = (props: Props) => {
 
   useEffect(() => {
     console.log("recent-apps", appList)
-  }, [])
+  }, [appList])
 
   return (
     <div className={classNames("recent-apps")}>

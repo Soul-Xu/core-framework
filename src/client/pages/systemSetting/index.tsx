@@ -1,7 +1,7 @@
 /**
  * 系统设置
  */
-import React, { useEffect } from "react"
+import React, { useCallback, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { useImmerReducer } from "use-immer";
 import { Divider, Card, Row, Col, Form, Switch, Table } from "antd";
@@ -62,9 +62,9 @@ const SystemSetting = () => {
    * @param key data字段
    * @param value data字段值
    */
-  const setState = (type: string, val: Record<string, any>) => {
+  const setState = useCallback((type: string, val: Record<string, any>) => {
     dispatch({ type, payload: val });
-  };
+  }, [dispatch]);
 
   const onSwitchChange = (id: string, type: string, value: boolean) => {
     dispatchRedux(setConfig({
@@ -116,6 +116,7 @@ const SystemSetting = () => {
                 appsList.map((app: any) => {
                   return (
                     <Card 
+                      key={app.id}
                       title={app.name} 
                       className={classNames("setting-content-card")}
                     >

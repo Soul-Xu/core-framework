@@ -85,7 +85,6 @@ const SearchDemo: NextPage = () => {
     // 弹出确认框，确保用户确认删除操作
     confirm({
       title: "确认删除",
-      // @ts-ignore
       icon: <ExclamationCircleFilled />,
       content: `是否确定删除用户 ${record.username}？`,
       onOk() {
@@ -132,9 +131,7 @@ const SearchDemo: NextPage = () => {
     ],
     customElements: () => (
       <section>
-        {/* @ts-ignore */}
         <Button className={classNames("btn-action")} onClick={() => console.log("search")} type='primary'>查询</Button>
-        {/* @ts-ignore */}
         <Button className={classNames("btn-action")} onClick={() => console.log("add")}>添加</Button>
       </section>
     )
@@ -153,7 +150,6 @@ const SearchDemo: NextPage = () => {
         render: (_: any, record: any) => {
           return (
             <>
-              {/* @ts-ignore */}
               <Button className={classNames("btn-action")} onClick={() => handleDelete(record)}>删除</Button>
             </>
           )

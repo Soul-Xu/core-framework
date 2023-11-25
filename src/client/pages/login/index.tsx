@@ -43,9 +43,9 @@ const Login: React.FC = () => {
    * @param key data字段
    * @param value data字段值
    */
-  const setState = (type: string, val: Record<string, any>) => {
+  const setState = useCallback((type: string, val: Record<string, any>) => {
     dispatch({ type, payload: val });
-  };
+  }, [dispatch]);
 
   /**
    * @description input组件onChange函数
@@ -72,35 +72,59 @@ const Login: React.FC = () => {
     }
     const params = {
       username,
-      password
+      password,
+      rememberMe: false
     }
 
-    const res = await dispatchRedux(asyncThunk.login(params) as any);
-
-    // const res:any = await axios.request({
-    //   url: `${baseApi}/login`,
-    //   method: "post",
-    //   data: params
-    // })
-
-    console.log("res-login-axios", res)
-
-    const data = res?.payload
+    // axios原生方式
+    const res:any = await axios.request({
+      url: `${baseApi}/login`,
+      method: "post",
+      data: params,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        withCredentials: true
+      }
+    }).then((res) => {
+      const data = res?.data
+      console.log("axios-data", data)
   
-    if (data?.code === 0) {
-      dispatchRedux(setAuthState({
-        authState: true
-      }))
-      dispatchRedux(setUserInfo({
-        userInfo: data.data
-      }))
-      localStorage.setItem("cookie", data.cookie)
-      message.success("登录成功")
-      router.push("/app")
-    } else {
-      message.error("登录失败，请重试")
-      return
-    }
+      if (data?.code === 200) {
+        dispatchRedux(setAuthState({
+          authState: true
+        }))
+        dispatchRedux(setUserInfo({
+          userInfo: data.data
+        }))
+        localStorage.setItem("cookie", data.cookie)
+        message.success("登录成功")
+        router.push("/app")
+      } else {
+        message.error("登录失败，请重试")
+        return
+      }
+    }).catch((err: any) => {
+      console.log("axios-login-catch", err)
+    })
+
+    // redux-toolkit方式
+    // const res = await dispatchRedux(asyncThunk.login(params) as any);
+    // const data = res?.payload
+  
+    // if (data?.code === 0) {
+    //   dispatchRedux(setAuthState({
+    //     authState: true
+    //   }))
+    //   dispatchRedux(setUserInfo({
+    //     userInfo: data.data
+    //   }))
+    //   localStorage.setItem("cookie", data.cookie)
+    //   message.success("登录成功")
+    //   router.push("/app")
+    // } else {
+    //   message.error("登录失败，请重试")
+    //   return
+    // }
   }, [password, username, dispatchRedux, router])
 
   /**

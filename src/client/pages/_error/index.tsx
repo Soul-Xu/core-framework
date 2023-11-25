@@ -13,7 +13,6 @@ function Error(props: any) {
     <div className={classNames('page-error')}>
       {statusCode}
     </div>
-
   );
 }
 

@@ -1,7 +1,7 @@
 /**
  * 个人中心
  */
-import React, { useEffect } from "react"
+import React, { useCallback, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { useImmerReducer } from "use-immer";
 import { Avatar, Space, Form, Divider } from 'antd';
@@ -37,9 +37,9 @@ const PersonalCenter = () => {
    * @param key data字段
    * @param value data字段值
    */
-  const setState = (type: string, val: Record<string, any>) => {
+  const setState = useCallback((type: string, val: Record<string, any>) => {
     dispatch({ type, payload: val });
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     const { fdAvatarURL, fdUserName, fdUserId, fdNickName, fdCellphone, fdEmail, fdRemark } = userInfo
@@ -52,7 +52,7 @@ const PersonalCenter = () => {
       fdEmail,
       fdRemark
     })
-  }, [])
+  }, [userInfo, setState])
 
   return (
     <>

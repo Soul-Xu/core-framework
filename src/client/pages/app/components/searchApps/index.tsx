@@ -54,7 +54,6 @@ const SearchApps = () => {
       {
         setting && (
           <>
-            {/* @ts-ignore */}
             <SettingApps open={setting} onClose={onClose} />
           </>
         )

@@ -15,17 +15,17 @@
     -webkit-box-align: center;
 
     &-logo {
-      width: 172px;
-      height: 40px;
       display: inline-block;
+      width: 172px;
       max-width: 500px;
+      height: 40px;
       font-size: 18px;
       font-weight: 700;
       line-height: 1.5em;
       background-image: url("../../public/images/app/logo.png");
-      background-size: contain;
       background-repeat: no-repeat;
       background-position: 20px;
+      background-size: contain;
     }
   }
 }

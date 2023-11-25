@@ -1,7 +1,7 @@
 /**
  * 设置应用组件
  */
-import React from 'react';
+import React, {useCallback} from 'react';
 import { Input, Tooltip, Drawer, Switch, Divider } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import { useImmerReducer } from "use-immer";
@@ -38,9 +38,9 @@ const SettingApps = (props: Props) => {
    * @param key data字段
    * @param value data字段值
    */
-  const setState = (type: string, val: Record<string, any>) => {
+  const setState = useCallback((type: string, val: Record<string, any>) => {
     dispatch({ type, payload: val });
-  };
+  }, [dispatch]);
 
   /**
    * @description 开关控件处理
@@ -69,7 +69,6 @@ const SettingApps = (props: Props) => {
 
   return (
     <>
-    {/* @ts-ignore */}
       <Drawer title="自定义应用" placement="right" onClose={onClose} open={open}>
         <div className={classNames("setting-container")}>
           <div className={classNames("setting-container-item")}>

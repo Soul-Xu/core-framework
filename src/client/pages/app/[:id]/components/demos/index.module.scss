@@ -10,12 +10,12 @@
 
 .form-item-require {
   display: inline-block;
-  margin-right: 12px;
   margin-inline-end: 4px;
-  color: #ff4d4f;
+  margin-right: 12px;
+  font-family: SimSun, sans-serif;
   font-size: 14px;
-  font-family: SimSun,sans-serif;
   line-height: 1;
+  color: #ff4d4f;
   content: "*";
 }
 
@@ -32,10 +32,10 @@
 }
 
 .container {
-  margin-top: 60px;
-  padding: 20px 0;
   height: auto;
   min-height: 500px;
+  padding: 20px 0;
+  margin-top: 60px;
   background: #fff;
 
   .container-title {
@@ -44,7 +44,7 @@
   }
 
   .container-content {
-    padding-left: 20px;
     padding-right: 20px;
+    padding-left: 20px;
   }
 }

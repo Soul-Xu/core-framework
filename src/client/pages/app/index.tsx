@@ -7,9 +7,10 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from "react-redux";
 import { useImmerReducer } from "use-immer";
+import axios from 'axios';
 /** utils */
 import asyncThunk from "../../store/asyncThunk";
-
+import { baseApi } from '../../config';
 /** css */
 import classnames from "classnames/bind";
 import styles from "./index.module.scss";
@@ -100,19 +101,34 @@ const App: NextPage = () => {
       }
     }
 
-    const res = await dispatchRedux(asyncThunk.getApps(params) as any)
-    const data = res.payload
-    console.log("applist-res", data)
-    if (data.code === 401 && data.message === "请先登录后再操作!") {
-      // setTimeout(() => {
-      //   router.push("/login")
-      // }, 3000)
-    }
+    // axios原生方式
+    const res:any = await axios.request({
+      url: `${baseApi}/app-permission/list`,
+      method: "post",
+      data: params,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        withCredentials: true
+      },
+    }).then((res: any) => {
+      console.log("axios-app", res)
+    }).catch((err: any) => {
+      console.log("axios-app-catch", err)
+    })
+
+    // const res = await dispatchRedux(asyncThunk.getApps(params) as any)
+    // const data = res.payload
+    // console.log("applist-res", data)
+    // if (data.code === 401 && data.message === "请先登录后再操作!") {
+    //   // setTimeout(() => {
+    //   //   router.push("/login")
+    //   // }, 3000)
+    // }
   }
 
   useEffect(() => {
-    // getAppList()
-  }, [showCurrent, showMine])
+    getAppList()
+  }, [])
 
   return (
     <>

@@ -76,7 +76,7 @@ const AppContainer: NextPage<PageContainerProps> = ({ children }: any) => {
   useEffect(() => {
     const currentPath = router.pathname.split("/")[1]
     setSelectKey([`${currentPath}`])
-  }, [])
+  }, [router.pathname])
 
   return (
     <Layout>
