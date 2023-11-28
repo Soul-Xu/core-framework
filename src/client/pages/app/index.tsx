@@ -3,14 +3,17 @@
  */
 /** 第三方库 */
 import { NextPage } from 'next';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from "react-redux";
 import { useImmerReducer } from "use-immer";
 import axios from 'axios';
 /** utils */
+import { reducer } from "../../utils/reducer";
 import asyncThunk from "../../store/asyncThunk";
 import { baseApi } from '../../config';
+/** store */
+import { setAppsList } from '../../store/modules/appsSlice';
 /** css */
 import classnames from "classnames/bind";
 import styles from "./index.module.scss";
@@ -21,72 +24,27 @@ import AppContainer from '../../layout/appContainer';
 import SearchApps from './components/searchApps';
 import RecentApps from './components/recentApps';
 import MyApps from './components/myApps';
-import { RedEnvelopeOutlined, TagOutlined } from '@ant-design/icons';
 
-const appList = [
-  {
-    appDisplay: false,
-    appNaviStyle: 0,
-    avatarType: 0,
-    createType: 0,
-    enName: "TiYanXiangMu[TYXM]",
-    fixed: false,
-    goodsId: "",
-    groupIds: [],
-    icon: "sys_1_worksheet",
-    iconColor: "#D81029",
-    iconUrl: <RedEnvelopeOutlined />,
-    id: "687eeb02-3894-424d-971e-38e4118838e4",
-    isGoods: false,
-    isGoodsStatus: true,
-    isLock: false,
-    isMarked: false,
-    isNew: false,
-    lightColor: "#ffe7e6",
-    name: "体验项目",
-    navColor: "#D81029",
-    pcDisplay: false,
-    pcNaviStyle: 0,
-    permissionType: 200,
-    projectId: "870b2382-20ed-4607-a7c3-a230d20efe1d",
-    selectAppItmeType: 2,
-    sourceType: 1,
-    webMobileDisplay: false,
-  },
-  {
-    appDisplay: false,
-    appNaviStyle: 0,
-    avatarType: 0,
-    createType: 0,
-    enName: "ERPKeLong(JinXiaoCun)[ERPKL(JXC)]",
-    fixed: false,
-    goodsId: "",
-    groupIds: [],
-    icon: "8_2_bookmark_ribbon",
-    iconColor: "#00BCD4",
-    iconUrl: <TagOutlined />,
-    id: "62b121c8-a5da-4733-ad21-678e5a97efcd",
-    isGoods: false,
-    isGoodsStatus: true,
-    isLock: false,
-    isMarked: false,
-    isNew: false,
-    name: "ERP克隆(进销存)",
-    navColor: "#00BCD4",
-    pcDisplay: false,
-    pcNaviStyle: 0,
-    permissionType: 200,
-    projectId: "870b2382-20ed-4607-a7c3-a230d20efe1d",
-    selectAppItmeType: 2,
-    sourceType: 1,
-    webMobileDisplay: false,
-  }
-]
+const initialState = {
+  appsList: []
+}
+
 const App: NextPage = () => {
   const router = useRouter()
   const dispatchRedux = useDispatch();
   const appsConfig = useSelector((state: any) => state.apps.appsConfig)
+  const [data, dispatch] = useImmerReducer(reducer, initialState);
   const { showCurrent, showMine } = appsConfig
+  const { appsList } = data
+
+  /**
+   * @description 数据处理函数
+   * @param key data字段
+   * @param value data字段值
+   */
+  const setState = useCallback((type: string, val: Record<string, any>) => {
+    dispatch({ type, payload: val });
+  }, [dispatch]);
 
   /**
    * @description 获取当前应用列表
@@ -95,7 +53,7 @@ const App: NextPage = () => {
   const getAppList = async () => {
     const params = {
       page: 1,
-      pageSize: 20,
+      pageSize: 999, // 默认size为20, 出于页面UI考虑，设定为999，即拿到所有的apps
       sort: {
         fdDisplayOrder: "desc"
       }
@@ -106,16 +64,27 @@ const App: NextPage = () => {
       url: `${baseApi}/app-permission/list`,
       method: "post",
       data: params,
+      withCredentials: true,  
       headers: {
-        "Access-Control-Allow-Origin": "*",
-        withCredentials: true
+        'Content-Type': 'application/json' // 设置为 application/json
       },
     }).then((res: any) => {
-      console.log("axios-app", res)
+      const data = res.data
+      if (data.code === 200) {
+        const { content } = data.data
+        setState("update", {
+          appsList: content
+        }) 
+        dispatchRedux(setAppsList({
+          appsList: content
+        }))
+      }
+
     }).catch((err: any) => {
       console.log("axios-app-catch", err)
     })
 
+    // redux-toolkit
     // const res = await dispatchRedux(asyncThunk.getApps(params) as any)
     // const data = res.payload
     // console.log("applist-res", data)
@@ -135,8 +104,8 @@ const App: NextPage = () => {
       <AppContainer>
         <div className={classNames("container")}>
           <SearchApps />
-          { showCurrent && <RecentApps appList={appList}/> }
-          { showMine && <MyApps appList={appList} /> }
+          { showCurrent && <RecentApps appList={appsList}/> }
+          { showMine && <MyApps appList={appsList} onRefresh={() => getAppList()} /> }
         </div>
       </AppContainer>
     </>

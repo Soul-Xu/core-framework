@@ -1,0 +1,16 @@
+.app-detail {
+  &-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+
+    &-label {
+      width: 80px;
+      text-align: left;
+    }
+
+    &-value {
+      width: 100%;
+    }
+  }
+}

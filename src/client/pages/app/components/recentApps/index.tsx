@@ -7,7 +7,9 @@ import React, { useState, useEffect } from "react";
 import { 
   CaretDownOutlined,
   CaretRightOutlined,
-  ClockCircleOutlined } from "@ant-design/icons";
+  ClockCircleOutlined,
+  RedEnvelopeOutlined
+} from "@ant-design/icons";
 
 /** 样式 */
 import classnames from "classnames/bind";
@@ -36,8 +38,8 @@ const RecentApps = (props: Props) => {
   const [isExpend, setIsExpanded] = useState(true)
 
   useEffect(() => {
-    console.log("recent-apps", appList)
-  }, [appList])
+    console.log("recent", appList)
+  }, [])
 
   return (
     <div className={classNames("recent-apps")}>
@@ -56,13 +58,13 @@ const RecentApps = (props: Props) => {
       </div>
       { isExpend && (
         <div className={classNames("recent-apps-list")}>
-          { appList.reverse().map((app: any) => (
-            <div className={classNames("recent-apps-list-item")} key={app.id}>
+          { appList?.map((app: any) => (
+            <div className={classNames("recent-apps-list-item")} key={app.fdId}>
               <div className={classNames("recent-apps-list-item-icon")} 
-                style={{ backgroundColor: app.navColor }}> 
-                {app.iconUrl}
+                style={{ backgroundColor: app.navColor || "red" }}> 
+                {app.fdIcon || <RedEnvelopeOutlined />} 
               </div>
-              <div className={classNames("recent-apps-list-item-title")}>{app.name}</div>
+              <div className={classNames("recent-apps-list-item-title")}>{app.fdAppName || "demo"}</div>
             </div>
           )) }
         </div>

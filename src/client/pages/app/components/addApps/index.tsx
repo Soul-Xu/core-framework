@@ -10,6 +10,8 @@ import { Modal, Form, Input } from "antd"
 /** utils */
 import { reducer } from "../../../../utils/reducer";
 import asyncThunk from "../../../../store/asyncThunk"
+import axios from "axios";
+import { baseApi } from "../../../../config";
 
 /**
  * interface
@@ -24,9 +26,10 @@ interface Props {
 }
 
 const initialState = {
-  fdAppNam: "",
+  fdAppName: "",
   fdIcon: "",
-  fdUrl: ""
+  fdUrl: "",
+  fdRemark: ""
 }
 
 const AddApps = (props: Props) => {
@@ -34,9 +37,7 @@ const AddApps = (props: Props) => {
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
   const { open, onCancel } = props
-  const [fdAppNam, setFdAppNam] = useState("")
-  const [fdIcon, setFdIcon] = useState("")
-  const [fdUrl, setFdUrl] = useState("")
+  const { fdAppName, fdIcon, fdUrl, fdRemark } = data
 
   /**
    * @description 数据处理函数
@@ -58,18 +59,33 @@ const AddApps = (props: Props) => {
    * @param
    */
   const onOk = async () => {
-    console.log("新建应用确认逻辑")
-
     const params = {
-      fdAppNam: fdAppNam,
+      fdAppName: fdAppName,
       fdIcon: fdIcon,
-      fdUrl: fdUrl
+      fdUrl: fdUrl,
+      fdRemark: fdRemark
     }
 
-    console.log("create-app", params)
-    const res = await dispatchRedux(asyncThunk.createApp(params) as any);
+    // axios原生方式
+    const res:any = await axios.request({
+      url: `${baseApi}/app-permission/add`,
+      method: "post",
+      data: params,
+      withCredentials: true,  
+      headers: {
+        'Content-Type': 'application/json' // 设置为 application/json
+      },
+    }).then((res: any) => {
+      const data = res.data
+      if (data.code === 200) {
+        onCancel()
+      }
 
-    console.log("create-app-res", res)
+    }).catch((err: any) => {
+      console.log("axios-app-catch", err)
+    })
+
+    // // const res = await dispatchRedux(asyncThunk.createApp(params) as any);
     onCancel()
   }
 
@@ -91,6 +107,9 @@ const AddApps = (props: Props) => {
         </Form.Item>
         <Form.Item label="图标地址" name="fdUrl">
           <Input placeholder="请输入图标地址" onChange={(e: any) => onHandleChange("fdUrl", e)} />
+        </Form.Item>
+        <Form.Item label="备注说明" name="fdRemark">
+          <Input placeholder="请输入备注说明" onChange={(e: any) => onHandleChange("fdRemark", e)} />
         </Form.Item>
       </Form>
     </Modal>

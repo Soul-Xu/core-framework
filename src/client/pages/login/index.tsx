@@ -11,7 +11,6 @@ import FormLayout from "../../components/formLayout";
 /** store */
 import { setAuthState } from "../../store/modules/authSlice";
 import { setUserInfo } from "../../store/modules/loginSlice"
-import { setCookie } from '../../store/modules/commonSlice';
 /** utils */
 import asyncThunk from "../../store/asyncThunk";
 import { reducer } from "../../utils/reducer";
@@ -82,9 +81,8 @@ const Login: React.FC = () => {
       method: "post",
       data: params,
       headers: {
-        "Access-Control-Allow-Origin": "*",
-        withCredentials: true
-      }
+        'Content-Type': 'application/json'
+      },
     }).then((res) => {
       const data = res?.data
       console.log("axios-data", data)
