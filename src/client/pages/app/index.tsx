@@ -83,16 +83,6 @@ const App: NextPage = () => {
     }).catch((err: any) => {
       console.log("axios-app-catch", err)
     })
-
-    // redux-toolkit
-    // const res = await dispatchRedux(asyncThunk.getApps(params) as any)
-    // const data = res.payload
-    // console.log("applist-res", data)
-    // if (data.code === 401 && data.message === "请先登录后再操作!") {
-    //   // setTimeout(() => {
-    //   //   router.push("/login")
-    //   // }, 3000)
-    // }
   }
 
   useEffect(() => {

@@ -33,10 +33,10 @@ function getItem(
 
 /** components */
 import AddMenus from '../addMenus';
-import AreaDemo from "../../../../../components/chartsDemo/area";
-import BarDemo from "../../../../../components/chartsDemo/bar";
-import ColumnDemo from "../../../../../components/chartsDemo/column";
-import LineDemo from "../../../../../components/chartsDemo/line";
+// import AreaDemo from "../../../../../components/chartsDemo/area";
+// import BarDemo from "../../../../../components/chartsDemo/bar";
+// import ColumnDemo from "../../../../../components/chartsDemo/column";
+// import LineDemo from "../../../../../components/chartsDemo/line";
 
 /** css */
 import classnames from "classnames/bind";
@@ -114,24 +114,24 @@ const TabsContent3 = () => {
         <Row style={{ marginBottom: "30px"}}>
           <Col span="10" style={{ marginRight: "30px"}}>
             <Card title="区域图">
-              <AreaDemo />
+              {/* <AreaDemo /> */}
             </Card>
           </Col>
           <Col span="10">
             <Card title="条形图">
-              <BarDemo />
+              {/* <BarDemo /> */}
             </Card>
           </Col>
         </Row>
         <Row>
           <Col span="10" style={{ marginRight: "30px"}}>
             <Card title="柱状图">
-              <ColumnDemo />
+              {/* <ColumnDemo /> */}
             </Card>
           </Col>
           <Col span="10">
             <Card title="折线图">
-              <LineDemo />
+              {/* <LineDemo /> */}
             </Card>
           </Col>
         </Row>

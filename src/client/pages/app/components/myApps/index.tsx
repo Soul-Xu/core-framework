@@ -24,6 +24,9 @@ import AddApps from "../addApps";
 import UpdateApps from "../updateApps";
 import DeleteApps from "../deleteApps"
 
+/** utils */
+import { getRandomColor } from "../../../../utils/index";
+
 /** css */
 import classnames from "classnames/bind";
 import styles from "./index.module.scss";
@@ -128,15 +131,15 @@ const MyApps = (props: Props) => {
     </div>
     { isExpend && (
       <div className={classNames("my-apps-list")}>
-        { appList.map((app: any) => (
+        { appList.map((app: any, index: number) => (
           <div className={classNames("my-apps-list-item")}>
             <div className={classNames("my-apps-list-item-btn")}>
               <span onClick={() => onUpdateAppModal(app)}><EditOutlined /></span>
-              <span onClick={() => onDeleteAppModal(app)}><DeleteOutlined /></span>
+              {index !== 0 && <span onClick={() => onDeleteAppModal(app)}><DeleteOutlined /></span>}
             </div>
             <Link href={`/app/${app.fdId}`} key={app.fdId}>
               <div className={classNames("my-apps-list-item-icon")} 
-                style={{ backgroundColor: app.navColor || "red", color: app.iconColor || "#000"}}> 
+                style={{ backgroundColor: app.navColor || getRandomColor(), color: app.iconColor || "#000"}}> 
                 {app.iconUrl || <RedEnvelopeOutlined />}
               </div>
               <div className={classNames("my-apps-list-item-title")}>{app.fdAppName || "demo"}</div>

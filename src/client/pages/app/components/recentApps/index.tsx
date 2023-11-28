@@ -11,7 +11,10 @@ import {
   RedEnvelopeOutlined
 } from "@ant-design/icons";
 
-/** 样式 */
+/** utils */
+import { getRandomColor } from "../../../../utils/index";
+
+/** css */
 import classnames from "classnames/bind";
 import styles from "./index.module.scss";
 const classNames = classnames.bind(styles);
@@ -61,7 +64,7 @@ const RecentApps = (props: Props) => {
           { appList?.map((app: any) => (
             <div className={classNames("recent-apps-list-item")} key={app.fdId}>
               <div className={classNames("recent-apps-list-item-icon")} 
-                style={{ backgroundColor: app.navColor || "red" }}> 
+                style={{ backgroundColor: app.navColor || getRandomColor() }}> 
                 {app.fdIcon || <RedEnvelopeOutlined />} 
               </div>
               <div className={classNames("recent-apps-list-item-title")}>{app.fdAppName || "demo"}</div>

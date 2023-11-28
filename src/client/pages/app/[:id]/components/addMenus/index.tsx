@@ -3,11 +3,14 @@
  */
 /** external library */
 import React, { useState, useEffect } from "react";
+import { useRouter } from 'next/router';
 import { useDispatch } from "react-redux";
 import { Modal, Form, Input } from "antd"
 
 /** utils */
 import asyncThunk from "../../../../../store/asyncThunk"
+import { baseApi } from '../../../../../config';
+import axios from "axios";
 
 /**
  * interface
@@ -23,6 +26,8 @@ interface Props {
 
 const AddMenus = (props: Props) => {
   // const form = useForm()
+  const router = useRouter()
+  const curTabId = router.query["tabId"]
   const dispatchRedux = useDispatch();
   const { open, onCancel } = props
   const [fdComponentName, setFdComponentName] = useState("")
@@ -42,7 +47,7 @@ const AddMenus = (props: Props) => {
   }
 
   /**
-   * @description 新建应用确认逻辑
+   * @description 新增左侧菜单确认逻辑
    * @param
    */
   const onOk = async () => {
@@ -51,11 +56,34 @@ const AddMenus = (props: Props) => {
     const params = {
       fdComponentName: fdComponentName,
       fdRemark: fdRemark,
-      fdUrl: fdUrl
+      fdUrl: fdUrl,
+      fdDisplayOrder:1,
+      fdParentEntity:{
+        fdId:curTabId
+      }
     }
 
-    console.log("create-tabs", params)
-    const res = await dispatchRedux(asyncThunk.createApp(params) as any);
+    const res = await axios.request({
+      url: `${baseApi}/component-permission/add-data`,
+      method: "post",
+      data: params,
+      withCredentials: true,  
+      headers: {
+        'Content-Type': 'application/json' // 设置为 application/json
+      },
+    }).then((res: any) => {
+      const data = res.data
+      if (data.code === 200) {
+        // const tabs: any = [...data.data, tabAdd]
+        // setTabsList(tabs)
+      }
+      
+    }).catch((err: any) => {
+      console.log("err", err)
+    })
+
+    console.log("create-menus", params)
+    // const res = await dispatchRedux(asyncThunk.createApp(params) as any);
     onCancel()
   }
 

@@ -3,7 +3,7 @@
  */
 /** external library */
 import Image from "next/image"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { NextPage } from 'next';
 import FormDemo from '../demos/form';
@@ -21,6 +21,10 @@ type MenuItem = Required<MenuProps>['items'][number];
 
 /** components */
 import AddMenus from '../addMenus';
+
+/** utils */
+import { baseApi } from '../../../../../config';
+import axios from "axios";
 
 function getItem(
   label: React.ReactNode,
@@ -52,9 +56,125 @@ const initialState = {
 }
 
 const TabsContent1 = () => {
+  const router = useRouter()
+  const curAppId = router.query[":id"]
+  const curTabId = router.query["tabId"]
   const [collapsed, setCollapsed] = useState(false)
   const [selectKey, setSelectKey] = useState([''])
   const [showAddModal, setShowAddModal] = useState(false)
+  const [menusList, setMenusList] = useState([])
+
+  const addMenu = getItem(
+    <div 
+      style={{ paddingLeft: "8px", color: "#beb2b2" }}
+      onClick={() => onShowAddModal("show")}
+    >新建菜单</div>, 
+    'add',
+    <div 
+      style={{ paddingLeft: "6px", width: "14px", height: "14px", color: "#beb2b2" }}
+      onClick={() => onShowAddModal("show")}
+    >
+      <PlusOutlined />
+    </div> 
+  )
+
+  const menuItem = [
+    {
+      fdId: "1hgacjuc83vtqukb1malp7g19appf42r039h",
+      fdComponentName: "测试二级菜单",
+      fdCreateTime: null,
+      fdIcon: null,
+      fdParentEntity: {
+        fdId: "1hgaaclhtna6abn3tvrkbgd9bi74q9qfu024",
+        fdName: null
+      },
+      fdAppEntity: null,
+      fdPermission: null,
+      fdRemark: "测试用左侧菜单",
+      fdRoleEntities: null,
+      children: [],
+      fdUpdateTime: null,
+      fdUrl: "默认",
+      fdVisiable: 1    
+    }
+  ]
+
+  const onMenuClick = (menu: any) => {
+    setSelectKey([`${menu.key}`])
+  }
+
+  /**
+   * @description 控制新建tab弹窗
+   * @param
+   */
+  const onShowAddModal = (type: string) => {
+    type === "show" &&  setShowAddModal(true)
+    type === "hide" && setShowAddModal(false)
+  }
+
+  /**
+   * @description 隐藏新建tab弹窗
+   * @param
+   */
+  const onHideAddModal = () => {
+    getMenus()
+    setShowAddModal(false)
+  }
+
+  const onHandleMenus = (menus: any) => {
+    console.log("1111-onHandleMenus", menus)
+    if (!menuItem || !Array.isArray(menuItem)) {
+      return [];
+    }
+  
+    return menuItem.map(item => {
+      const antMenuItem: MenuItem = {
+        key: item.fdId,
+        icon: item.fdIcon,
+        label: item.fdComponentName,
+        children: item?.children
+      };
+  
+      if (item.children && item.children.length > 0) {
+        antMenuItem.children = onHandleMenus(item.children);
+      }
+  
+      return antMenuItem;
+    });
+  }
+
+  /**
+   * @description 获取左侧菜单列表
+   * @param
+   */
+  const getMenus = async () => {
+    const params = {
+      fdId: curTabId
+    }
+
+    const res = await axios.request({
+      url: `${baseApi}/component-permission/child-menu`,
+      method: "post",
+      data: params,
+      withCredentials: true,  
+      headers: {
+        'Content-Type': 'application/json' // 设置为 application/json
+      },
+    }).then((res: any) => {
+      const data = res.data
+      if (data.code === 200) {
+        // const tabs: any = [...data.data, tabAdd]
+        // setTabsList(tabs)
+        const menus: any = onHandleMenus(data.data)
+        const renderMenus: any = [...menus, addMenu]
+        setMenusList(renderMenus)
+        // console.log("menu-list", data.data)
+      }
+      
+    }).catch((err: any) => {
+      console.log("err", err)
+    })
+  } 
 
   const items: MenuItem[] = [
     getItem('数据总览', 'app', <AppstoreFilled />),
@@ -77,18 +197,15 @@ const TabsContent1 = () => {
     ),
   ];
 
-  const onMenuClick = (menu: any) => {
-    setSelectKey([`${menu.key}`])
-  }
+  useEffect(() => {
+    getMenus()
+    console.log("route-tab", router.query)
+  }, [curAppId])
 
-  /**
-   * @description 控制新建tab弹窗
-   * @param
-   */
-  const onShowAddModal = (type: string) => {
-    type === "show" &&  setShowAddModal(true)
-    type === "hide" && setShowAddModal(false)
-  }
+  useEffect(() => {
+    const menus: any = [...menusList, addMenu]
+    setMenusList(menus)
+  }, [])
 
   return (
     <>
@@ -105,7 +222,7 @@ const TabsContent1 = () => {
           width: collapsed ? "60px" : "200px"
         }}
       >
-        <Menu defaultSelectedKeys={['app']} mode="inline" items={items} onClick={onMenuClick} />
+        <Menu defaultSelectedKeys={['app']} mode="inline" items={menusList} onClick={onMenuClick} />
       </Sider>
       <Content
         style={{
@@ -140,7 +257,7 @@ const TabsContent1 = () => {
           </Row>
         </div>
       </Content>
-      <AddMenus open={showAddModal} onCancel={() => onShowAddModal("hide")} />
+      <AddMenus open={showAddModal} onCancel={() => onHideAddModal()} />
     </>
   )
 }
@@ -149,3 +266,41 @@ export default TabsContent1
 
 
 
+const menuItem = [
+  {
+    fdId: "1hgacjuc83vtqukb1malp7g19appf42r039h",
+    fdComponentName: "测试二级菜单",
+    fdCreateTime: null,
+    fdIcon: null,
+    fdParentEntity: {
+      fdId: "1hgaaclhtna6abn3tvrkbgd9bi74q9qfu024",
+      fdName: null
+    },
+    fdAppEntity: null,
+    fdPermission: null,
+    fdRemark: "测试用左侧菜单",
+    fdRoleEntities: null,
+    children: [],
+    fdUpdateTime: null,
+    fdUrl: "默认",
+    fdVisiable: 1    
+  },
+  {
+    fdId: "1hgacjuc83vtqukb1malp7g19appsfafafsa9h",
+    fdComponentName: "测试二级菜单1111",
+    fdCreateTime: null,
+    fdIcon: null,
+    fdParentEntity: {
+      fdId: "1hgaaclhtna6abn3tvrkbgd9bi74q9qfu024",
+      fdName: null
+    },
+    fdAppEntity: null,
+    fdPermission: null,
+    fdRemark: "测试用左侧菜单",
+    fdRoleEntities: null,
+    children: [],
+    fdUpdateTime: null,
+    fdUrl: "默认",
+    fdVisiable: 1    
+  },
+]

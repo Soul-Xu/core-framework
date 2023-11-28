@@ -21,8 +21,8 @@ const AppById = () => {
         return <TabsContent1 />
       case "2":
         return <TabsContent2 />
-      case "3":
-        return <TabsContent3 />
+      // case "3":
+      //   return <TabsContent3 />
       default:
         return <TabsContent1 />
     }

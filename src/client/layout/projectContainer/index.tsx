@@ -5,11 +5,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { NextPage } from 'next';
 import axios from "axios"
 import { setTab } from '../../store/modules/menuSlice'
+import { setCurApp } from '../../store/modules/appsSlice';
 import type { TabsProps } from 'antd';
-import { Layout, Tabs } from 'antd';
+import { Layout, Tabs, Dropdown } from 'antd';
 const { Header } = Layout;
 /** components */
 import AddTabs from "../../pages/app/[:id]/components/addTabs"
+
+/** utils */
+import { baseApi } from '../../config';
 
 /** css */
 import classnames from "classnames/bind";
@@ -23,62 +27,82 @@ interface PageContainerProps {
 
 const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
   const router = useRouter()
+  const curAppId = router.query[":id"]
   const dispatchRedux = useDispatch();
   const tab = useSelector((state: any) => state.menu.tab)
+  const appsList = useSelector((state: any) => state.apps.appsList)
   const [selectTab, setSelectTab] = useState("1")
   const [showAddModal, setShowAddModal] = useState(false)
+  const [tabsList, setTabsList] = useState([])
+
+  // 默认tab添加项
+  const tabAdd = {
+    key: 'add',
+    fdComponentName: (
+      <div onClick={() => onShowAddModal("show")}>
+        <PlusOutlined />
+      </div>
+    )
+  }
+
+  // item demo
+  const tabItem = {
+    fdId: "1hgaaclhtna6abn3tvrkbgd9bi74q9qfu024",
+    fdComponentName: "测试ab",
+    fdDisplayOrder: 1,
+    fdIcon: null,
+    fdParentEntity: null,
+    fdAppEntity: {
+      fdId: "1hg82f58dreme6v2nar5ph23nu3eh1od1uo3",
+      fdName: "testtest"
+    },
+    chilren: [],
+    fdPermission: null,
+    fdRemark: "第一个测试用tab",
+    fdRoleEntities: null,
+    fdCreateTime: "2023-11-28 14:38:14",
+    fdUpdateTime: null,
+    fdUrl: "默认图标",
+    fdVisiable: 1
+  }
 
   const getTabs = async () => {
     const params = {
-      fdId: "211"
+      fdId: curAppId
     }
 
     const res = await axios.request({
-      url: "http://120.79.58.103:8080/api/sys-auth/component-permission/top-menu",
-      method: "POST",
+      url: `${baseApi}/component-permission/top-menu`,
+      method: "post",
       data: params,
+      withCredentials: true,  
       headers: {
-        "cookie": "JSESSIONID=9a7f9037-8369-45e1-a8d6-408f7ec85aa1",
-        "Content-Type": "application/json; charset=utf-8",
-        "Access-Control-Allow-Origin": "*",
+        'Content-Type': 'application/json' // 设置为 application/json
+      },
+    }).then((res: any) => {
+      const data = res.data
+      if (data.code === 200) {
+        const tabs: any = [...data.data, tabAdd]
+        setTabsList(tabs)
       }
+      
+    }).catch((err: any) => {
+      console.log("err", err)
     })
-
-    console.log("tabs-11111111", res)
   } 
 
   const onGoBack = () => {
     router.push("/app")
   }
 
-  const tabItems: TabsProps['items'] = [
-    {
-      key: '1',
-      label: '驾驶仓'
-    },
-    {
-      key: '2',
-      label: '采购'
-    },
-    {
-      key: '3',
-      label: '销售'
-    },
-    {
-      key: 'add',
-      label: (
-        <div onClick={() => onShowAddModal("show")}>
-          <PlusOutlined />
-        </div>
-      )
-    },
-  ];
-
-  const onTabsChange = (key: string) => {
-    setSelectTab(key)
+  const onTabsChange = (item: any) => {
+    setSelectTab(item.key)
     dispatchRedux(setTab({
-      tab: key
+      tab: item.key
     }))
+    // console.log("cur-tabs", item)
+    console.log("route-tab", router)
+    router.push(`${router.asPath}?tabId=${item.fdId}`)
   }
 
   /**
@@ -90,8 +114,26 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
     type === "hide" && setShowAddModal(false)
   }
 
+    /**
+   * @description 隐藏新建tab弹窗
+   * @param
+   */
+    const onHideAddModal = () => {
+      getTabs()
+      setShowAddModal(false)
+    }
+
+  const getAppConfig = () => {
+    const curApp = appsList.find((app: any) => app.fdId === curAppId)
+    console.log("curApp", curApp)
+    dispatchRedux(setCurApp({
+      curApp: curApp
+    }))
+  }
+
   useEffect(() => {
-    // getTabs()
+    getTabs()
+    getAppConfig()
   }, [])
 
   return (
@@ -108,14 +150,27 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
           </div>
           <div className={classNames("header-container-tabs")}>
             {
-              tabItems.map((item: any) => {
+              tabsList.map((item: any) => {
                 return (
                   (<div
                     key={item?.key}
-                    className={classNames(item.key === selectTab && item.key !== "add" ? "tabs-container-select" : "tabs-container")} 
-                    onClick={() => onTabsChange(item.key)}>
-                    <div className={classNames(item.key === selectTab && item.key !== "add" ? "tabs-container-select-label" : "tabs-container-label")}>{item.label}</div>
-                    <div className={classNames(item.key === selectTab && item.key !== "add" ? "tabs-container-select-line": "tabs-container-line")}></div>
+                    className={classNames(
+                      item.key === selectTab && item.key !== "add" 
+                      ? "tabs-container-select" 
+                      : "tabs-container")
+                    } 
+                    onClick={() => onTabsChange(item)}>
+                    <div className={classNames(
+                      item.key === selectTab && item.key !== "add" 
+                      ? "tabs-container-select-label" : "tabs-container-label")
+                      }>
+                        {item.fdComponentName}
+                      </div>
+                    <div className={classNames(
+                      item.key === selectTab && item.key !== "add" 
+                      ? "tabs-container-select-line"
+                      : "tabs-container-line")
+                      }></div>
                   </div>)
                 )
               })
@@ -126,7 +181,7 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
       <Layout className={classNames("container-wrapper")}>
         { children }
       </Layout>
-      <AddTabs open={showAddModal} onCancel={() => onShowAddModal("hide")} />
+      <AddTabs open={showAddModal} onCancel={() => onHideAddModal()} />
     </Layout>
   );
 };
