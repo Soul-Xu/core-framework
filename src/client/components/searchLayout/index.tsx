@@ -89,9 +89,6 @@ const SearchLayout = ({
           if (item.type === 'datepicker') {
             return (
               <Form.Item label={item.label} key={item.key} name={item.name} className={classNames("form-item")}>
-                {/* 
-
- */}
                 <RangePicker
                   onChange={(time: any) => {
                     item.callback(time)

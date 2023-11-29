@@ -5,7 +5,7 @@
 import React, { useCallback, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useImmerReducer } from "use-immer";
-import { Modal, Form, Input } from "antd"
+import { Modal, Form, Input, InputNumber } from "antd"
 
 /** utils */
 import { reducer } from "../../../../utils/reducer";
@@ -29,7 +29,8 @@ const initialState = {
   fdAppName: "",
   fdIcon: "",
   fdUrl: "",
-  fdRemark: ""
+  fdRemark: "",
+  fdDisplayOrder: 1
 }
 
 const AddApps = (props: Props) => {
@@ -37,7 +38,7 @@ const AddApps = (props: Props) => {
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
   const { open, onCancel } = props
-  const { fdAppName, fdIcon, fdUrl, fdRemark } = data
+  const { fdAppName, fdIcon, fdUrl, fdRemark, fdDisplayOrder } = data
 
   /**
    * @description 数据处理函数
@@ -49,9 +50,15 @@ const AddApps = (props: Props) => {
   }, [dispatch]);
   
   const onHandleChange = (type: string, e: any) => {
-    setState("update", {
-      [type]: e.target.value
-    })
+    if (type === "fdDisplayOrder") {
+      setState("update", {
+        [type]: e
+      })
+    } else {
+      setState("update", {
+        [type]: e.target.value
+      })
+    }
   }
 
   /**
@@ -63,7 +70,8 @@ const AddApps = (props: Props) => {
       fdAppName: fdAppName,
       fdIcon: fdIcon,
       fdUrl: fdUrl,
-      fdRemark: fdRemark
+      fdRemark: fdRemark,
+      fdDisplayOrder: fdDisplayOrder
     }
 
     // axios原生方式
@@ -110,6 +118,11 @@ const AddApps = (props: Props) => {
         </Form.Item>
         <Form.Item label="备注说明" name="fdRemark">
           <Input placeholder="请输入备注说明" onChange={(e: any) => onHandleChange("fdRemark", e)} />
+        </Form.Item>
+        <Form.Item label="应用排序" name="fdDisplayOrder">
+          <div style={{ textAlign: "left", width: "402px" }}>
+            <InputNumber style={{ width: "100%" }} placeholder="请输入应用排序" min={1} max={99} onChange={(e: any) => onHandleChange("fdDisplayOrder", e)} />
+          </div>
         </Form.Item>
       </Form>
     </Modal>

@@ -1,5 +1,5 @@
 /**
- * 新建应用
+ * 新建应用Tabs
  */
 /** external library */
 import React, { useState, useEffect } from "react";
@@ -51,7 +51,7 @@ const AddTabs = (props: Props) => {
   }
 
   /**
-   * @description 新建应用确认逻辑
+   * @description 新建tab确认逻辑
    * @param
    */
   const onOk = async () => {

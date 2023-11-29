@@ -7,7 +7,9 @@ import {
   CheckCircleOutlined,
   GoldFilled,
   UserOutlined,
-  SettingOutlined
+  ClusterOutlined,
+  SettingOutlined,
+  ExpandOutlined
  } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu } from 'antd';
@@ -38,7 +40,9 @@ const items: MenuItem[] = [
   getItem('我的待办', 'todo', <CheckCircleOutlined />),
   getItem('集成中心', 'integration', <GoldFilled />),
   getItem('个人中心', 'personalCenter', <UserOutlined />),
+  getItem('权限设置', 'permission', <ClusterOutlined />),
   getItem('系统设置', 'systemSetting', <SettingOutlined />),
+  getItem('开发文档', 'openAPI', <ExpandOutlined />),
 ];
 
 const itemsMap: any = {
@@ -69,8 +73,12 @@ const AppContainer: NextPage<PageContainerProps> = ({ children }: any) => {
   const router:any = useRouter()
 
   const onMenuClick = (menu: any) => {
-    setSelectKey([`${menu.key}`])
-    router.push(`/${menu.key}`)
+    if (menu.key !== "openAPI") {
+      setSelectKey([`${menu.key}`])
+      router.push(`/${menu.key}`)
+    } else {
+      console.log("openAPI")
+    }
   }
 
   useEffect(() => {
@@ -95,11 +103,12 @@ const AppContainer: NextPage<PageContainerProps> = ({ children }: any) => {
             overflow: "auto",
             height: "100vh",
             position: "fixed",
+            fontSize: "18px",
             left: 0,
             width: collapsed ? "60px" : "200px"
           }}
         >
-          <Menu selectedKeys={selectKey} defaultSelectedKeys={['app']} mode="inline" items={items} onClick={onMenuClick} />
+          <Menu selectedKeys={selectKey} style={{ fontSize: "18px" }} defaultSelectedKeys={['app']} mode="inline" items={items} onClick={onMenuClick} />
         </Sider>
         <Content
           style={{

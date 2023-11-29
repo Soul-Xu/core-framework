@@ -42,7 +42,14 @@ export class ViewController {
   @ApiResponse({ status: 200, description: '个人中心' })
   public async showPersonalCenter(@Req() req: Request, @Res() res: Response) {
     await this.viewService.handler(req, res);
-  }systemSetting
+  }
+
+  @Get('permission')
+  @ApiTags('Permission')
+  @ApiResponse({ status: 200, description: '权限管理' })
+  public async showPermission(@Req() req: Request, @Res() res: Response) {
+    await this.viewService.handler(req, res);
+  }
 
   @Get('systemSetting')
   @ApiTags('SystemSetting')

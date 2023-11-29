@@ -1,5 +1,5 @@
 /**
- * 新建应用
+ * 新建菜单
  */
 /** external library */
 import React, { useState, useEffect } from "react";
@@ -51,8 +51,6 @@ const AddMenus = (props: Props) => {
    * @param
    */
   const onOk = async () => {
-    console.log("新建应用确认逻辑")
-
     const params = {
       fdComponentName: fdComponentName,
       fdRemark: fdRemark,
