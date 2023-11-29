@@ -32,7 +32,6 @@ const request = (url: string, req: Record<string, any> = {}, conf: AxiosReqConfi
     rewriteUrl = rewriteUrl.replace("/api", "");
   }
   const cookie = localStorage.getItem("cookie")
-  console.log("request-cookie", cookie)
   const defConf: AxiosReqConfig = {
     url: rewriteUrl,
     method: "post", // 默认GET
@@ -40,7 +39,7 @@ const request = (url: string, req: Record<string, any> = {}, conf: AxiosReqConfi
     headers: {
       "Content-Type": "application/json; charset=utf-8",
       "Access-Control-Allow-Origin": "*",
-      "Authorization": cookie,
+      // "Authorization": cookie,
       withCredentials: true,
       crossDomain: true
     },
