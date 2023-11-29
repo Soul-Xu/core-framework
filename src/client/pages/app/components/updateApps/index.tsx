@@ -5,7 +5,8 @@
 import React, { useCallback, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useImmerReducer } from "use-immer";
-import { Modal, Form, Input } from "antd"
+import { Modal, Form, Input, InputNumber } from "antd"
+const { TextArea } = Input;
 
 /** utils */
 import { reducer } from "../../../../utils/reducer";
@@ -37,7 +38,8 @@ const initialState = {
   fdAppName: "",
   fdIcon: "",
   fdUrl: "",
-  fdRemark: ""
+  fdRemark: "",
+  fdDisplayOrder: 1
 }
 
 const UpdateApps = (props: Props) => {
@@ -45,7 +47,7 @@ const UpdateApps = (props: Props) => {
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
   const { open, appId, detail, onCancel } = props
-  const { fdAppName, fdIcon, fdUrl, fdRemark } = data
+  const { fdAppName, fdIcon, fdUrl, fdRemark, fdDisplayOrder } = data
 
   /**
    * @description 数据处理函数
@@ -57,9 +59,15 @@ const UpdateApps = (props: Props) => {
   }, [dispatch]);
   
   const onHandleChange = (type: string, e: any) => {
-    setState("update", {
-      [type]: e.target.value
-    })
+    if (type === "fdDisplayOrder") {
+      setState("update", {
+        [type]: e
+      })
+    } else {
+      setState("update", {
+        [type]: e.target.value
+      })
+    }
   }
 
   /**
@@ -102,18 +110,19 @@ const UpdateApps = (props: Props) => {
     onCancel()
   }
 
+  /**
+   * 初始化数据
+   */
   useEffect(() => {
-    console.log("update-modal", detail)
     if (!_.isEmpty(detail)) {
-      const { fdAppName, fdIcon, fdUrl, fdRemark } = detail
-      // setState("update", {
-      //   fdAppName,
-      //   fdIcon,
-      //   fdUrl,
-      //   fdRemark
-      // })
+      console.log("update-modal", detail);
+      const { fdAppName, fdIcon, fdUrl, fdRemark } = detail;
+      dispatch({
+        type: "update",
+        payload: { fdAppName, fdIcon, fdUrl, fdRemark }
+      });
     }
-  }, [])
+  }, [detail]);
 
   return (
     <Modal 
@@ -125,28 +134,35 @@ const UpdateApps = (props: Props) => {
       okText="提交"
     >
       <div className={classNames("app-detail")}>
+        {/* ... (existing code) */}
         <div className={classNames("app-detail-item")}>
           <div className={classNames("app-detail-item-label")}>应用名称</div>
           <div className={classNames("app-detail-item-value")}>
-            <Input defaultValue={detail?.fdAppName} onClick={(e: any) => onHandleChange("fdAppName", e)} />
+            <Input value={fdAppName} onChange={(e: any) => onHandleChange("fdAppName", e)} />
           </div>
         </div>
         <div className={classNames("app-detail-item")}>
           <div className={classNames("app-detail-item-label")}>图标名称</div>
           <div className={classNames("app-detail-item-value")}>
-            <Input defaultValue={detail?.fdIcon} onClick={(e: any) => onHandleChange("fdAppName", e)} />
+            <Input value={fdIcon} onChange={(e: any) => onHandleChange("fdIcon", e)} />
           </div>
         </div>
         <div className={classNames("app-detail-item")}>
           <div className={classNames("app-detail-item-label")}>图标地址</div>
           <div className={classNames("app-detail-item-value")}>
-            <Input defaultValue={detail?.fdUrl} onClick={(e: any) => onHandleChange("fdAppName", e)} />
+            <Input value={fdUrl} onChange={(e: any) => onHandleChange("fdUrl", e)} />
           </div>
         </div>
         <div className={classNames("app-detail-item")}>
           <div className={classNames("app-detail-item-label")}>备注说明</div>
           <div className={classNames("app-detail-item-value")}>
-            <Input defaultValue={detail?.fdRemark} onClick={(e: any) => onHandleChange("fdAppName", e)} />
+            <TextArea value={fdRemark} onChange={(e: any) => onHandleChange("fdRemark", e)} />
+          </div>
+        </div>
+        <div className={classNames("app-detail-item")}>
+          <div className={classNames("app-detail-item-label")}>应用排序</div>
+          <div className={classNames("app-detail-item-value")}>
+            <InputNumber style={{ width: "100%" }} placeholder="请输入应用排序" min={1} max={99} value={fdDisplayOrder} onChange={(e: any) => onHandleChange("fdDisplayOrder", e)} />
           </div>
         </div>
       </div>

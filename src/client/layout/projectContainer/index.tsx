@@ -31,6 +31,7 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
   const dispatchRedux = useDispatch();
   const tab = useSelector((state: any) => state.menu.tab)
   const appsList = useSelector((state: any) => state.apps.appsList)
+  const [AppName, setAppName] = useState("")
   const [selectTab, setSelectTab] = useState("1")
   const [showAddModal, setShowAddModal] = useState(false)
   const [tabsList, setTabsList] = useState([])
@@ -38,40 +39,28 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
   // 默认tab添加项
   const tabAdd = {
     key: 'add',
-    fdComponentName: (
+    label: (
       <div onClick={() => onShowAddModal("show")}>
         <PlusOutlined />
       </div>
     )
   }
 
-  // item demo
-  const tabItem = {
-    fdId: "1hgaaclhtna6abn3tvrkbgd9bi74q9qfu024",
-    fdComponentName: "测试ab",
-    fdDisplayOrder: 1,
-    fdIcon: null,
-    fdParentEntity: null,
-    fdAppEntity: {
-      fdId: "1hg82f58dreme6v2nar5ph23nu3eh1od1uo3",
-      fdName: "testtest"
-    },
-    chilren: [],
-    fdPermission: null,
-    fdRemark: "第一个测试用tab",
-    fdRoleEntities: null,
-    fdCreateTime: "2023-11-28 14:38:14",
-    fdUpdateTime: null,
-    fdUrl: "默认图标",
-    fdVisiable: 1
-  }
+  // 实用函数，将 tabItem 转换为 TabsProps['items']
+  const onHandleTabs = (tabItem) => {
+    const res = tabItem.map(item => ({
+      key: item.fdId,
+      label: item.fdComponentName
+    }))
+    return res
+  };
 
   const getTabs = async () => {
     const params = {
       fdId: curAppId
     }
 
-    const res = await axios.request({
+    await axios.request({
       url: `${baseApi}/component-permission/top-menu`,
       method: "post",
       data: params,
@@ -82,8 +71,13 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
     }).then((res: any) => {
       const data = res.data
       if (data.code === 200) {
-        const tabs: any = [...data.data, tabAdd]
-        setTabsList(tabs)
+        const tabs: any = onHandleTabs(data.data)
+        const renderTabs: any = [...tabs].concat(tabAdd)
+        setSelectTab(renderTabs[0].key)
+        setTabsList(renderTabs)
+        dispatchRedux(setTab({
+          tab: renderTabs[0].key
+        }))
       }
       
     }).catch((err: any) => {
@@ -100,8 +94,6 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
     dispatchRedux(setTab({
       tab: item.key
     }))
-    // console.log("cur-tabs", item)
-    console.log("route-tab", router)
     router.push(`${router.asPath}?tabId=${item.fdId}`)
   }
 
@@ -124,10 +116,10 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
     }
 
   const getAppConfig = () => {
-    const curApp = appsList.find((app: any) => app.fdId === curAppId)
-    console.log("curApp", curApp)
+    const curConfig = appsList.find((app: any) => app.fdId === curAppId)
+    setAppName(curConfig?.fdAppName)
     dispatchRedux(setCurApp({
-      curApp: curApp
+      curApp: curConfig
     }))
   }
 
@@ -146,7 +138,7 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
             >
               <LeftCircleOutlined />
             </div>
-            <span>体验项目</span>
+            <span>{AppName}</span>
           </div>
           <div className={classNames("header-container-tabs")}>
             {
@@ -164,7 +156,7 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
                       item.key === selectTab && item.key !== "add" 
                       ? "tabs-container-select-label" : "tabs-container-label")
                       }>
-                        {item.fdComponentName}
+                        {item.label}
                       </div>
                     <div className={classNames(
                       item.key === selectTab && item.key !== "add" 

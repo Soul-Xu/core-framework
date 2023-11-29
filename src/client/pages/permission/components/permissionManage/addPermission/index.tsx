@@ -65,8 +65,6 @@ const AddPermission = (props: Props) => {
    * @param
    */
   const onOk = async () => {
-    console.log("新建tab确认逻辑", curApp)
-
     if (curApp?.fdId) {
       message.warning("当前应用id缺失")
       return

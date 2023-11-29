@@ -109,7 +109,6 @@ const MyApps = (props: Props) => {
   }, [selectId])
 
   useEffect(() => {
-    console.log("update", selectId, selectDetail)
     selectId !== "" && selectDetail !== null && setShowUpdateModal(true)
   }, [selectDetail])
 
@@ -132,7 +131,7 @@ const MyApps = (props: Props) => {
     { isExpend && (
       <div className={classNames("my-apps-list")}>
         { appList.map((app: any, index: number) => (
-          <div className={classNames("my-apps-list-item")}>
+          <div className={classNames("my-apps-list-item")} key={app?.fdId}>
             <div className={classNames("my-apps-list-item-btn")}>
               <span onClick={() => onUpdateAppModal(app)}><EditOutlined /></span>
               {index !== 0 && <span onClick={() => onDeleteAppModal(app)}><DeleteOutlined /></span>}
@@ -140,7 +139,7 @@ const MyApps = (props: Props) => {
             <Link href={`/app/${app.fdId}`} key={app.fdId}>
               <div className={classNames("my-apps-list-item-icon")} 
                 style={{ backgroundColor: app.navColor || getRandomColor(), color: app.iconColor || "#000"}}> 
-                {app.iconUrl || <RedEnvelopeOutlined />}
+                {app.fdIcon || <RedEnvelopeOutlined />}
               </div>
               <div className={classNames("my-apps-list-item-title")}>{app.fdAppName || "demo"}</div>
             </Link>

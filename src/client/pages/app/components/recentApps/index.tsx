@@ -39,10 +39,14 @@ interface Props {
 const RecentApps = (props: Props) => {
   const { appList } = props
   const [isExpend, setIsExpanded] = useState(true)
+  const [renderAppList, setRenderAppList] = useState([])
 
   useEffect(() => {
-    console.log("recent", appList)
-  }, [])
+    if (appList.length > 0) {
+      const list: any = [...appList].reverse()
+      setRenderAppList(list)
+    }
+  }, [appList])
 
   return (
     <div className={classNames("recent-apps")}>
@@ -61,7 +65,7 @@ const RecentApps = (props: Props) => {
       </div>
       { isExpend && (
         <div className={classNames("recent-apps-list")}>
-          { appList?.map((app: any) => (
+          { renderAppList?.map((app: any) => (
             <div className={classNames("recent-apps-list-item")} key={app.fdId}>
               <div className={classNames("recent-apps-list-item-icon")} 
                 style={{ backgroundColor: app.navColor || getRandomColor() }}> 

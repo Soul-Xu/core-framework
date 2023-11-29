@@ -6,6 +6,7 @@ import React, { useCallback, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useImmerReducer } from "use-immer";
 import { Modal, Form, Input, InputNumber } from "antd"
+const { TextArea } = Input
 
 /** utils */
 import { reducer } from "../../../../utils/reducer";
@@ -117,7 +118,7 @@ const AddApps = (props: Props) => {
           <Input placeholder="请输入图标地址" onChange={(e: any) => onHandleChange("fdUrl", e)} />
         </Form.Item>
         <Form.Item label="备注说明" name="fdRemark">
-          <Input placeholder="请输入备注说明" onChange={(e: any) => onHandleChange("fdRemark", e)} />
+          <TextArea placeholder="请输入备注说明" onChange={(e: any) => onHandleChange("fdRemark", e)} />
         </Form.Item>
         <Form.Item label="应用排序" name="fdDisplayOrder">
           <div style={{ textAlign: "left", width: "402px" }}>

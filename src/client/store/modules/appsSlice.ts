@@ -33,7 +33,6 @@ export const appsSlice = createSlice({
       state.appsList = action.payload.appsList
     },
     setCurApp(state, action) {
-      console.log("store-curApp", action.payload.curApp)
       state.curApp = action.payload.curApp
     },
   }

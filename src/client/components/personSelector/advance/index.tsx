@@ -69,7 +69,7 @@ const PersonSelectorAdvance = ({ onSelect, placeholder }: Props) => {
       <Button onClick={handleOpenModal}>{placeholder}</Button>
       <Modal
         title="Select a Person"
-        visible={visible}
+        open={visible}
         onOk={handleOk}
         onCancel={handleCancel}
       >

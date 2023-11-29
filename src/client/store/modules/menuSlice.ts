@@ -22,7 +22,6 @@ export interface MenusState {
 
 // Initial state
 const initialState: MenusState = {
-  // tabs: [],
   tab: "1"
 }
 

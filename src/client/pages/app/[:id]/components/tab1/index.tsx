@@ -5,6 +5,7 @@
 import Image from "next/image"
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from "react-redux";
 import { NextPage } from 'next';
 import FormDemo from '../demos/form';
 import { 
@@ -59,6 +60,7 @@ const TabsContent1 = () => {
   const router = useRouter()
   const curAppId = router.query[":id"]
   const curTabId = router.query["tabId"]
+  const selectTab = useSelector((state: any) => state.menu.tab)
   const [collapsed, setCollapsed] = useState(false)
   const [selectKey, setSelectKey] = useState([''])
   const [showAddModal, setShowAddModal] = useState(false)
@@ -77,27 +79,6 @@ const TabsContent1 = () => {
       <PlusOutlined />
     </div> 
   )
-
-  const menuItem = [
-    {
-      fdId: "1hgacjuc83vtqukb1malp7g19appf42r039h",
-      fdComponentName: "测试二级菜单",
-      fdCreateTime: null,
-      fdIcon: null,
-      fdParentEntity: {
-        fdId: "1hgaaclhtna6abn3tvrkbgd9bi74q9qfu024",
-        fdName: null
-      },
-      fdAppEntity: null,
-      fdPermission: null,
-      fdRemark: "测试用左侧菜单",
-      fdRoleEntities: null,
-      children: [],
-      fdUpdateTime: null,
-      fdUrl: "默认",
-      fdVisiable: 1    
-    }
-  ]
 
   const onMenuClick = (menu: any) => {
     setSelectKey([`${menu.key}`])
@@ -121,8 +102,7 @@ const TabsContent1 = () => {
     setShowAddModal(false)
   }
 
-  const onHandleMenus = (menus: any) => {
-    console.log("1111-onHandleMenus", menus)
+  const onHandleMenus = (menuItem: any) => {
     if (!menuItem || !Array.isArray(menuItem)) {
       return [];
     }
@@ -132,7 +112,7 @@ const TabsContent1 = () => {
         key: item.fdId,
         icon: item.fdIcon,
         label: item.fdComponentName,
-        children: item?.children
+        children: item?.children || null
       };
   
       if (item.children && item.children.length > 0) {
@@ -149,7 +129,7 @@ const TabsContent1 = () => {
    */
   const getMenus = async () => {
     const params = {
-      fdId: curTabId
+      fdId: selectTab
     }
 
     const res = await axios.request({
@@ -163,43 +143,18 @@ const TabsContent1 = () => {
     }).then((res: any) => {
       const data = res.data
       if (data.code === 200) {
-        // const tabs: any = [...data.data, tabAdd]
-        // setTabsList(tabs)
         const menus: any = onHandleMenus(data.data)
         const renderMenus: any = [...menus, addMenu]
         setMenusList(renderMenus)
-        // console.log("menu-list", data.data)
       }
       
     }).catch((err: any) => {
       console.log("err", err)
     })
-  } 
-
-  const items: MenuItem[] = [
-    getItem('数据总览', 'app', <AppstoreFilled />),
-    getItem('库存看板', 'todo', <CheckCircleOutlined />),
-    getItem('销售看板', 'integration', <GoldFilled />),
-    getItem('采购看板', 'usercenter', <UserOutlined />),
-    getItem('财务看板', 'stock', <UserOutlined />),
-    getItem(
-      <div 
-        style={{ paddingLeft: "8px", color: "#beb2b2" }}
-        onClick={() => onShowAddModal("show")}
-      >新建菜单</div>, 
-      'add',
-      <div 
-        style={{ paddingLeft: "6px", width: "14px", height: "14px", color: "#beb2b2" }}
-        onClick={() => onShowAddModal("show")}
-      >
-        <PlusOutlined />
-      </div> 
-    ),
-  ];
+  }
 
   useEffect(() => {
     getMenus()
-    console.log("route-tab", router.query)
   }, [curAppId])
 
   useEffect(() => {
