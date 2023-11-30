@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import type { CheckboxValueType } from 'antd/es/checkbox/Group';
 import axios from "axios";
-import { baseApi } from "config";
+import { baseApi } from "../../../../../config";
 
 const CheckboxGroup = Checkbox.Group;
 

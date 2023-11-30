@@ -51,16 +51,20 @@ const OrganizationSelector = () => {
   };
 
   return (
-    <div>
-      <Tree onSelect={onSelect}>
-        {renderTreeNodes(treeData)}
-      </Tree>
-      <Cascader
-        options={treeData}
-        onChange={onChange}
-        placeholder="请选择组织"
-        value={selectedOrg}
-      />
+    <div style={{ display: "flex" }}>
+      <div style={{ width: "50%" }}>
+        <Tree onSelect={onSelect}>
+          {renderTreeNodes(treeData)}
+        </Tree>
+      </div>
+      <div>
+        <Cascader
+          options={treeData}
+          onChange={onChange}
+          placeholder="请选择组织"
+          value={selectedOrg}
+        />
+      </div>
     </div>
   );
 };
@@ -69,12 +73,12 @@ const renderTreeNodes = data => {
   return data.map(item => {
     if (item.children) {
       return (
-        <TreeNode title={item.title} key={item.key} value={item.value}>
+        <TreeNode title={item.title} key={item.key}>
           {renderTreeNodes(item.children)}
         </TreeNode>
       );
     }
-    return <TreeNode title={item.title} key={item.key} value={item.value} />;
+    return <TreeNode title={item.title} key={item.key} />;
   });
 };
 

@@ -23,7 +23,7 @@ import AppContainer from '../../layout/appContainer';
 import SearchApps from './components/searchApps';
 import RecentApps from './components/recentApps';
 import MyApps from './components/myApps';
-import { baseApi } from 'config';
+import { baseApi } from '../../config';
 
 const initialState = {
   appsList: []

@@ -73,12 +73,14 @@ const AppContainer: NextPage<PageContainerProps> = ({ children }: any) => {
   const router:any = useRouter()
 
   const onMenuClick = (menu: any) => {
-    if (menu.key !== "openAPI") {
-      setSelectKey([`${menu.key}`])
-      router.push(`/${menu.key}`)
-    } else {
-      console.log("openAPI")
-    }
+    // if (menu.key !== "openAPI") {
+    //   setSelectKey([`${menu.key}`])
+    //   router.push(`/${menu.key}`)
+    // } else {
+    //   console.log("openAPI")
+    // }
+    setSelectKey([`${menu.key}`])
+    router.push(`/${menu.key}`)
   }
 
   useEffect(() => {
