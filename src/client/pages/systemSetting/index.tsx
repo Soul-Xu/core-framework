@@ -33,10 +33,6 @@ const SystemSetting = () => {
     dispatch({ type, payload: val });
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log("change", config)
-  }, [config])
-
   return (
     <>
       <AppContainer>

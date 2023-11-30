@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 import ProjectContainer from '../../../layout/projectContainer';
 import TabsContent1 from './components/tab1';
 import TabsContent2 from './components/tab2';
-import TabsContent3 from './components/tab3';
 
 const AppById = () => {
   const dispatchRedux = useDispatch();

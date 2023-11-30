@@ -11,6 +11,7 @@ import FormLayout from "../../components/formLayout";
 /** store */
 import { setAuthState } from "../../store/modules/authSlice";
 import { setUserInfo } from "../../store/modules/loginSlice"
+import { setToken } from "../../store/modules/commonSlice"
 /** utils */
 import asyncThunk from "../../store/asyncThunk";
 import { reducer } from "../../utils/reducer";
@@ -76,53 +77,61 @@ const Login: React.FC = () => {
     }
 
     // axios原生方式
-    const res:any = await axios.request({
-      url: `${baseApi}/login`,
-      method: "post",
-      data: params,
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    }).then((res) => {
-      const data = res?.data
-      console.log("axios-data", data)
+    // await axios.request({
+    //   url: `${baseApi}/login`,
+    //   method: "post",
+    //   data: params,
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    // }).then((res) => {
+    //   const data = res?.data
+    //   console.log("axios-data", data)
+    //   console.log("axios-login-res-headers", res.headers)
+    //   // 获取特定的响应头
+    //   const allowCredentials = res.headers['access-control-allow-credentials'];
+    //   const allowHeaders = res.headers['access-control-allow-headers'];
+    //   // 根据需要添加更多的响应头字段
+      
+    //   console.log("Access-Control-Allow-Credentials:", allowCredentials);
+    //   console.log("Access-Control-Allow-Headers:", allowHeaders);
   
-      if (data?.code === 200) {
-        dispatchRedux(setAuthState({
-          authState: true
-        }))
-        dispatchRedux(setUserInfo({
-          userInfo: data.data
-        }))
-        localStorage.setItem("cookie", data.cookie)
-        message.success("登录成功")
-        router.push("/app")
-      } else {
-        message.error("登录失败，请重试")
-        return
-      }
-    }).catch((err: any) => {
-      console.log("axios-login-catch", err)
-    })
+    //   if (data?.code === 200) {
+    //     dispatchRedux(setAuthState({
+    //       authState: true
+    //     }))
+    //     dispatchRedux(setUserInfo({
+    //       userInfo: data.data
+    //     }))
+    //     message.success("登录成功")
+    //     // router.push("/app")
+    //   } else {
+    //     message.error("登录失败，请重试")
+    //     return
+    //   }
+    // }).catch((err: any) => {
+    //   console.log("axios-login-catch", err)
+    // })
 
     // redux-toolkit方式
-    // const res = await dispatchRedux(asyncThunk.login(params) as any);
-    // const data = res?.payload
+    const res = await dispatchRedux(asyncThunk.login(params) as any);
+    const data = res?.payload
   
-    // if (data?.code === 0) {
-    //   dispatchRedux(setAuthState({
-    //     authState: true
-    //   }))
-    //   dispatchRedux(setUserInfo({
-    //     userInfo: data.data
-    //   }))
-    //   localStorage.setItem("cookie", data.cookie)
-    //   message.success("登录成功")
-    //   router.push("/app")
-    // } else {
-    //   message.error("登录失败，请重试")
-    //   return
-    // }
+    if (data?.code === 0) {
+      dispatchRedux(setAuthState({
+        authState: true
+      }))
+      dispatchRedux(setUserInfo({
+        userInfo: data.data
+      }))
+      console.log("sssssss-login-token", data)
+      localStorage.setItem("token", data.token)
+      message.success("登录成功")
+      router.push("/app")
+    } else {
+      message.error("登录失败，请重试")
+      return
+    }
   }, [password, username, dispatchRedux, router])
 
   /**

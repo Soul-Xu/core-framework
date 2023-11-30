@@ -68,12 +68,10 @@ const AddTabs = (props: Props) => {
    * @param
    */
   const onOk = async () => {
-    console.log("新建tab确认逻辑", curApp)
-
-    if (curApp?.fdId) {
-      message.warning("当前应用id缺失")
-      return
-    }
+    // if (curApp?.fdId) {
+    //   message.warning("当前应用id缺失")
+    //   return
+    // }
 
     const params = {
       fdComponentName: fdComponentName,
@@ -102,9 +100,6 @@ const AddTabs = (props: Props) => {
     }).catch((err: any) => {
       console.log("err", err)
     })
-
-    console.log("create-tabs", params)
-    // const res = await dispatchRedux(asyncThunk.createApp(params) as any);
     onCancel()
   }
 
@@ -118,6 +113,9 @@ const AddTabs = (props: Props) => {
       okText="提交"
     >
       <Form name="AddTabs" style={{ marginTop: "30px" }}>
+        <Form.Item label="所属应用" name="fdAppName">
+          <div style={{ textAlign: "left" }}>{curApp?.fdAppName}</div>
+        </Form.Item>
         <Form.Item label="菜单名称" name="fdComponentName">
           <Input placeholder="请输入菜单名称" onChange={(e: any) => onHandleChange("fdComponentName", e)} />
         </Form.Item>

@@ -2,12 +2,12 @@ import { createSlice } from "@reduxjs/toolkit"
 import { AppState } from "../store"
 
 export interface CommonState {
-  cookie: string
+  token: string
 }
 
 // Initial state
 const initialState: CommonState = {
-  cookie: ""
+  token: ""
 }
 
 // Actual Slice
@@ -16,14 +16,14 @@ export const commonSlice = createSlice({
   initialState,
   reducers: {
     // Action to set the authentication status
-    setCookie(state, action) {
-      state.cookie = action.payload.cookie
+    setToken(state, action) {
+      state.token = action.payload.token
     },
   }
 })
 
-export const { setCookie } = commonSlice.actions
+export const { setToken } = commonSlice.actions
 
-export const cookie = (state: AppState) => state.common.cookie
+export const token = (state: AppState) => state.common.token
 
 export default commonSlice.reducer

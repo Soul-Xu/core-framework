@@ -5,7 +5,7 @@
 import React, { useCallback, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useImmerReducer } from "use-immer";
-import { Modal, Form, Input, InputNumber } from "antd"
+import { Modal, Form, Input, InputNumber, Select } from "antd"
 const { TextArea } = Input
 
 /** utils */
@@ -26,12 +26,22 @@ interface Props {
   onCancel: () => void
 }
 
+const permissonOption = [
+  { value: 'top-menu', label: '一级菜单维护权限' },
+  { value: 'sub-menu', label: '二级菜单维护权限' },
+  { value: 'add', label: '数据新增功能权限' },
+  { value: 'check', label: '数据查询功能权限' },
+  { value: 'delete', label: '数据删除功能权限' },
+  { value: 'update', label: '数据修改功能权限' },
+]
+
 const initialState = {
   fdAppName: "",
   fdIcon: "",
   fdUrl: "",
   fdRemark: "",
-  fdDisplayOrder: 1
+  fdDisplayOrder: 1,
+  fdPermission: ""
 }
 
 const AddApps = (props: Props) => {
@@ -51,7 +61,7 @@ const AddApps = (props: Props) => {
   }, [dispatch]);
   
   const onHandleChange = (type: string, e: any) => {
-    if (type === "fdDisplayOrder") {
+    if (type === "fdDisplayOrder" || type === "fdPermission") {
       setState("update", {
         [type]: e
       })
@@ -124,6 +134,9 @@ const AddApps = (props: Props) => {
           <div style={{ textAlign: "left", width: "402px" }}>
             <InputNumber style={{ width: "100%" }} placeholder="请输入应用排序" min={1} max={99} onChange={(e: any) => onHandleChange("fdDisplayOrder", e)} />
           </div>
+        </Form.Item>
+        <Form.Item label="绑定权限" name="fdPermission">
+          <Select style={{ textAlign: "left" }} placeholder="请选择是否绑定权限" options={permissonOption} onChange={(e: any) => onHandleChange("fdPermission", e)} />
         </Form.Item>
       </Form>
     </Modal>

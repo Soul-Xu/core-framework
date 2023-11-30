@@ -9,6 +9,9 @@ import { useRouter } from "next/router";
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import type { CheckboxValueType } from 'antd/es/checkbox/Group';
 
+/** components */
+import OrganizationTree from "../../../../../../components/organizationSelect";
+
 const CheckboxGroup = Checkbox.Group;
 
 // 后台管理
@@ -39,10 +42,12 @@ const AddRoles = (props: Props) => {
   const [fdComponentName, setFdComponentName] = useState("")
   const [fdRemark, setFdRemark] = useState("")
   const [fdUrl, setFdUrl] = useState("")
+  const [showOrgan, setShowOrgan] = useState(false)
   const [checkedList, setCheckedList] = useState<CheckboxValueType[]>(defaultCheckedList);
 
   const checkAll = plainOptions.length === checkedList.length;
   const indeterminate = checkedList.length > 0 && checkedList.length < plainOptions.length;
+
 
   const onChange = (list: CheckboxValueType[]) => {
     setCheckedList(list);
@@ -80,38 +85,43 @@ const AddRoles = (props: Props) => {
   }
 
   return (
-    <Modal 
-      title="角色授权定义"
-      style={{ textAlign: "center" }}
-      open={open}
-      onOk={onOk}
-      onCancel={onCancel}
-      okText="提交"
-    >
-      <Form name="AddRoles" style={{ marginTop: "30px" }}>
-        <Form.Item label="角色组名称" name="fdComponentName">
-          <Input placeholder="请输入角色组名称" onChange={() => console.log("请输入角色组名称")} />
-        </Form.Item>
-        <Form.Item label="角色组成员" name="fdRemark">
-          <Input placeholder="请选择角色组成员" onChange={() => console.log("请选择角色组成员")} />
-        </Form.Item>
-        <Form.Item label="权限设置" name="fdUrl">
-          <div style={{ textAlign: "left" }}>
-            <Checkbox indeterminate={indeterminate} style={{ marginBottom: "15px" }} onChange={onCheckAllChange} checked={checkAll}>
-              <span>后台管理</span>
-            </Checkbox>
-            <CheckboxGroup options={plainOptions} value={checkedList} onChange={onChange} />
-          </div>
-          {/* <Divider /> */}
-          {/* <div style={{ textAlign: "left" }}>
-            <Checkbox indeterminate={indeterminate} style={{ marginBottom: "15px" }} onChange={onCheckAllChangeITIL} checked={checkAll}>
-              <span>ITIL事件流程</span>
-            </Checkbox>
-            <CheckboxGroup options={processOptions} value={checkedList} onChange={onChangeITIL} />
-          </div> */}
-        </Form.Item>
-      </Form>
-    </Modal>
+    <section>
+      <Modal 
+        title="角色授权定义"
+        style={{ textAlign: "center" }}
+        open={open}
+        onOk={onOk}
+        onCancel={onCancel}
+        okText="提交"
+      >
+        <Form name="AddRoles" style={{ marginTop: "30px" }}>
+          <Form.Item label="角色组名称" name="fdComponentName">
+            <Input placeholder="请输入角色组名称" onChange={() => console.log("请输入角色组名称")} />
+          </Form.Item>
+          <Form.Item label="角色组成员" name="fdRemark">
+            <div style={{ display: "flex" }}>
+              <Input style={{ marginRight: "10px" }} placeholder="请选择角色组成员" onChange={() => console.log("请选择角色组成员")} />
+              <OrganizationTree />
+            </div>
+          </Form.Item>
+          <Form.Item label="权限设置" name="fdUrl">
+            <div style={{ textAlign: "left" }}>
+              <Checkbox indeterminate={indeterminate} style={{ marginBottom: "15px" }} onChange={onCheckAllChange} checked={checkAll}>
+                <span>后台管理</span>
+              </Checkbox>
+              <CheckboxGroup options={plainOptions} value={checkedList} onChange={onChange} />
+            </div>
+            {/* <Divider /> */}
+            {/* <div style={{ textAlign: "left" }}>
+              <Checkbox indeterminate={indeterminate} style={{ marginBottom: "15px" }} onChange={onCheckAllChangeITIL} checked={checkAll}>
+                <span>ITIL事件流程</span>
+              </Checkbox>
+              <CheckboxGroup options={processOptions} value={checkedList} onChange={onChangeITIL} />
+            </div> */}
+          </Form.Item>
+        </Form>
+      </Modal>
+    </section>
   )
 }
 

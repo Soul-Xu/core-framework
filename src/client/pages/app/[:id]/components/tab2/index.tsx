@@ -128,7 +128,7 @@ const TabsContent2 = () => {
           </Row>
         </div>
       </Content>
-      <AddMenus open={showAddModal} onCancel={() => onShowAddModal("hide")} />
+      <AddMenus tabName='测试' open={showAddModal} onCancel={() => onShowAddModal("hide")} />
     </>
   )
 }

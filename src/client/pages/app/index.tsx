@@ -11,7 +11,6 @@ import axios from 'axios';
 /** utils */
 import { reducer } from "../../utils/reducer";
 import asyncThunk from "../../store/asyncThunk";
-import { baseApi } from '../../config';
 /** store */
 import { setAppsList } from '../../store/modules/appsSlice';
 /** css */
@@ -24,6 +23,7 @@ import AppContainer from '../../layout/appContainer';
 import SearchApps from './components/searchApps';
 import RecentApps from './components/recentApps';
 import MyApps from './components/myApps';
+import { baseApi } from 'config';
 
 const initialState = {
   appsList: []
@@ -59,14 +59,17 @@ const App: NextPage = () => {
       }
     }
 
+    const token = localStorage.getItem("token")
+
     // axios原生方式
-    const res:any = await axios.request({
+    await axios.request({
       url: `${baseApi}/app-permission/list`,
       method: "post",
       data: params,
       withCredentials: true,  
       headers: {
-        'Content-Type': 'application/json' // 设置为 application/json
+        'Content-Type': 'application/json', // 设置为 application/json
+        'ltpatoken': token
       },
     }).then((res: any) => {
       const data = res.data
@@ -81,7 +84,7 @@ const App: NextPage = () => {
       }
 
     }).catch((err: any) => {
-      console.log("axios-app-catch", err)
+      console.log("axios-app-err", err)
     })
   }
 

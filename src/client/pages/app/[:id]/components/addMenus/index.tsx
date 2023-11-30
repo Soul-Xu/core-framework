@@ -6,7 +6,7 @@ import React, { useCallback, useState, useEffect } from "react";
 import { useRouter } from 'next/router';
 import { useImmerReducer } from "use-immer";
 import { useDispatch, useSelector } from "react-redux";
-import { Modal, Form, Input, InputNumber } from "antd"
+import { Modal, Form, Input, InputNumber, Select } from "antd"
 const { TextArea } = Input
 
 /** utils */
@@ -22,10 +22,18 @@ import axios from "axios";
  */
 interface Props {
   title?: string,
+  tabName: string,
   open: boolean,
   onOk?: () => void,
   onCancel: () => void
 }
+
+const permissonOption = [
+  { value: 'add', label: '数据新增功能权限' },
+  { value: 'check', label: '数据查询功能权限' },
+  { value: 'delete', label: '数据删除功能权限' },
+  { value: 'update', label: '数据修改功能权限' },
+]
 
 const initialState = {
   fdComponentName: "",
@@ -35,9 +43,10 @@ const initialState = {
 }
 
 const AddMenus = (props: Props) => {
-  const { open, onCancel } = props
+  const { tabName, open, onCancel } = props
   const router = useRouter()
   const selectTab = useSelector((state: any) => state.menu.tab)
+  const curTab = useSelector((state: any) => state.menu.curTab)
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
   const { fdComponentName, fdUrl, fdRemark, fdDisplayOrder } = data
@@ -96,9 +105,6 @@ const AddMenus = (props: Props) => {
     }).catch((err: any) => {
       console.log("err", err)
     })
-
-    console.log("create-menus", params)
-    // const res = await dispatchRedux(asyncThunk.createApp(params) as any);
     onCancel()
   }
 
@@ -112,6 +118,9 @@ const AddMenus = (props: Props) => {
       okText="提交"
     >
       <Form name="AddMenus" style={{ marginTop: "30px" }}>
+        <Form.Item label="一级菜单" name="fdTabName">
+          <div style={{ textAlign: "left" }}>{tabName}</div>
+        </Form.Item>
         <Form.Item label="菜单名称" name="fdComponentName">
           <Input placeholder="请输入菜单名称" onChange={(e: any) => onHandleChange("fdComponentName", e)} />
         </Form.Item>
@@ -125,6 +134,9 @@ const AddMenus = (props: Props) => {
           <div style={{ textAlign: "left", width: "402px" }}>
             <InputNumber style={{ width: "100%" }} placeholder="请输入应用排序" min={1} max={99} onChange={(e: any) => onHandleChange("fdDisplayOrder", e)} />
           </div>
+        </Form.Item>
+        <Form.Item label="绑定权限" name="fdPermission">
+          <Select style={{ textAlign: "left" }} placeholder="请选择是否绑定权限" options={permissonOption} onChange={(e: any) => onHandleChange("fdPermission", e)} />
         </Form.Item>
       </Form>
     </Modal>

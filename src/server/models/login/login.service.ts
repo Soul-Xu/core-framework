@@ -12,19 +12,16 @@ export class LoginService {
       rememberMe: false
     }
     const res = await axios.post(`${baseApi}/login`, params)
-    console.log("222222222222222222-setCookie", res.headers['set-cookie'])
+    console.log("22222222222222222222222-res.headers", res.headers)
 
-    // 获取cookie的值
-    const setCookie = res.headers['set-cookie'][0]
-    // 获取JSESSIONID值
-    const jsessionId = setCookie.split(";")[0]
-
+    // 获取token的值
+    const token = res.headers['ltpatoken']
     const data = res.data
     if (data.code === 200 && data.success) {
       return {
         code: 0,
         data: data.data,
-        cookie: jsessionId,
+        token: token,
         message: "登录成功"
       }
     } else {

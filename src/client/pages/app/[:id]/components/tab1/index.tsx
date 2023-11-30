@@ -47,6 +47,7 @@ import styles from "./index.module.scss";
 const classNames = classnames.bind(styles);
 
 const initialState = {
+  fdTabName: "", // 顶部Tab名称
   fdSubject: "", // 标题
   fdDesc: "", // 描述
   fdNo: "", // 事件编号
@@ -65,6 +66,7 @@ const TabsContent1 = () => {
   const [selectKey, setSelectKey] = useState([''])
   const [showAddModal, setShowAddModal] = useState(false)
   const [menusList, setMenusList] = useState([])
+  const [tabName, setTabName] = useState("")
 
   const addMenu = getItem(
     <div 
@@ -145,7 +147,9 @@ const TabsContent1 = () => {
       if (data.code === 200) {
         const menus: any = onHandleMenus(data.data)
         const renderMenus: any = [...menus, addMenu]
+        const fdTabName = data.data[0]?.fdParentEntity.fdName
         setMenusList(renderMenus)
+        setTabName(fdTabName)
       }
       
     }).catch((err: any) => {
@@ -212,50 +216,9 @@ const TabsContent1 = () => {
           </Row>
         </div>
       </Content>
-      <AddMenus open={showAddModal} onCancel={() => onHideAddModal()} />
+      <AddMenus tabName={tabName} open={showAddModal} onCancel={() => onHideAddModal()} />
     </>
   )
 }
 
 export default TabsContent1
-
-
-
-const menuItem = [
-  {
-    fdId: "1hgacjuc83vtqukb1malp7g19appf42r039h",
-    fdComponentName: "测试二级菜单",
-    fdCreateTime: null,
-    fdIcon: null,
-    fdParentEntity: {
-      fdId: "1hgaaclhtna6abn3tvrkbgd9bi74q9qfu024",
-      fdName: null
-    },
-    fdAppEntity: null,
-    fdPermission: null,
-    fdRemark: "测试用左侧菜单",
-    fdRoleEntities: null,
-    children: [],
-    fdUpdateTime: null,
-    fdUrl: "默认",
-    fdVisiable: 1    
-  },
-  {
-    fdId: "1hgacjuc83vtqukb1malp7g19appsfafafsa9h",
-    fdComponentName: "测试二级菜单1111",
-    fdCreateTime: null,
-    fdIcon: null,
-    fdParentEntity: {
-      fdId: "1hgaaclhtna6abn3tvrkbgd9bi74q9qfu024",
-      fdName: null
-    },
-    fdAppEntity: null,
-    fdPermission: null,
-    fdRemark: "测试用左侧菜单",
-    fdRoleEntities: null,
-    children: [],
-    fdUpdateTime: null,
-    fdUrl: "默认",
-    fdVisiable: 1    
-  },
-]

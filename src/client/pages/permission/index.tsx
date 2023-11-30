@@ -13,6 +13,10 @@ import PermissionManage from "./components/permissionManage";
 /** utils */
 import { reducer } from "../../utils/reducer";
 import { setConfig } from "../../store/modules/settingSlice";
+import { setAppsList } from "../../store/modules/appsSlice";
+import { setRolesList, setPermissionList } from "../../store/modules/permissionSlice";
+import axios from 'axios';
+import { baseApi } from '../../config';
 /** css */
 import classnames from "classnames/bind";
 import styles from "./index.module.scss";
@@ -28,16 +32,6 @@ const items: TabsProps['items'] = [
     key: '2',
     label: '权限管理',
     children: <PermissionManage />,
-  },
-  {
-    key: '3',
-    label: '功能管理',
-    children: 'Content of Tab Pane 3',
-  },
-  {
-    key: '3',
-    label: '操作管理',
-    children: 'Content of Tab Pane 3',
   },
 ];
 
@@ -63,9 +57,52 @@ const Permission = () => {
     console.log(key);
   };
 
+    /**
+   * 角色管理 - 获取功能权限列表
+   */
+    const getRoleFunc = async () => {
+      const params = {
+        page: 1,
+        pageSize: 20
+      }
+  
+      const token = localStorage.getItem("token")
+  
+      // axios原生方式
+      await axios.request({
+        url: `${baseApi}/api-permission/list`,
+        method: "post",
+        data: params,
+        withCredentials: true,  
+        headers: {
+          'Content-Type': 'application/json', // 设置为 application/json
+          'ltpatoken': token
+        },
+      }).then((res: any) => {
+        const data = res.data
+        if (data.code === 200) {
+          const { content } = data.data;
+          let roles = [];
+          content.forEach((contentItem: any) => {
+            roles = roles.concat(contentItem?.fdRoleEntities); // 使用 concat 的返回值更新 roles
+          });
+
+          dispatchRedux(setPermissionList({
+            permissionList: content
+          }))
+          dispatchRedux(setRolesList({
+            rolesList: roles
+          }))
+        }
+  
+      }).catch((err: any) => {
+        console.log("axios-role-err", err)
+      })
+    }
+
   useEffect(() => {
-    console.log("change", config)
-  }, [config])
+    getRoleFunc()
+  }, [])
 
   return (
     <>

@@ -5,6 +5,7 @@ import { loginSlice } from "./modules/loginSlice"
 import { menuSlice } from "./modules/menuSlice"
 import { appsSlice } from "./modules/appsSlice"
 import { commonSlice } from "./modules/commonSlice"
+import { permissionSlice } from "./modules/permissionSlice"
 import { settingSlice } from "./modules/settingSlice"
 import { templateSlice } from "./modules/templateSlice"
 
@@ -15,6 +16,7 @@ const makeStore = () =>
       auth: authSlice.reducer,
       login: loginSlice.reducer,
       common: commonSlice.reducer,
+      permission: permissionSlice.reducer,
       menu: menuSlice.reducer,
       apps: appsSlice.reducer,
       setting: settingSlice.reducer

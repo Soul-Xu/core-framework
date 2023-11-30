@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from "react-redux";
 import { NextPage } from 'next';
 import axios from "axios"
-import { setTab } from '../../store/modules/menuSlice'
+import { setTab, setCurTab } from '../../store/modules/menuSlice'
 import { setCurApp } from '../../store/modules/appsSlice';
 import type { TabsProps } from 'antd';
 import { Layout, Tabs, Dropdown } from 'antd';
@@ -29,7 +29,6 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
   const router = useRouter()
   const curAppId = router.query[":id"]
   const dispatchRedux = useDispatch();
-  const tab = useSelector((state: any) => state.menu.tab)
   const appsList = useSelector((state: any) => state.apps.appsList)
   const [AppName, setAppName] = useState("")
   const [selectTab, setSelectTab] = useState("1")
@@ -78,6 +77,9 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
         dispatchRedux(setTab({
           tab: renderTabs[0].key
         }))
+        dispatchRedux(setCurTab({
+          curTab: renderTabs[0]
+        }))
       }
       
     }).catch((err: any) => {
@@ -94,7 +96,10 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
     dispatchRedux(setTab({
       tab: item.key
     }))
-    router.push(`${router.asPath}?tabId=${item.fdId}`)
+    dispatchRedux(setCurTab({
+      curTab: item
+    }))
+    router.push(`${router.asPath}`)
   }
 
   /**

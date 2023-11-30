@@ -17,12 +17,17 @@ export interface tabItemsProps {
 
 export interface MenusState {
   tabs?: Array<tabItemsProps>,
-  tab: string
+  tab: string,
+  curTab: tabItemsProps
 }
 
 // Initial state
 const initialState: MenusState = {
-  tab: "1"
+  tab: "1",
+  curTab: {
+    key: "",
+    label: ""
+  }
 }
 
 // Actual Slice
@@ -36,13 +41,14 @@ export const menuSlice = createSlice({
     },
     setTab(state, action) {
       state.tab = action.payload.tab
+    },
+    setCurTab(state, action) {
+      console.log("setCurTab", action.payload)
+      state.curTab = action.payload.curTab
     }
   }
 })
 
-export const { setTabs, setTab } = menuSlice.actions
-
-export const tabs = (state: AppState) => state.menu.tabs
-export const tab = (state: AppState) => state.menu.tab
+export const { setTabs, setTab, setCurTab } = menuSlice.actions
 
 export default menuSlice.reducer

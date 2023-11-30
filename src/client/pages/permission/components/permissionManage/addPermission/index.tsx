@@ -4,10 +4,12 @@
 /** external library */
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Modal, Form, Input, message, Row, Col, Checkbox, Divider } from "antd"
+import { Modal, Form, Input, message, Row, Col, Checkbox, Divider, Select } from "antd"
 import { useRouter } from "next/router";
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import type { CheckboxValueType } from 'antd/es/checkbox/Group';
+import axios from "axios";
+import { baseApi } from "config";
 
 const CheckboxGroup = Checkbox.Group;
 
@@ -36,39 +38,23 @@ const AddPermission = (props: Props) => {
   const dispatchRedux = useDispatch();
   const { open, onCancel } = props
   const curApp = useSelector((state: any) => state.apps.curApp)
+  const appsList = useSelector((state: any) => state.apps.appsList)
   const [fdComponentName, setFdComponentName] = useState("")
   const [fdRemark, setFdRemark] = useState("")
   const [fdUrl, setFdUrl] = useState("")
   const [checkedList, setCheckedList] = useState<CheckboxValueType[]>(defaultCheckedList);
-
-  const checkAll = plainOptions.length === checkedList.length;
-  const indeterminate = checkedList.length > 0 && checkedList.length < plainOptions.length;
-
-  const onChange = (list: CheckboxValueType[]) => {
-    setCheckedList(list);
-  };
-
-  const onCheckAllChange = (e: CheckboxChangeEvent) => {
-    setCheckedList(e.target.checked ? plainOptions : []);
-  };
-
-  const onChangeITIL = (list: CheckboxValueType[]) => {
-    setCheckedList(list);
-  };
-
-  const onCheckAllChangeITIL = (e: CheckboxChangeEvent) => {
-    setCheckedList(e.target.checked ? processOptions : []);
-  };
+  const [modules, setModules] = useState([])
+  const [apps, setApps] = useState([])
 
   /**
    * @description 新建应用确认逻辑
    * @param
    */
   const onOk = async () => {
-    if (curApp?.fdId) {
-      message.warning("当前应用id缺失")
-      return
-    }
+    // if (curApp?.fdId) {
+    //   message.warning("当前应用id缺失")
+    //   return
+    // }
 
     const params = {
 
@@ -76,6 +62,57 @@ const AddPermission = (props: Props) => {
 
     onCancel()
   }
+
+  /**
+   * 
+   */
+  const onHandleModule = (items: any) => {
+    return items.map(item => ({
+      value: item.fdId,
+      label: item.fdName
+    }));
+  }
+
+  const onHandleApps = (items: any) => {
+    return items.map(item => ({
+      value: item.fdId,
+      label: item.fdAppName || "demo"
+    }));
+  }
+
+  /**
+   * @description 获取所属分类列表
+   */
+  const getModules = async () => {
+    const params = {}
+
+    await axios.request({
+      url: `${baseApi}/api-module/list-selected`,
+      method: "post",
+      data: params,
+      withCredentials: true,  
+      headers: {
+        'Content-Type': 'application/json', // 设置为 application/json
+      },
+    }).then((res: any) => {
+      const data = res?.data
+      if (data.code === 200) {
+        const options: any = onHandleModule(data.data)
+        setModules(options)
+      }
+    }).catch((err: any) => {
+      console.log("permisson-err", err)
+    })
+  }
+
+  useEffect(() => {
+    getModules()
+  }, [])
+
+  useEffect(() => {
+    const apps = onHandleApps(appsList)
+    setApps(apps)
+  }, [appsList])
 
   return (
     <Modal 
@@ -87,8 +124,8 @@ const AddPermission = (props: Props) => {
       okText="提交"
     >
       <Form name="AddPermission" style={{ marginTop: "30px" }}>
-        <Form.Item label="所属分类" name="fdComponentName">
-          <Input placeholder="请选择所属分类" onChange={() => console.log("请输入角色组名称")} />
+        <Form.Item label="所属模块" name="fdComponentName">
+          <Select style={{ textAlign: "left" }} options={modules} placeholder="请选择所属模块" />
         </Form.Item>
         <Form.Item label="权限名称" name="fdRemark">
           <Input placeholder="请选择权限名称" onChange={() => console.log("请选择角色组成员")} />
@@ -100,7 +137,7 @@ const AddPermission = (props: Props) => {
           <Input placeholder="请输入权限描述" onChange={() => console.log("请选择角色组成员")} />
         </Form.Item>
         <Form.Item label="绑定应用" name="fdUrl">
-          <Input placeholder="请输入绑定应用" onChange={() => console.log("请选择角色组成员")} />
+          <Select style={{ textAlign: "left" }} options={apps} placeholder="请选择需要绑定的应用" />
         </Form.Item>
         <Form.Item label="绑定菜单" name="fdUrl">
           <Input placeholder="请输入绑定菜单" onChange={() => console.log("请选择角色组成员")} />
