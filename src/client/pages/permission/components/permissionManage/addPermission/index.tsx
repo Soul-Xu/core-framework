@@ -9,7 +9,8 @@ import { useRouter } from "next/router";
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import type { CheckboxValueType } from 'antd/es/checkbox/Group';
 import axios from "axios";
-import { baseApi } from "../../../../../config";
+// import { baseApi } from "../../../../../config";
+import asyncThunk from "../../../../../store/asyncThunk";
 
 const CheckboxGroup = Checkbox.Group;
 
@@ -39,6 +40,7 @@ const AddPermission = (props: Props) => {
   const { open, onCancel } = props
   const curApp = useSelector((state: any) => state.apps.curApp)
   const appsList = useSelector((state: any) => state.apps.appsList)
+  const baseApi = useSelector((state: any) => state.common.baseApi)
   const [fdComponentName, setFdComponentName] = useState("")
   const [fdRemark, setFdRemark] = useState("")
   const [fdUrl, setFdUrl] = useState("")
@@ -51,11 +53,6 @@ const AddPermission = (props: Props) => {
    * @param
    */
   const onOk = async () => {
-    // if (curApp?.fdId) {
-    //   message.warning("当前应用id缺失")
-    //   return
-    // }
-
     const params = {
 
     }
@@ -86,23 +83,12 @@ const AddPermission = (props: Props) => {
   const getModules = async () => {
     const params = {}
 
-    await axios.request({
-      url: `${baseApi}/api-module/list-selected`,
-      method: "post",
-      data: params,
-      withCredentials: true,  
-      headers: {
-        'Content-Type': 'application/json', // 设置为 application/json
-      },
-    }).then((res: any) => {
-      const data = res?.data
+    const res = await dispatchRedux(asyncThunk.getFuncs(params) as any);
+      const data = res?.payload
       if (data.code === 200) {
         const options: any = onHandleModule(data.data)
         setModules(options)
       }
-    }).catch((err: any) => {
-      console.log("permisson-err", err)
-    })
   }
 
   useEffect(() => {

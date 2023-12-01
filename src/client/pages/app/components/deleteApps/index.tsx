@@ -3,13 +3,14 @@
  */
 /** external library */
 import React from "react";
-import { useDispatch } from "react-redux";
-import { Modal, Form, Input } from "antd"
+import { useDispatch, useSelector } from "react-redux";
+import { Modal, Form, Input, message } from "antd"
 import { WarningOutlined } from "@ant-design/icons";
 
 /** utils */
 import axios from "axios";
-import { baseApi } from "../../../../config";
+import asyncThunk from "../../../../store/asyncThunk"
+// import { baseApi } from "../../../../config";
 
 /**
  * interface
@@ -28,6 +29,7 @@ interface Props {
 const DeleteApps = (props: Props) => {
   // const form = useForm()
   const dispatchRedux = useDispatch();
+  const baseApi = useSelector((state: any) => state.common.baseApi)
   const { open, appId, onCancel } = props
   
   /**
@@ -39,26 +41,12 @@ const DeleteApps = (props: Props) => {
       fdId: appId,
     }
 
-    // axios原生方式
-    const res:any = await axios.request({
-      url: `${baseApi}/app-permission/delete`,
-      method: "post",
-      data: params,
-      withCredentials: true,  
-      headers: {
-        'Content-Type': 'application/json' // 设置为 application/json
-      },
-    }).then((res: any) => {
-      const data = res.data
-      if (data.code === 200) {
-        onCancel()
-      }
-
-    }).catch((err: any) => {
-      console.log("axios-app-catch", err)
-    })
-
-    // const res = await dispatchRedux(asyncThunk.createApp(params) as any);
+    const res = await dispatchRedux(asyncThunk.deleteApp(params) as any);
+    const data = res?.payload;
+    if (data.code === 200) {
+      message.success("删除成功")
+      onCancel()
+    }
     onCancel()
   }
 

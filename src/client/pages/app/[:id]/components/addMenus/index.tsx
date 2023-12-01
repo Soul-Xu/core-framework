@@ -12,8 +12,6 @@ const { TextArea } = Input
 /** utils */
 import { reducer } from "../../../../../utils/reducer";
 import asyncThunk from "../../../../../store/asyncThunk"
-import { baseApi } from '../../../../../config';
-import axios from "axios";
 
 /**
  * interface
@@ -46,6 +44,7 @@ const AddMenus = (props: Props) => {
   const { tabName, open, onCancel } = props
   const router = useRouter()
   const selectTab = useSelector((state: any) => state.menu.tab)
+  const baseApi = useSelector((state: any) => state.common.baseApi)
   const curTab = useSelector((state: any) => state.menu.curTab)
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
@@ -87,24 +86,11 @@ const AddMenus = (props: Props) => {
       }
     }
 
-    const res = await axios.request({
-      url: `${baseApi}/component-permission/add-data`,
-      method: "post",
-      data: params,
-      withCredentials: true,  
-      headers: {
-        'Content-Type': 'application/json' // 设置为 application/json
-      },
-    }).then((res: any) => {
-      const data = res.data
-      if (data.code === 200) {
-        // const tabs: any = [...data.data, tabAdd]
-        // setTabsList(tabs)
-      }
-      
-    }).catch((err: any) => {
-      console.log("err", err)
-    })
+    const res = await dispatchRedux(asyncThunk.createMenu(params) as any);
+    const data = res?.payload;
+    if (data.code === 200) {
+      onCancel()
+    }
     onCancel()
   }
 

@@ -12,9 +12,10 @@ import { AppsService } from './apps.service';
 import { GetAppsDto } from './dto/getApps.dto'; 
 import { CreateAppDto } from './dto/createApp.dto';
 import { UpdateAppDto } from './dto/updateApp.dto';
+import { DeleteAppDto } from './dto/deleteApp.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
-@Controller('/api/apps')
+@Controller('/apis/apps')
 @ApiTags('Apps')
 export class AppsController {
   constructor(private readonly appsService: AppsService) {}
@@ -31,14 +32,15 @@ export class AppsController {
 
   @Post('/updateApp/:id')
   update(
-    @Param('id') id: string,
     @Body() body: UpdateAppDto,
   ) {
-    return this.appsService.updateApp(+id, body);
+    return this.appsService.updateApp(body);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.appsService.remove(+id);
+  @Post('/updateApp/:id')
+  remove(
+    @Body() body: DeleteAppDto,
+  ) {
+    return this.appsService.remove(body);
   }
 }

@@ -24,7 +24,7 @@ type MenuItem = Required<MenuProps>['items'][number];
 import AddMenus from '../addMenus';
 
 /** utils */
-import { baseApi } from '../../../../../config';
+// import { baseApi } from '../../../../../config';
 import axios from "axios";
 
 function getItem(
@@ -62,6 +62,7 @@ const TabsContent1 = () => {
   const curAppId = router.query[":id"]
   const curTabId = router.query["tabId"]
   const selectTab = useSelector((state: any) => state.menu.tab)
+  const baseApi = useSelector((state: any) => state.common.baseApi)
   const [collapsed, setCollapsed] = useState(false)
   const [selectKey, setSelectKey] = useState([''])
   const [showAddModal, setShowAddModal] = useState(false)

@@ -34,7 +34,7 @@ const demo: Record<string, AsyncThunkValue> = {
   }
 };
 
-// 应用
+// 应用 - apps
 const apps: Record<string, AsyncThunkValue> = {
   // 获取应用列表
   getApps: {
@@ -58,13 +58,63 @@ const apps: Record<string, AsyncThunkValue> = {
   }
 };
 
+// 应用详情
+const projects: Record<string, AsyncThunkValue> = {
+  // 新建一级菜单
+  createTab: {
+    method: "post",
+    url: "/apis/apps/createApp"
+  },
+  // 获取一级菜单列表
+  getTabs: {
+    method: "post",
+    url: "/apis/apps/createApp"
+  },
+  // 新建二级菜单
+  createMenu: {
+    method: "post",
+    url: "/apis/apps/updateApp/:id"
+  },
+  // 获取一级菜单列表
+  getMenus: {
+    method: "post",
+    url: "/apis/apps/createApp"
+  },
+};
+
+// 权限设置
+const permission: Record<string, AsyncThunkValue> = {
+  // 功能权限定义--获取可选模块
+  getFuncs: {
+    method: "post",
+    url: "/apis/permission/getFuncs"
+  },
+  // 权限管理--获取权限列表
+  getPermissions: {
+    method: "post",
+    url: "/apis/permission/getPermissions"
+  },
+  // 角色管理--获取角色列表
+  getRoles: {
+    method: "post",
+    url: "/apis/permission/getRoles"
+  },
+  // 地址本接口（人员选择器）
+  getAddress: {
+    method: "post",
+    url: "/apis/permission/getAddress"
+  },
+};
+
 const asyncThunkMap: Record<string, AsyncThunkValue> = {
   login: {
     method: "post",
     url: "/apis/login"
   },
   ...demo,
-  ...apps
+  ...apps,
+  ...projects,
+  ...permission
 };
 
 export type AsyncThunkMap =
@@ -73,6 +123,11 @@ export type AsyncThunkMap =
   | "createApp"
   | "updateApp"
   | "deleteApp"
-
+  | "createTab"
+  | "createMenu"
+  | "getFuncs"
+  | "getPermissions"
+  | "getRoles"
+  | "getAddress"
 
 export default asyncThunkMap;

@@ -5,6 +5,22 @@ import styles from "./index.module.scss";
 const classNames = classnames.bind(styles);
 
 const OpenAPI = () => {
+  const renderUpload = (status: any) => {
+    switch(status) {
+      case "loading": {
+
+      }
+      case "done": {
+
+      }
+      case "fail": {
+
+      }
+      default: 
+        return
+    }
+  }
+
   return (
     <>
       <div className={classNames("container")}>
@@ -14,7 +30,11 @@ const OpenAPI = () => {
         </div>
         <div className={classNames("body")}>
           <div className={classNames("body-timeline")}>timeline</div>
-          <div className={classNames("body-upload")}>upload</div>
+          <div className={classNames("body-upload")}>
+            {/* <Upload>
+              {renderUpload("done")}
+            </Upload> */}
+          </div>
         </div>
       </div>
     </>

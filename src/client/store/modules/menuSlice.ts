@@ -43,7 +43,6 @@ export const menuSlice = createSlice({
       state.tab = action.payload.tab
     },
     setCurTab(state, action) {
-      console.log("setCurTab", action.payload)
       state.curTab = action.payload.curTab
     }
   }

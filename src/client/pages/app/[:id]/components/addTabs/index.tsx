@@ -10,7 +10,7 @@ const { TextArea } = Input
 
 /** utils */
 import { reducer } from "../../../../../utils/reducer";
-import { baseApi } from '../../../../../config';
+import asyncThunk from "../../../../../store/asyncThunk"
 import axios from "axios";
 import { useRouter } from "next/router";
 
@@ -39,6 +39,7 @@ const AddTabs = (props: Props) => {
   const curAppId = router.query[":id"]
   const dispatchRedux = useDispatch();
   const curApp = useSelector((state: any) => state.apps.curApp)
+  const baseApi = useSelector((state: any) => state.common.baseApi)
   const [data, dispatch] = useImmerReducer(reducer, initialState);
   const { fdComponentName, fdUrl, fdRemark, fdDisplayOrder } = data
 
@@ -68,11 +69,6 @@ const AddTabs = (props: Props) => {
    * @param
    */
   const onOk = async () => {
-    // if (curApp?.fdId) {
-    //   message.warning("当前应用id缺失")
-    //   return
-    // }
-
     const params = {
       fdComponentName: fdComponentName,
       fdRemark: fdRemark,
@@ -83,23 +79,11 @@ const AddTabs = (props: Props) => {
       }
     }
 
-    const res = await axios.request({
-      url: `${baseApi}/component-permission/add-data`,
-      method: "post",
-      data: params,
-      withCredentials: true,  
-      headers: {
-        'Content-Type': 'application/json' // 设置为 application/json
-      },
-    }).then((res: any) => {
-      const data = res.data
-      if (data.code === 200) {
-        console.log("data-add-tab", data)
-      }
-      
-    }).catch((err: any) => {
-      console.log("err", err)
-    })
+    const res = await dispatchRedux(asyncThunk.createTab(params) as any);
+    const data = res?.payload;
+    if (data.code === 200) {
+      onCancel()
+    }
     onCancel()
   }
 

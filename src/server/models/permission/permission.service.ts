@@ -1,16 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { baseApi, Global } from 'src/server/config';
-import { GetAppsDto } from './dto/getApps.dto'; 
-import { CreateAppDto } from './dto/createApp.dto';
-import { UpdateAppDto } from './dto/updateApp.dto';
-import { DeleteAppDto } from './dto/deleteApp.dto';
+import { CreatePermissionDto } from './dto/create-permission.dto';
+import { UpdatePermissionDto } from './dto/update-permission.dto';
 
 @Injectable()
-export class AppsService {
-  async getApps(body: GetAppsDto) {
+export class PermissionService {
+  async getFuncs(body: CreatePermissionDto) {
     const res = await axios.request({
-      url: `${baseApi}/app-permission/list`,
+      url: `${baseApi}/api-module/list-selected`,
       method: "post",
       data: body,
       headers: {
@@ -34,9 +32,9 @@ export class AppsService {
     }
   }
 
-  async createApp(body: CreateAppDto) {
+  async getPermissions(body: CreatePermissionDto) {
     const res = await axios.request({
-      url: `${baseApi}/app-permission/add`,
+      url: `${baseApi}/api-permission/list`,
       method: "post",
       data: body,
       headers: {
@@ -60,9 +58,9 @@ export class AppsService {
     }
   }
 
-  async updateApp(body: UpdateAppDto) {
+  async getRoles(body: CreatePermissionDto) {
     const res = await axios.request({
-      url: `${baseApi}/app-permission/update`,
+      url: `${baseApi}/role/list`,
       method: "post",
       data: body,
       headers: {
@@ -86,9 +84,9 @@ export class AppsService {
     }
   }
 
-  async remove(body: DeleteAppDto) {
+  async getAddress(body: CreatePermissionDto) {
     const res = await axios.request({
-      url: `${baseApi}/app-permission/update`,
+      url: `${baseApi}/address/tree`,
       method: "post",
       data: body,
       headers: {

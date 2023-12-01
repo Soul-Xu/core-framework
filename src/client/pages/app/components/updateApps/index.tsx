@@ -3,7 +3,7 @@
  */
 /** external library */
 import React, { useCallback, useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useImmerReducer } from "use-immer";
 import { Modal, Form, Input, InputNumber } from "antd"
 const { TextArea } = Input;
@@ -12,7 +12,7 @@ const { TextArea } = Input;
 import { reducer } from "../../../../utils/reducer";
 import asyncThunk from "../../../../store/asyncThunk"
 import axios from "axios";
-import { baseApi } from "../../../../config";
+// import { baseApi } from "../../../../config";
 import _ from "lodash"
 
 /** css */
@@ -39,15 +39,17 @@ const initialState = {
   fdIcon: "",
   fdUrl: "",
   fdRemark: "",
-  fdDisplayOrder: 1
+  fdDisplayOrder: 1,
+  fdPermission: ""
 }
 
 const UpdateApps = (props: Props) => {
   const form = Form.useForm()
   const dispatchRedux = useDispatch();
+  const baseApi = useSelector((state: any) => state.common.baseApi)
   const [data, dispatch] = useImmerReducer(reducer, initialState);
   const { open, appId, detail, onCancel } = props
-  const { fdAppName, fdIcon, fdUrl, fdRemark, fdDisplayOrder } = data
+  const { fdAppName, fdIcon, fdUrl, fdRemark, fdDisplayOrder, fdPermission } = data
 
   /**
    * @description 数据处理函数
@@ -80,32 +82,15 @@ const UpdateApps = (props: Props) => {
       fdAppName: fdAppName,
       fdIcon: fdIcon,
       fdUrl: fdUrl,
-      fdRemark: fdRemark
+      fdRemark: fdRemark,
+      fdDisplayOrder: fdDisplayOrder
     }
 
-    console.log("update-app", params)
-
-    // axios原生方式
-    const res:any = await axios.request({
-      url: `${baseApi}/app-permission/update`,
-      method: "post",
-      data: params,
-      withCredentials: true,  
-      headers: {
-        'Content-Type': 'application/json' // 设置为 application/json
-      },
-    }).then((res: any) => {
-      const data = res.data
-      console.log("axios-app-update-data", data)
-      if (data.code === 200) {
-        onCancel()
-      }
-
-    }).catch((err: any) => {
-      console.log("axios-app-catch", err)
-    })
-
-    // // const res = await dispatchRedux(asyncThunk.createApp(params) as any);
+    const res = await dispatchRedux(asyncThunk.updateApp(params) as any);
+    const data = res?.payload;
+    if (data.code === 200) {
+      onCancel()
+    }
 
     onCancel()
   }
@@ -115,7 +100,6 @@ const UpdateApps = (props: Props) => {
    */
   useEffect(() => {
     if (!_.isEmpty(detail)) {
-      console.log("update-modal", detail);
       const { fdAppName, fdIcon, fdUrl, fdRemark } = detail;
       dispatch({
         type: "update",
@@ -134,7 +118,6 @@ const UpdateApps = (props: Props) => {
       okText="提交"
     >
       <div className={classNames("app-detail")}>
-        {/* ... (existing code) */}
         <div className={classNames("app-detail-item")}>
           <div className={classNames("app-detail-item-label")}>应用名称</div>
           <div className={classNames("app-detail-item-value")}>
@@ -163,6 +146,12 @@ const UpdateApps = (props: Props) => {
           <div className={classNames("app-detail-item-label")}>应用排序</div>
           <div className={classNames("app-detail-item-value")}>
             <InputNumber style={{ width: "100%" }} placeholder="请输入应用排序" min={1} max={99} value={fdDisplayOrder} onChange={(e: any) => onHandleChange("fdDisplayOrder", e)} />
+          </div>
+        </div>
+        <div className={classNames("app-detail-item")}>
+          <div className={classNames("app-detail-item-label")}>权限绑定</div>
+          <div className={classNames("app-detail-item-value")}>
+            <Input value={fdPermission} placeholder="请选择权限绑定" onChange={(e: any) => onHandleChange("fdPermission", e)} />
           </div>
         </div>
       </div>

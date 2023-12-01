@@ -1,9 +1,9 @@
 
 /** external library */
 import Image from 'next/image';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useImmerReducer } from "use-immer";
 import { Button, message } from 'antd';
 /** components */
@@ -11,12 +11,13 @@ import FormLayout from "../../components/formLayout";
 /** store */
 import { setAuthState } from "../../store/modules/authSlice";
 import { setUserInfo } from "../../store/modules/loginSlice"
-import { setToken } from "../../store/modules/commonSlice"
+import { setToken, setBaseApi } from "../../store/modules/commonSlice"
+
 /** utils */
 import asyncThunk from "../../store/asyncThunk";
 import { reducer } from "../../utils/reducer";
 import axios from 'axios';
-import { baseApi } from '../../config';
+// import { baseApi } from '../../config';
 /** css */
 import classnames from "classnames/bind";
 import styles from "./index.module.scss";
@@ -35,6 +36,7 @@ const initialState = {
 const Login: React.FC = () => {
   const router = useRouter()
   const dispatchRedux = useDispatch();
+  const baseApi = useSelector((state: any) => state.common.baseApi)
   const [data, dispatch] = useImmerReducer(reducer, initialState);
   const { username, password } = data as any;
 
@@ -76,43 +78,6 @@ const Login: React.FC = () => {
       rememberMe: false
     }
 
-    // axios原生方式
-    // await axios.request({
-    //   url: `${baseApi}/login`,
-    //   method: "post",
-    //   data: params,
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    // }).then((res) => {
-    //   const data = res?.data
-    //   console.log("axios-data", data)
-    //   console.log("axios-login-res-headers", res.headers)
-    //   // 获取特定的响应头
-    //   const allowCredentials = res.headers['access-control-allow-credentials'];
-    //   const allowHeaders = res.headers['access-control-allow-headers'];
-    //   // 根据需要添加更多的响应头字段
-      
-    //   console.log("Access-Control-Allow-Credentials:", allowCredentials);
-    //   console.log("Access-Control-Allow-Headers:", allowHeaders);
-  
-    //   if (data?.code === 200) {
-    //     dispatchRedux(setAuthState({
-    //       authState: true
-    //     }))
-    //     dispatchRedux(setUserInfo({
-    //       userInfo: data.data
-    //     }))
-    //     message.success("登录成功")
-    //     // router.push("/app")
-    //   } else {
-    //     message.error("登录失败，请重试")
-    //     return
-    //   }
-    // }).catch((err: any) => {
-    //   console.log("axios-login-catch", err)
-    // })
-
     // redux-toolkit方式
     const res = await dispatchRedux(asyncThunk.login(params) as any);
     const data = res?.payload
@@ -124,7 +89,6 @@ const Login: React.FC = () => {
       dispatchRedux(setUserInfo({
         userInfo: data.data
       }))
-      console.log("sssssss-login-token", data)
       localStorage.setItem("token", data.token)
       message.success("登录成功")
       router.push("/app")
@@ -191,6 +155,21 @@ const Login: React.FC = () => {
       </section>
     )
   }
+
+  useEffect(() => {
+    const hostName = window.location.hostname
+    const origin = window.location.origin
+    if (hostName === "localhost") {
+      const apiPre = "http://localhost:3001/api/sys-auth"
+      dispatchRedux(setBaseApi({
+        baseApi: apiPre
+      }))
+    } else {
+      dispatchRedux(setBaseApi({
+        baseApi: `${origin}/api/sys-auth`
+      }))
+    }
+  }, [])
 
   return (
     <section className={classNames("login-container")}>

@@ -12,11 +12,12 @@ import RolesManage from "./components/rolesManage";
 import PermissionManage from "./components/permissionManage";
 /** utils */
 import { reducer } from "../../utils/reducer";
+import asyncThunk from "../../store/asyncThunk";
 import { setConfig } from "../../store/modules/settingSlice";
 import { setAppsList } from "../../store/modules/appsSlice";
 import { setRolesList, setPermissionList } from "../../store/modules/permissionSlice";
 import axios from 'axios';
-import { baseApi } from '../../config';
+// import { baseApi } from '../../config';
 /** css */
 import classnames from "classnames/bind";
 import styles from "./index.module.scss";
@@ -41,6 +42,7 @@ const initialState = {
 
 const Permission = () => {
   const dispatchRedux = useDispatch();
+  const baseApi = useSelector((state: any) => state.common.baseApi)
   const [data, dispatch] = useImmerReducer(reducer, initialState);
   const config = useSelector((state: any) => state.setting.config)
 
@@ -57,8 +59,8 @@ const Permission = () => {
     console.log(key);
   };
 
-    /**
-   * 角色管理 - 获取功能权限列表
+  /**
+   * 权限管理 - 获取功能权限列表
    */
     const getRoleFunc = async () => {
       const params = {
@@ -66,38 +68,22 @@ const Permission = () => {
         pageSize: 20
       }
   
-      const token = localStorage.getItem("token")
-  
-      // axios原生方式
-      await axios.request({
-        url: `${baseApi}/api-permission/list`,
-        method: "post",
-        data: params,
-        withCredentials: true,  
-        headers: {
-          'Content-Type': 'application/json', // 设置为 application/json
-          'ltpatoken': token
-        },
-      }).then((res: any) => {
-        const data = res.data
-        if (data.code === 200) {
-          const { content } = data.data;
-          let roles = [];
-          content.forEach((contentItem: any) => {
-            roles = roles.concat(contentItem?.fdRoleEntities); // 使用 concat 的返回值更新 roles
-          });
+      const res = await dispatchRedux(asyncThunk.getPermissions(params) as any);
+      const data = res?.payload
+      if (data.code === 200) {
+        const { content } = data.data;
+        let roles = [];
+        content.forEach((contentItem: any) => {
+          roles = roles.concat(contentItem?.fdRoleEntities); // 使用 concat 的返回值更新 roles
+        });
 
-          dispatchRedux(setPermissionList({
-            permissionList: content
-          }))
-          dispatchRedux(setRolesList({
-            rolesList: roles
-          }))
-        }
-  
-      }).catch((err: any) => {
-        console.log("axios-role-err", err)
-      })
+        dispatchRedux(setPermissionList({
+          permissionList: content
+        }))
+        dispatchRedux(setRolesList({
+          rolesList: roles
+        }))
+      }
     }
 
   useEffect(() => {

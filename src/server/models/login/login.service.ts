@@ -1,6 +1,6 @@
 import { Injectable,  Request, Response } from '@nestjs/common';
 import axios from 'axios';
-import { baseApi } from 'src/server/config';
+import { baseApi, Global } from 'src/server/config';
 
 @Injectable()
 export class LoginService {
@@ -16,6 +16,7 @@ export class LoginService {
 
     // 获取token的值
     const token = res.headers['ltpatoken']
+    Global.token = token
     const data = res.data
     if (data.code === 200 && data.success) {
       return {

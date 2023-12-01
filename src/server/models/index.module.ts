@@ -1,22 +1,25 @@
 import { ViewModule } from './view/view.module';
-import { HomeModule } from './home/home.module';
 import { Module } from '@nestjs/common';
 import { LoginModule } from './login/login.module';
 import { AppsModule } from './apps/apps.module';
+import { MenuModule } from './menu/menu.module';
+import { PermissionModule } from './permission/permission.module';
 import { TemplateModule } from './template/template.module';
 
 @Module({
   imports: [
     ViewModule,
-    HomeModule,
     LoginModule,
+    MenuModule,
+    PermissionModule,
     AppsModule,
     TemplateModule,
   ],
   exports: [
     ViewModule,
-    HomeModule,
     LoginModule,
+    MenuModule,
+    PermissionModule,
     AppsModule,
     TemplateModule,
   ],

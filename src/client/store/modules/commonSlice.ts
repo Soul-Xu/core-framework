@@ -2,12 +2,14 @@ import { createSlice } from "@reduxjs/toolkit"
 import { AppState } from "../store"
 
 export interface CommonState {
-  token: string
+  token: string,
+  baseApi: string
 }
 
 // Initial state
 const initialState: CommonState = {
-  token: ""
+  token: "",
+  baseApi: ""
 }
 
 // Actual Slice
@@ -19,10 +21,13 @@ export const commonSlice = createSlice({
     setToken(state, action) {
       state.token = action.payload.token
     },
+    setBaseApi(state, action) {
+      state.baseApi = action.payload.baseApi
+    },
   }
 })
 
-export const { setToken } = commonSlice.actions
+export const { setToken, setBaseApi } = commonSlice.actions
 
 export const token = (state: AppState) => state.common.token
 

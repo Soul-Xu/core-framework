@@ -13,7 +13,7 @@ const { Header } = Layout;
 import AddTabs from "../../pages/app/[:id]/components/addTabs"
 
 /** utils */
-import { baseApi } from '../../config';
+// import { baseApi } from '../../config';
 
 /** css */
 import classnames from "classnames/bind";
@@ -30,6 +30,7 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
   const curAppId = router.query[":id"]
   const dispatchRedux = useDispatch();
   const appsList = useSelector((state: any) => state.apps.appsList)
+  const baseApi = useSelector((state: any) => state.common.baseApi)
   const [AppName, setAppName] = useState("")
   const [selectTab, setSelectTab] = useState("1")
   const [showAddModal, setShowAddModal] = useState(false)
@@ -58,6 +59,9 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
     const params = {
       fdId: curAppId
     }
+
+    // const baseApi =
+    // export const baseApi = "http://localhost:3001/api/sys-auth"
 
     await axios.request({
       url: `${baseApi}/component-permission/top-menu`,

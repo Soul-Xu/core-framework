@@ -3,7 +3,7 @@
  */
 /** external library */
 import React, { useCallback, useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useImmerReducer } from "use-immer";
 import { Modal, Form, Input, InputNumber, Select } from "antd"
 const { TextArea } = Input
@@ -11,8 +11,6 @@ const { TextArea } = Input
 /** utils */
 import { reducer } from "../../../../utils/reducer";
 import asyncThunk from "../../../../store/asyncThunk"
-import axios from "axios";
-import { baseApi } from "../../../../config";
 
 /**
  * interface
@@ -47,6 +45,7 @@ const initialState = {
 const AddApps = (props: Props) => {
   // const form = useForm()
   const dispatchRedux = useDispatch();
+  const baseApi = useSelector((state: any) => state.common.baseApi)
   const [data, dispatch] = useImmerReducer(reducer, initialState);
   const { open, onCancel } = props
   const { fdAppName, fdIcon, fdUrl, fdRemark, fdDisplayOrder } = data
@@ -85,26 +84,11 @@ const AddApps = (props: Props) => {
       fdDisplayOrder: fdDisplayOrder
     }
 
-    // axios原生方式
-    const res:any = await axios.request({
-      url: `${baseApi}/app-permission/add`,
-      method: "post",
-      data: params,
-      withCredentials: true,  
-      headers: {
-        'Content-Type': 'application/json' // 设置为 application/json
-      },
-    }).then((res: any) => {
-      const data = res.data
-      if (data.code === 200) {
-        onCancel()
-      }
-
-    }).catch((err: any) => {
-      console.log("axios-app-catch", err)
-    })
-
-    // // const res = await dispatchRedux(asyncThunk.createApp(params) as any);
+    const res = await dispatchRedux(asyncThunk.createApp(params) as any);
+    const data = res?.payload;
+    if (data.code === 200) {
+      onCancel()
+    }
     onCancel()
   }
 

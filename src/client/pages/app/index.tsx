@@ -7,7 +7,6 @@ import React, { useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from "react-redux";
 import { useImmerReducer } from "use-immer";
-import axios from 'axios';
 /** utils */
 import { reducer } from "../../utils/reducer";
 import asyncThunk from "../../store/asyncThunk";
@@ -23,7 +22,6 @@ import AppContainer from '../../layout/appContainer';
 import SearchApps from './components/searchApps';
 import RecentApps from './components/recentApps';
 import MyApps from './components/myApps';
-import { baseApi } from '../../config';
 
 const initialState = {
   appsList: []
@@ -33,6 +31,7 @@ const App: NextPage = () => {
   const router = useRouter()
   const dispatchRedux = useDispatch();
   const appsConfig = useSelector((state: any) => state.apps.appsConfig)
+  const baseApi = useSelector((state: any) => state.common.baseApi)
   const [data, dispatch] = useImmerReducer(reducer, initialState);
   const { showCurrent, showMine } = appsConfig
   const { appsList } = data
@@ -58,34 +57,17 @@ const App: NextPage = () => {
         fdDisplayOrder: "desc"
       }
     }
-
-    const token = localStorage.getItem("token")
-
-    // axios原生方式
-    await axios.request({
-      url: `${baseApi}/app-permission/list`,
-      method: "post",
-      data: params,
-      withCredentials: true,  
-      headers: {
-        'Content-Type': 'application/json', // 设置为 application/json
-        'ltpatoken': token
-      },
-    }).then((res: any) => {
-      const data = res.data
-      if (data.code === 200) {
-        const { content } = data.data
-        setState("update", {
-          appsList: content
-        }) 
-        dispatchRedux(setAppsList({
-          appsList: content
-        }))
-      }
-
-    }).catch((err: any) => {
-      console.log("axios-app-err", err)
-    })
+    const res = await dispatchRedux(asyncThunk.getApps(params) as any);
+    const data = res?.payload
+    if (data.code === 200) {
+      const { content } = data.data
+      setState("update", {
+        appsList: content
+      }) 
+      dispatchRedux(setAppsList({
+        appsList: content
+      }))
+    }
   }
 
   useEffect(() => {
