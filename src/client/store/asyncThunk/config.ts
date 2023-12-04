@@ -84,6 +84,26 @@ const projects: Record<string, AsyncThunkValue> = {
 
 // 权限设置
 const permission: Record<string, AsyncThunkValue> = {
+  // 模块新增接口
+  addModules: {
+    method: "post",
+    url: "/apis/permission/addModules"
+  },
+  // 检查模块标识是否唯一接口
+  uniqueModules: {
+    method: "post",
+    url: "/apis/permission/uniqueModules"
+  },
+  // 模块列表接口
+  getModules: {
+    method: "post",
+    url: "/apis/permission/getModules"
+  },
+  // 功能权限定义接口
+  addFuncs: {
+    method: "post",
+    url: "/apis/permission/addFuncs"
+  },
   // 功能权限定义--获取可选模块
   getFuncs: {
     method: "post",
@@ -94,10 +114,51 @@ const permission: Record<string, AsyncThunkValue> = {
     method: "post",
     url: "/apis/permission/getPermissions"
   },
+  // 功能权限定义接口
+  uniquePermissions: {
+    method: "post",
+    url: "/apis/permission/uniquePermissions"
+  },
+  // 角色管理--新增角色
+  addRoles: {
+    method: "post",
+    url: "/apis/permission/addRoles"
+  },
   // 角色管理--获取角色列表
   getRoles: {
     method: "post",
     url: "/apis/permission/getRoles"
+  },
+  // 角色管理--获取角色列表
+  getRolesInfo: {
+    method: "post",
+    url: "/apis/permission/getRolesInfo"
+  },
+  // 角色管理--获取可选的角色列表
+  getRolesOption: {
+    method: "post",
+    url: "/apis/permission/getRolesOption"
+  },
+  // 组织架构维护
+  // 新增用户
+  addUsers: {
+    method: "post",
+    url: "/apis/permission/addUsers"
+  },
+  // 用户列表接口
+  getUsers: {
+    method: "post",
+    url: "/apis/permission/getUsers"
+  },
+  // 新增用户
+  addDepts: {
+    method: "post",
+    url: "/apis/permission/addDepts"
+  },
+  // 部门列表接口
+  getDepts: {
+    method: "post",
+    url: "/apis/permission/getDepts"
   },
   // 地址本接口（人员选择器）
   getAddress: {
@@ -125,8 +186,13 @@ export type AsyncThunkMap =
   | "deleteApp"
   | "createTab"
   | "createMenu"
+  | "addModule"
+  | "uniqueModule"
+  | "getModules"
+  | "addFuncs"
   | "getFuncs"
   | "getPermissions"
+  | "uniquePermissions"
   | "getRoles"
   | "getAddress"
 
