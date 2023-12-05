@@ -14,35 +14,35 @@ const classNames = classnames.bind(style);
 const { confirm } = Modal;
 
 /** components */
-import AddRoles from './components/addRoles';
+import AddModules from './components/addModules';
 
 const initialState = {
-  fdRoleName: "", // 角色名称
-  description: "", // 组织
-  dataList: [], // 角色列表
+  fdName: "", // 组织名称
+  dataList: [], // 组织列表
   page: 1,
   pageSize: 10,
   total: 0
 }
 
-const RolesManage: NextPage = () => {
+const ModulesManage: NextPage = () => {
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
-  const { page, pageSize, dataList, fdRoleName } = data
+  const { page, pageSize, dataList, fdName } = data
   const [showAddModal, setShowAddModal] = useState(false)
+  const permissionList = useSelector((state: any) => state.permission.permissionList)
 
   /**
    * @description 数据处理函数
    * @param key data字段
    * @param value data字段值
    */
-  const setState = useCallback((type: string, val: Record<string, any>) => {
-    dispatch({ type, payload: val });
-  }, [dispatch]);
+    const setState = useCallback((type: string, val: Record<string, any>) => {
+      dispatch({ type, payload: val });
+    }, [dispatch]);
 
   const onChangePagination = (page: number, pageSize: number) => {
     // 更新数据列表
-    console.log("page")
+    console.log("onChangePagination")
     // updateDataList(page, pageSize);
   }
 
@@ -61,14 +61,12 @@ const RolesManage: NextPage = () => {
     confirm({
       title: "确认删除",
       icon: <ExclamationCircleFilled />,
-      content: `是否确定删除用户 ${record.fdRoleName}？`,
+      content: `是否确定删除用户 ${record.permission}？`,
       onOk() {
         // 创建新的数据列表，不包含要删除的数据项
         const updatedDataList = dataList.filter((item: any) => item.key !== record.key);
         // 更新数据列表状态
-        setState("update", {
-          dataList: updatedDataList
-        })
+        // setDataList(updatedDataList);
         // 在这里可以执行删除请求到服务器，根据情况来更新服务器数据
         message.success("删除成功"); // 可以使用 Ant Design 的消息提示
       },
@@ -80,24 +78,25 @@ const RolesManage: NextPage = () => {
   }
 
   /**
-   * 权限管理 - 获取角色列表
+   * 权限管理 - 获取权限列表
    */
-  const getRoles = async () => {
+  const getModules = async () => {
     const params = {
       page: 1,
       pageSize: 20
     }
 
-    const res = await dispatchRedux(asyncThunk.getRoles(params) as any);
+    const res = await dispatchRedux(asyncThunk.getModules(params) as any);
     const data = res?.payload
     if (data.code === 200) {
+      console.log("permission-11111", data)
       const { content } = data.data;
-      const roles = content.map((contentItem: any, index: number) => {
-          return {
-            ...contentItem,
-            sort: index + 1
-          }
-      })
+     const roles = content.map((contentItem: any, index: number) => {
+        return {
+          ...contentItem,
+          sort: index + 1
+        }
+     })
       setState("update", {
         dataList: roles
       })
@@ -108,19 +107,19 @@ const RolesManage: NextPage = () => {
   }
 
   const formObj = {
-    name: 'role-list',
+    name: 'permission-list',
     layout: 'inline',
     items: [
       {
         type: 'input',
-        key: 'role',
-        value: fdRoleName,
-        label: '角色名称',
-        name: 'role',
-        placeholder: '请输入用户名',
+        key: 'fdName',
+        value: fdName,
+        label: '权限名称',
+        name: 'fdName',
+        placeholder: '请输入模块名称',
         callback: (e: any) => {
           setState("update", {
-            fdRoleName: e.target.value.trim()
+            fdName: e.target.value.trim()
           })
         }
       },
@@ -136,8 +135,17 @@ const RolesManage: NextPage = () => {
   const tabelObj = {
     columns: [
       { title: "序号", dataIndex: "sort", key: "sort" },
-      { title: "角色名称", dataIndex: "fdRoleName", key: "fdRoleName" },
-      { title: "描述", dataIndex: "fdRemark", key: "fdRemark" },
+      { title: "模块名称", dataIndex: "fdName", key: "fdName" },
+      { 
+        title: "描述", 
+        dataIndex: "fdRemark", 
+        key: "fdRemark",
+        render: (_: any, record: any) => {
+          return (
+            <div style={{ width: "650px" }}>{record?.fdRemark}</div>
+          ) 
+        }
+      },
       { 
         title: "状态", 
         dataIndex: "fdStatus", 
@@ -151,6 +159,7 @@ const RolesManage: NextPage = () => {
     ],
     datasource: dataList,
     total: dataList.length,
+    api: 'db/appid',
     pagination: {
       page: page,
       pageSize: pageSize,
@@ -160,7 +169,7 @@ const RolesManage: NextPage = () => {
   }
 
   useEffect(() => {
-    getRoles()
+    getModules()
   }, [])
 
   return (
@@ -170,9 +179,9 @@ const RolesManage: NextPage = () => {
           <SearchLayout formObj={formObj} tabelObj={tabelObj} />
         </div>
       </section>
-      <AddRoles open={showAddModal} onCancel={() => onHideAddModal()}/>
+      <AddModules open={showAddModal} onCancel={() => onHideAddModal()}/>
     </div>
   )
 }
 
-export default RolesManage
+export default ModulesManage

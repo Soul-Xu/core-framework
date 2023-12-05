@@ -1,31 +1,45 @@
-import React from 'react'
 import { NextPage } from 'next'
 import SearchLayout from '../../../../components/searchLayout/'
 import { ExclamationCircleFilled } from '@ant-design/icons';
-import { useEffect, useState } from "react";
-import { useSelector } from 'react-redux';
+import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useImmerReducer } from "use-immer";
+import asyncThunk from "../../../../store/asyncThunk";
+import { setRolesList, setPermissionList } from "../../../../store/modules/permissionSlice";
 import { Button, Tag, Modal, message } from "antd";
+import { reducer } from "../../../../utils/reducer";
 import classnames from 'classnames/bind';
 import style from './index.module.scss';
 const classNames = classnames.bind(style);
 const { confirm } = Modal;
 
 /** components */
-import AddPermission from './addPermission';
+import AddPermission from './components/addPermission';
 
 const initialState = {
   permission: "", // 用户名
   description: "", // 组织
+  dataList: [], // 角色列表
   page: 1,
   pageSize: 10,
   total: 0
 }
 
 const PermissionManage: NextPage = () => {
-  const [state, setState] = useState<any>(initialState)
-  const [dataList, setDataList] = useState([])
+  const dispatchRedux = useDispatch();
+  const [data, dispatch] = useImmerReducer(reducer, initialState);
+  const { page, pageSize, dataList, permission } = data
   const [showAddModal, setShowAddModal] = useState(false)
   const permissionList = useSelector((state: any) => state.permission.permissionList)
+
+  /**
+   * @description 数据处理函数
+   * @param key data字段
+   * @param value data字段值
+   */
+    const setState = useCallback((type: string, val: Record<string, any>) => {
+      dispatch({ type, payload: val });
+    }, [dispatch]);
 
   const onChangePagination = (page: number, pageSize: number) => {
     // 更新数据列表
@@ -53,7 +67,7 @@ const PermissionManage: NextPage = () => {
         // 创建新的数据列表，不包含要删除的数据项
         const updatedDataList = dataList.filter((item: any) => item.key !== record.key);
         // 更新数据列表状态
-        setDataList(updatedDataList);
+        // setDataList(updatedDataList);
         // 在这里可以执行删除请求到服务器，根据情况来更新服务器数据
         message.success("删除成功"); // 可以使用 Ant Design 的消息提示
       },
@@ -64,21 +78,49 @@ const PermissionManage: NextPage = () => {
     });
   }
 
+  /**
+   * 权限管理 - 获取权限列表
+   */
+  const getPermissions = async () => {
+    const params = {
+      page: 1,
+      pageSize: 20
+    }
+
+    const res = await dispatchRedux(asyncThunk.getPermissions(params) as any);
+    const data = res?.payload
+    if (data.code === 200) {
+      const { content } = data.data;
+      const permissions = content.map((contentItem: any, index: number) => {
+        return {
+          ...contentItem,
+          sort: index + 1
+        }
+     })
+      setState("update", {
+        dataList: permissions
+      })
+      dispatchRedux(setRolesList({
+        permissionsList: permissions
+      }))
+    }
+  }
+
   const formObj = {
     name: 'permission-list',
     layout: 'inline',
     items: [
-      {
-        type: 'input',
-        key: 'permission',
-        value: state.permission,
-        label: '权限名称',
-        name: 'permission',
-        placeholder: '请输入用户名',
-        callback: (e: any) => {
-          setState({ ...state, permission: e.target.value })
-        }
-      },
+      // {
+      //   type: 'input',
+      //   key: 'permission',
+      //   value: state.permission,
+      //   label: '权限名称',
+      //   name: 'permission',
+      //   placeholder: '请输入用户名',
+      //   callback: (e: any) => {
+      //     setState({ ...state, permission: e.target.value })
+      //   }
+      // },
     ],
     customElements: () => (
       <section>
@@ -104,7 +146,7 @@ const PermissionManage: NextPage = () => {
       },
       { title: "所属模块", dataIndex: "fdModuleName", key: "fdModuleName" },
       { 
-        title: "是否系统权限", 
+        title: "系统权限", 
         dataIndex: "fdIsSystem", 
         key: "fdIsSystem",
         render: (_: any, record: any) => {
@@ -113,37 +155,21 @@ const PermissionManage: NextPage = () => {
           ) 
         }
       },
-      {
-        title: "操作",
-        dataIndex: "action",
-        key: "action",
-        render: (_: any, record: any) => {
-          return (
-            <>
-              <Button className={classNames("btn-action")} onClick={() => handleDelete(record)}>删除</Button>
-            </>
-          )
-        }
-      }
     ],
     datasource: dataList,
     total: dataList.length,
     api: 'db/appid',
     pagination: {
-      page: state.page,
-      pageSize: state.pageSize,
+      page: page,
+      pageSize: pageSize,
       total: dataList.length
     },
     onChangePage: (page: number, pageSize: number) => onChangePagination(page, pageSize)
   }
 
   useEffect(() => {
-    const datalist: any = permissionList.map((permission, index) => ({
-      sort: index + 1,
-      ...permission
-    }));
-    setDataList(datalist)
-  }, [permissionList])
+    getPermissions()
+  }, [])
 
   return (
     <div>

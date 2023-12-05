@@ -3,13 +3,13 @@ import { AppState } from "../store"
 
 export interface PermissionState {
   rolesList: Array<any>
-  permissionList: Array<any>
+  permissionsList: Array<any>
 }
 
 // Initial state
 const initialState: PermissionState = {
   rolesList: [],
-  permissionList: []
+  permissionsList: []
 }
 
 // Actual Slice
@@ -22,7 +22,7 @@ export const permissionSlice = createSlice({
       state.rolesList = action.payload.rolesList
     },
     setPermissionList(state, action) {
-      state.permissionList = action.payload.permissionList
+      state.permissionsList = action.payload.permissionsList
     },
   }
 })

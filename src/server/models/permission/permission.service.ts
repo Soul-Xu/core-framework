@@ -20,6 +20,7 @@ import { GetDeptsDto } from './dto/get-depts.dto';
 @Injectable()
 export class PermissionService {
   async addModules(body: AddModulesDto) {
+    console.log("222222-addModules", body)
     const res = await axios.request({
       url: `${baseApi}/api-module/add`,
       method: "post",

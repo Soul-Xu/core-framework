@@ -129,7 +129,7 @@ const permission: Record<string, AsyncThunkValue> = {
     method: "post",
     url: "/apis/permission/getRoles"
   },
-  // 角色管理--获取角色列表
+  // 角色管理--获取角色数据
   getRolesInfo: {
     method: "post",
     url: "/apis/permission/getRolesInfo"
@@ -186,14 +186,21 @@ export type AsyncThunkMap =
   | "deleteApp"
   | "createTab"
   | "createMenu"
-  | "addModule"
-  | "uniqueModule"
+  | "addModules"
+  | "uniqueModules"
   | "getModules"
   | "addFuncs"
   | "getFuncs"
   | "getPermissions"
   | "uniquePermissions"
+  | "addRoles"
   | "getRoles"
+  | "getRolesInfo"
+  | "getRolesOption"
+  | "addUsers"
+  | "getUsers"
+  | "addDepts"
+  | "getDepts"
   | "getAddress"
 
 export default asyncThunkMap;

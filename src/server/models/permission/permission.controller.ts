@@ -33,8 +33,9 @@ export class PermissionController {
   constructor(private readonly permissionService: PermissionService) {}
 
   // 模块新增接口
-  @Post("/addModule")
+  @Post("/addModules")
   addModules(@Body() body: AddModulesDto) {
+    console.log("111111-addModules", body)
     return this.permissionService.addModules(body);
   }
 

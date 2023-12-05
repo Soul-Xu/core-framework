@@ -10,7 +10,7 @@ import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import type { CheckboxValueType } from 'antd/es/checkbox/Group';
 import axios from "axios";
 // import { baseApi } from "../../../../../config";
-import asyncThunk from "../../../../../store/asyncThunk";
+import asyncThunk from "../../../../../../store/asyncThunk";
 
 const CheckboxGroup = Checkbox.Group;
 
