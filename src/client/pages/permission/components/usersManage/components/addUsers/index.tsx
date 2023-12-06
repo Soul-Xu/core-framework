@@ -3,11 +3,18 @@
  */
 /** external library */
 import React, { useCallback } from "react";
+import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { useImmerReducer } from "use-immer";
 import { reducer } from "../../../../../../utils/reducer";
-import { Modal, Form, Input } from "antd"
+import { Modal, Form, Input, message } from "antd"
 import asyncThunk from "../../../../../../store/asyncThunk";
+const Textarea = Input
+
+/** css */
+import classnames from 'classnames/bind';
+import style from '../../index.module.scss';
+const classNames = classnames.bind(style);
 
 /**
  * interface
@@ -22,15 +29,24 @@ interface Props {
 }
 
 const initialState = {
-  fdName: "",
-  fdModuleKey: "",
-  fdRemark: ""
+  fdNickName: "",
+  fdUserName: "",
+  fdPassword: "", 
+  fdEmail: "",
+  fdCellphone: "",
+  fdEducation: "",
+  fdCity: "",
+  fdRemark: "",
+  // “fdParent":{
+  //         "fdId":"xxxx"
+  // },
 }
 
 const AddUsers = (props: Props) => {
+  const router = useRouter()
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
-  const { fdName, fdModuleKey, fdRemark } = data
+  const { fdNickName, fdUserName, fdPassword, fdEmail, fdCellphone, fdEducation, fdCity, fdRemark } = data
   const { open, onCancel } = props
 
   /**
@@ -46,53 +62,49 @@ const AddUsers = (props: Props) => {
    * @description 处理变量值变化函数
    */
   const onHandleChange = (type: string, e: any) => {
-    console.log("eeee", e.target.value)
     setState("update", {
       [type]: e.target.value
     })
   }
 
   /**
-   * @description 校验模块名称是否唯一
-   */
-  const onUnique = async (fdName: string) => {
-    const params = {
-      fdName: fdName
-    }
-
-    const res = await dispatchRedux(asyncThunk.uniqueModules(params) as any);
-    const data = res?.payload
-    if (data.code === 200 && data.data === true) {
-      return true
-    }
-    return false
-  }
-
-
-  /**
-   * @description 添加模块确认逻辑
+   * @description 添加用户确认逻辑
    * @param
    */
   const onOk = async () => {
-    onUnique(fdName)
-
     const params = {
-      fdName: fdName,
-      fdModuleKey: fdModuleKey,
-      fdRemark: fdRemark
+      fdNickName: fdNickName,
+      fdUserName: fdUserName,
+      fdPassword: fdPassword, 
+      fdEmail: fdEmail,
+      fdCellphone: fdCellphone,
+      fdEducation: fdEducation,
+      fdCity: fdCity,
+      fdRemark: fdRemark,
+      fdParent: {
+        fdId: "1hc2iasp01vuk8e93igqvu31g2aamj19"
+      }
     }
 
-    const res = await dispatchRedux(asyncThunk.addModules(params) as any);
+    const res = await dispatchRedux(asyncThunk.addUsers(params) as any);
     const data = res?.payload
+    console.log("addUsers", data)
     if (data.code === 200) {
+      message.success("添加用户成功")
       onCancel()
+    } else if (
+        data.code === 401 && 
+        data.success === false &&
+        data.message === "请先登录后再操作!") {
+      router.push("/login")
     }
+    message.error("添加用户失败")
     onCancel()
   }
 
   return (
     <Modal 
-      title="添加模块"
+      title="添加用户"
       style={{ textAlign: "center" }}
       open={open}
       onOk={onOk}
@@ -100,14 +112,69 @@ const AddUsers = (props: Props) => {
       okText="提交"
     >
       <Form name="AddUsers" style={{ marginTop: "30px" }}>
-        <Form.Item label="模块名称" name="fdName">
-          <Input placeholder="请选择模块名称" onChange={(e: any) => onHandleChange("fdName", e)} />
+        <Form.Item 
+          name="fdNickName"
+          label={(
+            <div className={classNames("form-item-label")}>用户昵称</div>
+          )}
+        >
+          <Input placeholder="请选择用户昵称" onChange={(e: any) => onHandleChange("fdNickName", e)} />
         </Form.Item>
-        <Form.Item label="模块标识" name="fdModuleKey">
-          <Input placeholder="请输入模块标识" onChange={(e: any) => onHandleChange("fdModuleKey", e)} />
+        <Form.Item 
+          name="fdUserName"
+          label={(
+            <div className={classNames("form-item-label")}>用户名称</div>
+          )} 
+        >
+          <Input placeholder="请输入用户名称" onChange={(e: any) => onHandleChange("fdUserName", e)} />
         </Form.Item>
-        <Form.Item label="模块描述" name="fdUrl">
-          <Input placeholder="请输入模块描述" onChange={(e: any) => onHandleChange("fdRemark", e)} />
+        <Form.Item 
+          name="fdPassword"
+          label={(
+            <div className={classNames("form-item-label")}>密码</div>
+          )} 
+        >
+          <Input placeholder="请输入密码" onChange={(e: any) => onHandleChange("fdPassword", e)} />
+        </Form.Item>
+        <Form.Item 
+          name="fdEmail"
+          label={(
+            <div className={classNames("form-item-label")}>邮箱</div>
+          )} 
+        >
+          <Input placeholder="请选择邮箱" onChange={(e: any) => onHandleChange("fdEmail", e)} />
+        </Form.Item>
+        <Form.Item 
+          name="fdCellphone"
+          label={(
+            <div className={classNames("form-item-label")}>电话号码</div>
+          )} 
+        >
+          <Input placeholder="请输入电话号码" onChange={(e: any) => onHandleChange("fdCellphone", e)} />
+        </Form.Item>
+        <Form.Item 
+          name="fdEducation"
+          label={(
+            <div className={classNames("form-item-label")}>教育背景</div>
+          )} 
+        >
+          <Input placeholder="请选择教育背景" onChange={(e: any) => onHandleChange("fdEducation", e)} />
+        </Form.Item>
+        <Form.Item 
+          name="fdCity"
+          label={(
+            <div className={classNames("form-item-label")}>城市</div>
+          )} 
+        >
+          <Input placeholder="请选择城市" onChange={(e: any) => onHandleChange("fdCity", e)} />
+        </Form.Item>
+        <Form.Item 
+          name="fdRemark"
+          label={(
+            <div className={classNames("form-item-label")}>备注</div>
+          )} 
+        >
+          <Textarea placeholder="请输入备注" onChange={(e: any) => onHandleChange("fdRemark", e)} />
         </Form.Item>
       </Form>
     </Modal>

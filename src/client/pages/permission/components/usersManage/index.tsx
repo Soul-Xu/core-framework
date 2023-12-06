@@ -2,10 +2,11 @@ import { NextPage } from 'next'
 import SearchLayout from '../../../../components/searchLayout/'
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import React, { useCallback, useEffect, useState } from "react";
+import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from "react-redux";
 import { useImmerReducer } from "use-immer";
 import asyncThunk from "../../../../store/asyncThunk";
-import { setRolesList, setPermissionList } from "../../../../store/modules/permissionSlice";
+import { setUsersList } from "../../../../store/modules/permissionSlice";
 import { Button, Tag, Modal, message } from "antd";
 import { reducer } from "../../../../utils/reducer";
 import classnames from 'classnames/bind';
@@ -17,7 +18,12 @@ const { confirm } = Modal;
 import AddUsers from './components/addUsers';
 
 const initialState = {
-  fdName: "", // 组织名称
+  fdNickName: "", // 昵称
+  fdUserName: "", // 用户名
+  fdEmail: "", // 邮箱
+  fdCellphone: "", // 电话号码
+  fdEducation: "", // 教育背景
+  fdCity: "", // 城市
   dataList: [], // 组织列表
   page: 1,
   pageSize: 10,
@@ -25,11 +31,11 @@ const initialState = {
 }
 
 const UsersManage: NextPage = () => {
+  const router = useRouter()
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
-  const { page, pageSize, dataList, fdName } = data
+  const { page, pageSize, dataList, fdNickName, fdUserName, fdEmail, fdCellphone, fdEducation, fdCity } = data
   const [showAddModal, setShowAddModal] = useState(false)
-  const permissionList = useSelector((state: any) => state.permission.permissionList)
 
   /**
    * @description 数据处理函数
@@ -78,9 +84,9 @@ const UsersManage: NextPage = () => {
   }
 
   /**
-   * 权限管理 - 获取权限列表
+   * 人员管理 - 获取用户列表
    */
-  const getModules = async () => {
+  const getUsers = async () => {
     const params = {
       page: 1,
       pageSize: 20
@@ -89,37 +95,106 @@ const UsersManage: NextPage = () => {
     const res = await dispatchRedux(asyncThunk.getUsers(params) as any);
     const data = res?.payload
     if (data.code === 200) {
-      console.log("getUsers-11111", data)
       const { content } = data.data;
-     const roles = content.map((contentItem: any, index: number) => {
-        return {
-          ...contentItem,
-          sort: index + 1
-        }
-     })
-      setState("update", {
-        dataList: roles
+      const users = content.map((contentItem: any, index: number) => {
+          return {
+            ...contentItem,
+            sort: index + 1
+          }
       })
-      dispatchRedux(setRolesList({
-        rolesList: roles
+      setState("update", {
+        dataList: users
+      })
+      dispatchRedux(setUsersList({
+        usersList: users
       }))
+    } else if (
+        data.code === 401 && 
+        data.success === false &&
+        data.message === "请先登录后再操作!") {
+      router.push("/login")
     }
   }
 
   const formObj = {
-    name: 'permission-list',
+    name: 'users-list',
     layout: 'inline',
     items: [
       {
         type: 'input',
-        key: 'fdName',
-        value: fdName,
-        label: '权限名称',
-        name: 'fdName',
-        placeholder: '请输入模块名称',
+        key: 'fdNickName',
+        value: fdNickName,
+        label: '用户昵称',
+        name: 'fdNickName',
+        placeholder: '请输入用户昵称',
         callback: (e: any) => {
           setState("update", {
-            fdName: e.target.value.trim()
+            fdNickName: e.target.value.trim()
+          })
+        }
+      },
+      {
+        type: 'input',
+        key: 'fdUserName',
+        value: fdUserName,
+        label: '用户名称',
+        name: 'fdUserName',
+        placeholder: '请输入用户名称',
+        callback: (e: any) => {
+          setState("update", {
+            fdUserName: e.target.value.trim()
+          })
+        }
+      },
+      {
+        type: 'input',
+        key: 'fdEmail',
+        value: fdEmail,
+        label: '邮箱',
+        name: 'fdEmail',
+        placeholder: '请输入邮箱',
+        callback: (e: any) => {
+          setState("update", {
+            fdEmail: e.target.value.trim()
+          })
+        }
+      },
+      {
+        type: 'input',
+        key: 'fdCellphone',
+        value: fdCellphone,
+        label: '电话号码',
+        name: 'fdCellphone',
+        placeholder: '请输入电话号码',
+        callback: (e: any) => {
+          setState("update", {
+            fdCellphone: e.target.value.trim()
+          })
+        }
+      },
+      {
+        type: 'input',
+        key: 'fdEducation',
+        value: fdEducation,
+        label: '教育背景',
+        name: 'fdEducation',
+        placeholder: '请输入教育背景',
+        callback: (e: any) => {
+          setState("update", {
+            fdEducation: e.target.value.trim()
+          })
+        }
+      },
+      {
+        type: 'input',
+        key: 'fdCity',
+        value: fdCity,
+        label: '城市',
+        name: 'fdCity',
+        placeholder: '请输入城市',
+        callback: (e: any) => {
+          setState("update", {
+            fdCity: e.target.value.trim()
           })
         }
       },
@@ -135,14 +210,30 @@ const UsersManage: NextPage = () => {
   const tabelObj = {
     columns: [
       { title: "序号", dataIndex: "sort", key: "sort" },
-      { title: "模块名称", dataIndex: "fdName", key: "fdName" },
+      { title: "用户名称", dataIndex: "fdUserName", key: "fdUserName" },
+      { title: "昵称", dataIndex: "fdNickName", key: "fdNickName" },
+      { title: "密码", dataIndex: "fdPassword", key: "fdPassword" },
+      { title: "邮箱", dataIndex: "fdEmail", key: "fdEmail" },
+      { title: "电话号码", dataIndex: "fdCellphone", key: "fdCellphone" },
+      // { 
+      //   title: "性别", 
+      //   dataIndex: "fdGender", 
+      //   key: "fdGender",
+      //   render: (_: any, record: any) => {
+      //     return (
+      //       <div>{record?.fdGender}</div>
+      //     ) 
+      //   }
+      // },
+      { title: "城市", dataIndex: "fdCity", key: "fdCity" },
+      { title: "教育背景", dataIndex: "fdEducation", key: "fdEducation" },
       { 
         title: "描述", 
         dataIndex: "fdRemark", 
         key: "fdRemark",
         render: (_: any, record: any) => {
           return (
-            <div style={{ width: "650px" }}>{record?.fdRemark}</div>
+            <div style={{ width: "350px" }}>{record?.fdRemark}</div>
           ) 
         }
       },
@@ -169,7 +260,7 @@ const UsersManage: NextPage = () => {
   }
 
   useEffect(() => {
-    getModules()
+    getUsers()
   }, [])
 
   return (

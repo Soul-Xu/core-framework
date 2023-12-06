@@ -90,6 +90,11 @@ const AddMenus = (props: Props) => {
     const data = res?.payload;
     if (data.code === 200) {
       onCancel()
+    } else if (
+        data.code === 401 && 
+        data.success === false &&
+        data.message === "请先登录后再操作!") {
+      router.push("/login")
     }
     onCancel()
   }

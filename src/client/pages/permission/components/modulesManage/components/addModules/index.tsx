@@ -3,6 +3,7 @@
  */
 /** external library */
 import React, { useCallback } from "react";
+import { useRouter } from 'next/router';
 import { useDispatch } from "react-redux";
 import { useImmerReducer } from "use-immer";
 import { reducer } from "../../../../../../utils/reducer";
@@ -28,6 +29,7 @@ const initialState = {
 }
 
 const AddModules = (props: Props) => {
+  const router = useRouter()
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
   const { fdName, fdModuleKey, fdRemark } = data
@@ -64,6 +66,11 @@ const AddModules = (props: Props) => {
     const data = res?.payload
     if (data.code === 200 && data.data === true) {
       return true
+    } else if (
+        data.code === 401 && 
+        data.success === false &&
+        data.message === "请先登录后再操作!") {
+      router.push("/login")
     }
     return false
   }
@@ -86,7 +93,12 @@ const AddModules = (props: Props) => {
     const data = res?.payload
     if (data.code === 200) {
       onCancel()
-    }
+    } else if (
+      data.code === 401 && 
+      data.success === false &&
+      data.message === "请先登录后再操作!") {
+    router.push("/login")
+  }
     onCancel()
   }
 

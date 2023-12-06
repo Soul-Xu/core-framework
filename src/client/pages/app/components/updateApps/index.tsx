@@ -3,6 +3,7 @@
  */
 /** external library */
 import React, { useCallback, useState, useEffect } from "react";
+import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from "react-redux";
 import { useImmerReducer } from "use-immer";
 import { Modal, Form, Input, InputNumber } from "antd"
@@ -44,7 +45,7 @@ const initialState = {
 }
 
 const UpdateApps = (props: Props) => {
-  const form = Form.useForm()
+  const router = useRouter()
   const dispatchRedux = useDispatch();
   const baseApi = useSelector((state: any) => state.common.baseApi)
   const [data, dispatch] = useImmerReducer(reducer, initialState);
@@ -90,6 +91,11 @@ const UpdateApps = (props: Props) => {
     const data = res?.payload;
     if (data.code === 200) {
       onCancel()
+    } else if (
+        data.code === 401 && 
+        data.success === false &&
+        data.message === "请先登录后再操作!") {
+      router.push("/login")
     }
 
     onCancel()

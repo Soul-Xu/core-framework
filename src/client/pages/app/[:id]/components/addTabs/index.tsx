@@ -3,6 +3,7 @@
  */
 /** external library */
 import React, { useCallback, useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { useImmerReducer } from "use-immer";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal, Form, Input, message, InputNumber } from "antd"
@@ -11,8 +12,6 @@ const { TextArea } = Input
 /** utils */
 import { reducer } from "../../../../../utils/reducer";
 import asyncThunk from "../../../../../store/asyncThunk"
-import axios from "axios";
-import { useRouter } from "next/router";
 
 /**
  * interface
@@ -83,6 +82,11 @@ const AddTabs = (props: Props) => {
     const data = res?.payload;
     if (data.code === 200) {
       onCancel()
+    } else if (
+        data.code === 401 && 
+        data.success === false &&
+        data.message === "请先登录后再操作!") {
+      router.push("/login")
     }
     onCancel()
   }

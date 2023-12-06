@@ -4,12 +4,16 @@ import { AppState } from "../store"
 export interface PermissionState {
   rolesList: Array<any>
   permissionsList: Array<any>
+  modulesList: Array<any>
+  usersList: Array<any>
 }
 
 // Initial state
 const initialState: PermissionState = {
   rolesList: [],
-  permissionsList: []
+  permissionsList: [],
+  modulesList: [],
+  usersList: []
 }
 
 // Actual Slice
@@ -21,12 +25,18 @@ export const permissionSlice = createSlice({
     setRolesList(state, action) {
       state.rolesList = action.payload.rolesList
     },
-    setPermissionList(state, action) {
+    setPermissionsList(state, action) {
       state.permissionsList = action.payload.permissionsList
+    },
+    setModulesList(state, action) {
+      state.modulesList = action.payload.modulesList
+    },
+    setUsersList(state, action) {
+      state.usersList = action.payload.usersList
     },
   }
 })
 
-export const { setRolesList, setPermissionList } = permissionSlice.actions
+export const { setRolesList, setPermissionsList, setModulesList, setUsersList } = permissionSlice.actions
 
 export default permissionSlice.reducer

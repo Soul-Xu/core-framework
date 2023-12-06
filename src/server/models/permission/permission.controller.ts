@@ -10,24 +10,12 @@ import {
 } from '@nestjs/common';
 import { PermissionService } from './permission.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { AddModulesDto } from './dto/add-modules.dto';
-import { UpdateModulesDto } from './dto/update-modules.dto';
-import { DeleteModulesDto } from './dto/delete-modules.dto';
-import { UniqueModulesDto } from './dto/unique-modules.dto';
-import { GetModulesDto } from './dto/get-modules.dto';
-import { AddFuncsDto } from './dto/add-funcs.dto';
-import { CreatePermissionDto } from './dto/create-permission.dto';
-import { UpdatePermissionDto } from './dto/update-permission.dto';
-import { UniquePermissionsDto } from './dto/unque-permissions.dto';
-import { GetPermissionsDto } from './dto/get-permissions.dto';
-import { AddRolesDto } from './dto/add-roles.dto';
-import { GetRolesDto } from './dto/get-roles.dto';
-import { GetRolesInfoDto } from './dto/get-roles-info.dto';
-import { GetRolesOptionDto } from './dto/get-roles-option.dto';
-import { AddUsersDto } from './dto/add-users.dto';
-import { GetUsersDto } from './dto/get-users.dto';
-import { AddDeptsDto } from './dto/add-depts.dto';
-import { GetDeptsDto } from './dto/get-depts.dto';
+import { AddModulesDto, UpdateModulesDto, DeleteModulesDto, UniqueModulesDto, GetModulesDto } from './dto/modules.dto'
+import { AddFuncsDto, UpdateFuncsDto, DeleteFuncsDto, GetFuncsDto } from './dto/funcs.dto';
+import { AddPermissionDto, UpdatePermissionDto, DeletePermissionDto, UniquePermissionsDto, GetPermissionsDto } from './dto/permissions.dto'
+import { AddRolesDto, UpdateRolesDto, DeleteRolesDto, GetRolesDto, GetRolesInfoDto, GetRolesOptionDto } from './dto/roles.dto'
+import { AddUsersDto, UpdateUsersDto, DeleteUsersDto, GetUsersDto } from './dto/users.dto';
+import { AddDeptsDto, UpdateDeptsDto, DeleteDeptsDto, GetDeptsDto } from './dto/depts.dto';
 
 @Controller('/apis/permission')
 @ApiTags('Permission')
@@ -72,7 +60,7 @@ export class PermissionController {
 
   // 功能权限定义--获取可选模块
   @Post("/getFuncs")
-  getFuncs(@Body() body: CreatePermissionDto) {
+  getFuncs(@Body() body: GetFuncsDto) {
     return this.permissionService.getFuncs(body);
   }
 
@@ -138,7 +126,7 @@ export class PermissionController {
 
   // 地址本接口（人员选择器）
   @Post("/getAddress")
-  getAddress(@Body() body: CreatePermissionDto) {
+  getAddress(@Body() body: AddPermissionDto) {
     return this.permissionService.getAddress(body);
   }
 }

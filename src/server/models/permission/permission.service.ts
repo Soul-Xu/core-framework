@@ -1,23 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
-import { baseApi, Global } from 'src/server/config';
-import { AddModulesDto } from './dto/add-modules.dto';
-import { UpdateModulesDto } from './dto/update-modules.dto';
-import { DeleteModulesDto } from './dto/delete-modules.dto';
-import { UniqueModulesDto } from './dto/unique-modules.dto';
-import { GetModulesDto } from './dto/get-modules.dto';
-import { AddFuncsDto } from './dto/add-funcs.dto';
-import { CreatePermissionDto } from './dto/create-permission.dto';
-import { UpdatePermissionDto } from './dto/update-permission.dto';
-import { GetPermissionsDto } from './dto/get-permissions.dto';
-import { UniquePermissionsDto } from './dto/unque-permissions.dto';
-import { AddRolesDto } from './dto/add-roles.dto';
-import { GetRolesDto } from './dto/get-roles.dto';
-import { GetRolesInfoDto } from './dto/get-roles-info.dto';
-import { AddUsersDto } from './dto/add-users.dto';
-import { GetUsersDto } from './dto/get-users.dto';
-import { AddDeptsDto } from './dto/add-depts.dto';
-import { GetDeptsDto } from './dto/get-depts.dto';
+import { baseApi, baseApiOrg, Global } from 'src/server/config';
+import { AddModulesDto, UpdateModulesDto, DeleteModulesDto, UniqueModulesDto, GetModulesDto } from './dto/modules.dto'
+import { AddFuncsDto, UpdateFuncsDto, DeleteFuncsDto, GetFuncsDto } from './dto/funcs.dto';
+import { AddPermissionDto, UpdatePermissionDto, DeletePermissionDto, UniquePermissionsDto, GetPermissionsDto } from './dto/permissions.dto'
+import { AddRolesDto, UpdateRolesDto, DeleteRolesDto, GetRolesDto, GetRolesInfoDto, GetRolesOptionDto } from './dto/roles.dto'
+import { AddUsersDto, UpdateUsersDto, DeleteUsersDto, GetUsersDto } from './dto/users.dto';
+import { AddDeptsDto, UpdateDeptsDto, DeleteDeptsDto, GetDeptsDto } from './dto/depts.dto';
 
 @Injectable()
 export class PermissionService {
@@ -177,7 +166,7 @@ export class PermissionService {
     }
   }
 
-  async getFuncs(body: CreatePermissionDto) {
+  async getFuncs(body: GetFuncsDto) {
     const res = await axios.request({
       url: `${baseApi}/api-module/list-selected`,
       method: "post",
@@ -361,7 +350,7 @@ export class PermissionService {
 
   async addUsers(body: AddUsersDto) {
     const res = await axios.request({
-      url: `${baseApi}/user/add`,
+      url: `${baseApiOrg}/user/add`,
       method: "post",
       data: body,
       headers: {
@@ -387,7 +376,7 @@ export class PermissionService {
 
   async getUsers(body: GetUsersDto) {
     const res = await axios.request({
-      url: `${baseApi}/user/list`,
+      url: `${baseApiOrg}/user/list`,
       method: "post",
       data: body,
       headers: {
@@ -463,7 +452,7 @@ export class PermissionService {
     }
   }
 
-  async getAddress(body: CreatePermissionDto) {
+  async getAddress(body: AddPermissionDto) {
     const res = await axios.request({
       url: `${baseApi}/address/tree`,
       method: "post",

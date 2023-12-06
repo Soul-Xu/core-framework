@@ -88,6 +88,11 @@ const AddPermission = (props: Props) => {
       if (data.code === 200) {
         const options: any = onHandleModule(data.data)
         setModules(options)
+      } else if (
+          data.code === 401 && 
+          data.success === false &&
+          data.message === "请先登录后再操作!") {
+        router.push("/login")
       }
   }
 

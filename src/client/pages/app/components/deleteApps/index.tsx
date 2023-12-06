@@ -3,6 +3,7 @@
  */
 /** external library */
 import React from "react";
+import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal, Form, Input, message } from "antd"
 import { WarningOutlined } from "@ant-design/icons";
@@ -27,7 +28,7 @@ interface Props {
 
 
 const DeleteApps = (props: Props) => {
-  // const form = useForm()
+  const router = useRouter()
   const dispatchRedux = useDispatch();
   const baseApi = useSelector((state: any) => state.common.baseApi)
   const { open, appId, onCancel } = props
@@ -46,6 +47,11 @@ const DeleteApps = (props: Props) => {
     if (data.code === 200) {
       message.success("删除成功")
       onCancel()
+    } else if (
+        data.code === 401 && 
+        data.success === false &&
+        data.message === "请先登录后再操作!") {
+      router.push("/login")
     }
     onCancel()
   }

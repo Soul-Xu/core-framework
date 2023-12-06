@@ -67,6 +67,11 @@ const App: NextPage = () => {
       dispatchRedux(setAppsList({
         appsList: content
       }))
+    } else if (
+        data.code === 401 && 
+        data.success === false &&
+        data.message === "请先登录后再操作!") {
+      router.push("/login")
     }
   }
 

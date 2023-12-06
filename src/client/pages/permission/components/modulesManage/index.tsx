@@ -2,10 +2,11 @@ import { NextPage } from 'next'
 import SearchLayout from '../../../../components/searchLayout/'
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import React, { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useImmerReducer } from "use-immer";
 import asyncThunk from "../../../../store/asyncThunk";
-import { setRolesList, setPermissionList } from "../../../../store/modules/permissionSlice";
+import { setRolesList, setPermissionsList } from "../../../../store/modules/permissionSlice";
 import { Button, Tag, Modal, message } from "antd";
 import { reducer } from "../../../../utils/reducer";
 import classnames from 'classnames/bind';
@@ -25,6 +26,7 @@ const initialState = {
 }
 
 const ModulesManage: NextPage = () => {
+  const router = useRouter()
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
   const { page, pageSize, dataList, fdName } = data
