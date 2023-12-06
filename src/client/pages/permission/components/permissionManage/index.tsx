@@ -17,9 +17,9 @@ const { confirm } = Modal;
 import AddPermission from './components/addPermission';
 
 const initialState = {
-  permission: "", // 用户名
+  fdApiName: "", // 用户名
   description: "", // 组织
-  dataList: [], // 角色列表
+  dataList: [], // 权限列表
   page: 1,
   pageSize: 10,
   total: 0
@@ -28,9 +28,8 @@ const initialState = {
 const PermissionManage: NextPage = () => {
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
-  const { page, pageSize, dataList, permission } = data
+  const { page, pageSize, dataList, fdApiName } = data
   const [showAddModal, setShowAddModal] = useState(false)
-  const permissionList = useSelector((state: any) => state.permission.permissionList)
 
   /**
    * @description 数据处理函数
@@ -110,17 +109,19 @@ const PermissionManage: NextPage = () => {
     name: 'permission-list',
     layout: 'inline',
     items: [
-      // {
-      //   type: 'input',
-      //   key: 'permission',
-      //   value: state.permission,
-      //   label: '权限名称',
-      //   name: 'permission',
-      //   placeholder: '请输入用户名',
-      //   callback: (e: any) => {
-      //     setState({ ...state, permission: e.target.value })
-      //   }
-      // },
+      {
+        type: 'input',
+        key: 'fdApiName',
+        value: fdApiName,
+        label: '权限名称',
+        name: 'fdApiName',
+        placeholder: '请输入权限名称',
+        callback: (e: any) => {
+          setState("update", {
+            fdApiName: e.target.value.trim()
+          })
+        }
+      },
     ],
     customElements: () => (
       <section>

@@ -11,6 +11,8 @@ import {
 import { PermissionService } from './permission.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AddModulesDto } from './dto/add-modules.dto';
+import { UpdateModulesDto } from './dto/update-modules.dto';
+import { DeleteModulesDto } from './dto/delete-modules.dto';
 import { UniqueModulesDto } from './dto/unique-modules.dto';
 import { GetModulesDto } from './dto/get-modules.dto';
 import { AddFuncsDto } from './dto/add-funcs.dto';
@@ -35,8 +37,19 @@ export class PermissionController {
   // 模块新增接口
   @Post("/addModules")
   addModules(@Body() body: AddModulesDto) {
-    console.log("111111-addModules", body)
     return this.permissionService.addModules(body);
+  }
+
+  // 模块新增接口
+  @Post("/updateModules")
+  updateModules(@Body() body: UpdateModulesDto) {
+    return this.permissionService.updateModules(body);
+  }
+
+  // 模块删除接口
+  @Post("/deleteModules")
+  deleteModules(@Body() body: DeleteModulesDto) {
+    return this.permissionService.deleteModules(body);
   }
 
   // 检查模块标识是否唯一接口

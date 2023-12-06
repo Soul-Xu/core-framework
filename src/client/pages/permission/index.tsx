@@ -9,6 +9,7 @@ import AppContainer from "../../layout/appContainer"
 import RolesManage from "./components/rolesManage";
 import PermissionManage from "./components/permissionManage";
 import ModulesManage from "./components/modulesManage";
+import UsersManage from "./components/usersManage";
 /** css */
 import classnames from "classnames/bind";
 import styles from "./index.module.scss";
@@ -16,19 +17,24 @@ const classNames = classnames.bind(styles);
 
 const items: TabsProps['items'] = [
   {
-    key: '1',
+    key: 'roles',
     label: '角色管理',
     children: <RolesManage />,
   },
   {
-    key: '2',
+    key: 'permissions',
     label: '权限管理',
     children: <PermissionManage />,
   },
   {
-    key: '3',
+    key: 'modules',
     label: '模块管理',
     children: <ModulesManage />,
+  },
+  {
+    key: 'users',
+    label: '人员管理',
+    children: <UsersManage />,
   },
 ];
 

@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { baseApi, Global } from 'src/server/config';
 import { AddModulesDto } from './dto/add-modules.dto';
+import { UpdateModulesDto } from './dto/update-modules.dto';
+import { DeleteModulesDto } from './dto/delete-modules.dto';
 import { UniqueModulesDto } from './dto/unique-modules.dto';
 import { GetModulesDto } from './dto/get-modules.dto';
 import { AddFuncsDto } from './dto/add-funcs.dto';
@@ -20,9 +22,60 @@ import { GetDeptsDto } from './dto/get-depts.dto';
 @Injectable()
 export class PermissionService {
   async addModules(body: AddModulesDto) {
-    console.log("222222-addModules", body)
     const res = await axios.request({
       url: `${baseApi}/api-module/add`,
+      method: "post",
+      data: body,
+      headers: {
+        withCredentials: true,
+        "ltpatoken": Global.token
+      }
+    })
+    const data = res.data
+    if (data.code === 200 && data.success) {
+      return {
+        code: 200,
+        data: data.data
+      }
+    } else {
+      return {
+        code: data.code,
+        data: data.data,
+        message: data.message,
+        success: data.success
+      }
+    }
+  }
+
+  async updateModules(body: UpdateModulesDto) {
+    const res = await axios.request({
+      url: `${baseApi}/api-module/update`,
+      method: "post",
+      data: body,
+      headers: {
+        withCredentials: true,
+        "ltpatoken": Global.token
+      }
+    })
+    const data = res.data
+    if (data.code === 200 && data.success) {
+      return {
+        code: 200,
+        data: data.data
+      }
+    } else {
+      return {
+        code: data.code,
+        data: data.data,
+        message: data.message,
+        success: data.success
+      }
+    }
+  }
+
+  async deleteModules(body: DeleteModulesDto) {
+    const res = await axios.request({
+      url: `${baseApi}/api-module/delete`,
       method: "post",
       data: body,
       headers: {

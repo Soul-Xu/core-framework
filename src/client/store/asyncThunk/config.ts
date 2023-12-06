@@ -89,6 +89,16 @@ const permission: Record<string, AsyncThunkValue> = {
     method: "post",
     url: "/apis/permission/addModules"
   },
+  // 模块编辑接口
+  updateModules: {
+    method: "post",
+    url: "/apis/permission/updateModules"
+  },
+  // 模块删除接口
+  deleteModules: {
+    method: "post",
+    url: "/apis/permission/deleteModules"
+  },
   // 检查模块标识是否唯一接口
   uniqueModules: {
     method: "post",
@@ -187,6 +197,8 @@ export type AsyncThunkMap =
   | "createTab"
   | "createMenu"
   | "addModules"
+  | "updateModules"
+  | "deleteModules"
   | "uniqueModules"
   | "getModules"
   | "addFuncs"

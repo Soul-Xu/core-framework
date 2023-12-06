@@ -57,18 +57,19 @@ const ModulesManage: NextPage = () => {
 
    // 删除数据的函数
   const handleDelete = (record: any) => {
-    // 弹出确认框，确保用户确认删除操作
+    // 弹出确认框，确保模块确认删除操作
     confirm({
       title: "确认删除",
       icon: <ExclamationCircleFilled />,
-      content: `是否确定删除用户 ${record.permission}？`,
+      content: (
+        <div>
+          是否确定删除模块
+          <span style={{ color: "red" }}>{record.fdName}</span>
+          ？
+        </div>
+      ),
       onOk() {
-        // 创建新的数据列表，不包含要删除的数据项
-        const updatedDataList = dataList.filter((item: any) => item.key !== record.key);
-        // 更新数据列表状态
-        // setDataList(updatedDataList);
-        // 在这里可以执行删除请求到服务器，根据情况来更新服务器数据
-        message.success("删除成功"); // 可以使用 Ant Design 的消息提示
+        deleteModules(record?.fdId)
       },
       onCancel() {
         // 用户取消删除操作
@@ -78,7 +79,24 @@ const ModulesManage: NextPage = () => {
   }
 
   /**
-   * 权限管理 - 获取权限列表
+   * @description 模块管理 - 删除模块
+   */
+  const deleteModules = async (fdId: string) => {
+    const params = {
+      fdId: fdId
+    }
+
+    const res = await dispatchRedux(asyncThunk.deleteModules(params) as any);
+    const data = res?.payload
+    if (data.code === 200) {
+      getModules()
+      message.success("删除成功")
+    }
+  }
+
+
+  /**
+   * @description 模块管理 - 获取模块列表
    */
   const getModules = async () => {
     const params = {
@@ -91,7 +109,7 @@ const ModulesManage: NextPage = () => {
     if (data.code === 200) {
       console.log("permission-11111", data)
       const { content } = data.data;
-     const roles = content.map((contentItem: any, index: number) => {
+      const roles = content.map((contentItem: any, index: number) => {
         return {
           ...contentItem,
           sort: index + 1
@@ -156,6 +174,18 @@ const ModulesManage: NextPage = () => {
           )
         }
       },
+      {
+        title: "操作",
+        dataIndex: "action",
+        key: "action",
+        render: (_: any, record: any) => {
+          return (
+            <>
+              <Button className={classNames("btn-action")} onClick={() => handleDelete(record)}>删除</Button>
+            </>
+          )
+        }
+      }
     ],
     datasource: dataList,
     total: dataList.length,
