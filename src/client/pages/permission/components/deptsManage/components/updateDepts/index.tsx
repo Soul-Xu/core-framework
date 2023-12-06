@@ -12,11 +12,11 @@ import style from '../../index.module.scss';
 const classNames = classnames.bind(style);
 
 interface Props {
-  title?: string;
-  detail: any;
-  open: boolean;
-  onOk?: () => void;
-  onCancel: () => void;
+  title?: string
+  detail: any
+  open: boolean
+  onOk?: () => void
+  onCancel: () => void
 }
 
 const initialState = {
@@ -61,8 +61,6 @@ const UpdateDepts = (props: Props) => {
       fdRemark: fdRemark || detail?.fdRemark,
       fdParent: detail?.fdParent || null
     };
-
-    console.log("onOk", params)
 
     const res = await dispatchRedux(asyncThunk.updateDepts(params) as any);
     const data = res?.payload;

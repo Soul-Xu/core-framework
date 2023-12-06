@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { useImmerReducer } from "use-immer";
 import { reducer } from "../../../../../../utils/reducer";
-import { Modal, Form, Input, message, Select } from "antd"
+import { Modal, Form, Input, message } from "antd"
 import asyncThunk from "../../../../../../store/asyncThunk";
 import { setDeptsList } from "../../../../../../store/modules/permissionSlice" 
 const Textarea = Input
@@ -23,9 +23,10 @@ const classNames = classnames.bind(style);
  * @returns 
  */
 interface Props {
-  title?: string,
-  open: boolean,
-  onOk?: () => void,
+  title?: string
+  detail: any
+  open: boolean
+  onOk?: () => void
   onCancel: () => void
 }
 
@@ -39,15 +40,14 @@ const initialState = {
   fdCity: "",
   fdRemark: "",
   fdId: "",
-  depts: []
 }
 
 const AddUsers = (props: Props) => {
   const router = useRouter()
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
-  const { fdNickName, fdUserName, fdPassword, fdEmail, fdCellphone, fdEducation, fdCity, fdRemark, fdId, depts } = data
-  const { open, onCancel } = props
+  const { fdNickName, fdUserName, fdPassword, fdEmail, fdCellphone, fdEducation, fdCity, fdRemark, fdId } = data
+  const { detail, open, onCancel } = props
 
   /**
    * @description 数据处理函数
@@ -62,23 +62,10 @@ const AddUsers = (props: Props) => {
    * @description 处理变量值变化函数
    */
   const onHandleChange = (type: string, e: any) => {
-    if (type === "fdId") {
-      setState("update", {
-        [type]: e
-      })
-    } else {
-      setState("update", {
-        [type]: e.target.value
-      })
-    }
+    setState("update", {
+      [type]: e.target.value
+    })
   }
-
-  /**
-   * 重置数据
-   */
-  const resetForm = () => {
-    // dispatch({ type: "reset" });
-  };
 
   /**
    * @description 添加用户确认逻辑
@@ -86,6 +73,7 @@ const AddUsers = (props: Props) => {
    */
   const onOk = async () => {
     const params = {
+      fdId: detail?.fdId,
       fdNickName: fdNickName,
       fdUserName: fdUserName,
       fdPassword: fdPassword, 
@@ -99,11 +87,11 @@ const AddUsers = (props: Props) => {
       }
     }
 
-    const res = await dispatchRedux(asyncThunk.addUsers(params) as any);
+    const res = await dispatchRedux(asyncThunk.updateUsers(params) as any);
     const data = res?.payload
     console.log("addUsers", data)
     if (data.code === 200) {
-      message.success("添加用户成功")
+      message.success("编辑用户成功")
       onCancel()
     } else if (
         data.code === 401 && 
@@ -111,7 +99,7 @@ const AddUsers = (props: Props) => {
         data.message === "请先登录后再操作!") {
       router.push("/login")
     }
-    message.error("添加用户失败")
+    message.error("编辑用户失败")
     onCancel()
   }
 
@@ -125,16 +113,16 @@ const AddUsers = (props: Props) => {
     const data = res?.payload
     if (data.code === 200) {
       const { content } = data.data;
-      const options: any = []
       const depts = content.map((contentItem: any, index: number) => {
-        options.push({
-          value: contentItem?.fdId,
-          label: contentItem?.fdName
-        })
+          return {
+            ...contentItem,
+            sort: index + 1
+          }
       })
-      setState("update", {
-        depts: options
-      })
+      console.log("getDepts", depts)
+      // setState("update", {
+      //   dataList: users
+      // })
       dispatchRedux(setDeptsList({
         deptsList: depts
       }))
@@ -150,17 +138,38 @@ const AddUsers = (props: Props) => {
     getDepts()
   }, [])
 
+  useEffect(() => {
+    if (detail) {
+      // 将 detail 中的值赋给表单的初始值
+      dispatch({ type: "update", payload: detail });
+    }
+
+    // 清空 data 的状态为初始值
+    return () => {
+      setState("update", {
+        fdNickName: "",
+        fdUserName: "",
+        fdPassword: "", 
+        fdEmail: "",
+        fdCellphone: "",
+        fdEducation: "",
+        fdCity: "",
+        fdRemark: "",
+        fdId: "",
+      })
+    };
+  }, [detail, dispatch]);
+
   return (
     <Modal 
       title="添加用户"
       style={{ textAlign: "center" }}
-      // open={open}
-      visible={open}
+      open={open}
       onOk={onOk}
       onCancel={onCancel}
       okText="提交"
     >
-      <Form name="AddUsers" style={{ marginTop: "30px" }}>
+      <Form name="AddUsers" style={{ marginTop: "30px" }} initialValues={detail}>
         <Form.Item 
           name="fdNickName"
           label={(
@@ -220,11 +229,10 @@ const AddUsers = (props: Props) => {
         <Form.Item 
           name="fdId"
           label={(
-            <div className={classNames("form-item-label")}>关联部门</div>
+            <div className={classNames("form-item-label")}>城市</div>
           )} 
         >
-          <Select options={depts} onChange={(e: any) => onHandleChange("fdId", e)} />
-          {/* < placeholder="请选择关联部门" onChange={(e: any) => onHandleChange("fdId", e)} /> */}
+          <Input placeholder="请选择城市" onChange={(e: any) => onHandleChange("fdId", e)} />
         </Form.Item>
         <Form.Item 
           name="fdRemark"

@@ -16,35 +16,44 @@ const { confirm } = Modal;
 
 /** components */
 import AddUsers from './components/addUsers';
+import UpdateUsers from './components/updateUsers'
 
 const initialState = {
-  fdNickName: "", // 昵称
-  fdUserName: "", // 用户名
-  fdEmail: "", // 邮箱
-  fdCellphone: "", // 电话号码
-  fdEducation: "", // 教育背景
-  fdCity: "", // 城市
-  dataList: [], // 组织列表
-  page: 1,
-  pageSize: 10,
-  total: 0
+  req: {
+    fdNickName: "", // 昵称
+    fdUserName: "", // 用户名
+    fdEmail: "", // 邮箱
+    fdCellphone: "", // 电话号码
+    fdEducation: "", // 教育背景
+    fdCity: "", // 城市
+    page: 1,
+    pageSize: 10,
+  },
+  dataList: [], // 用户列表
+  detail: {}, // 用户详情
 }
 
 const UsersManage: NextPage = () => {
   const router = useRouter()
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
-  const { page, pageSize, dataList, fdNickName, fdUserName, fdEmail, fdCellphone, fdEducation, fdCity } = data
+  const { req, dataList, detail } = data
+  const { page, pageSize, fdNickName, fdUserName, fdEmail, fdCellphone, fdEducation, fdCity } = req
   const [showAddModal, setShowAddModal] = useState(false)
+  const [showUpdateModal, setShowUpdateModal] = useState(false)
 
   /**
    * @description 数据处理函数
    * @param key data字段
    * @param value data字段值
    */
-    const setState = useCallback((type: string, val: Record<string, any>) => {
-      dispatch({ type, payload: val });
-    }, [dispatch]);
+  const setState = useCallback((type: string, val: Record<string, any>) => {
+    dispatch({ type, payload: val });
+  }, [dispatch]);
+
+  const onSearch = () => {
+    dispatchRedux(getUsers(req) as any);
+  };
 
   const onChangePagination = (page: number, pageSize: number) => {
     // 更新数据列表
@@ -59,6 +68,19 @@ const UsersManage: NextPage = () => {
 
   const onHideAddModal = () => {
     setShowAddModal(false)
+  }
+
+  // 编辑弹窗
+  const onShowUpdateModal = (record: any) => {
+    setState("update", {
+      detail: record
+    })
+    setShowUpdateModal(true)
+  }
+
+  const onHideUpdateModal = () => {
+    getUsers()
+    setShowUpdateModal(false)
   }
 
    // 删除数据的函数
@@ -76,7 +98,6 @@ const UsersManage: NextPage = () => {
       ),
       onOk() {
         deleteModules(record?.fdId)
-        message.success("删除成功"); // 可以使用 Ant Design 的消息提示
       },
       onCancel() {
         // 用户取消删除操作
@@ -98,16 +119,22 @@ const UsersManage: NextPage = () => {
       if (data.code === 200) {
         getUsers()
         message.success("删除成功")
+      } else if (
+          data.code === 401 && 
+          data.success === false &&
+          data.message === "请先登录后再操作!") {
+        router.push("/login")
       }
     }
 
   /**
    * 用户管理 - 获取用户列表
    */
-  const getUsers = async () => {
+  const getUsers = async (req?: any) => {
     const params = {
       page: 1,
-      pageSize: 20
+      pageSize: 20,
+      ...req
     }
 
     const res = await dispatchRedux(asyncThunk.getUsers(params) as any);
@@ -219,7 +246,7 @@ const UsersManage: NextPage = () => {
     ],
     customElements: () => (
       <section>
-        <Button className={classNames("btn-action")} onClick={() => console.log("search")} type='primary'>查询</Button>
+        <Button className={classNames("btn-action")} onClick={() => onSearch()} type='primary'>查询</Button>
         <Button className={classNames("btn-action")} onClick={() => onShowAddModal()}>添加</Button>
       </section>
     )
@@ -233,16 +260,6 @@ const UsersManage: NextPage = () => {
       { title: "密码", dataIndex: "fdPassword", key: "fdPassword" },
       { title: "邮箱", dataIndex: "fdEmail", key: "fdEmail" },
       { title: "电话号码", dataIndex: "fdCellphone", key: "fdCellphone" },
-      // { 
-      //   title: "性别", 
-      //   dataIndex: "fdGender", 
-      //   key: "fdGender",
-      //   render: (_: any, record: any) => {
-      //     return (
-      //       <div>{record?.fdGender}</div>
-      //     ) 
-      //   }
-      // },
       { title: "城市", dataIndex: "fdCity", key: "fdCity" },
       { title: "教育背景", dataIndex: "fdEducation", key: "fdEducation" },
       { 
@@ -272,6 +289,7 @@ const UsersManage: NextPage = () => {
         render: (_: any, record: any) => {
           return (
             <>
+              <Button className={classNames("btn-action")} onClick={() => onShowUpdateModal(record)}>编辑</Button>
               <Button className={classNames("btn-action")} onClick={() => handleDelete(record)}>删除</Button>
             </>
           )
@@ -301,6 +319,7 @@ const UsersManage: NextPage = () => {
         </div>
       </section>
       <AddUsers open={showAddModal} onCancel={() => onHideAddModal()}/>
+      <UpdateUsers open={showUpdateModal} detail={detail} onCancel={() => onHideUpdateModal()}/>
     </div>
   )
 }

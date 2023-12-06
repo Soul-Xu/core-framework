@@ -52,7 +52,7 @@ const DeptsManage: NextPage = () => {
     }, [dispatch]);
 
   const onSearch = () => {
-    dispatchRedux(asyncThunk.getDepts(req) as any);
+    dispatchRedux(getDepts(req) as any);
   };
 
   const onChangePagination = (page: number, pageSize: number) => {

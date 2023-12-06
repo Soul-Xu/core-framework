@@ -304,6 +304,27 @@ export class PermissionService {
     }
   }
 
+  async updateUsers(body: UpdateUsersDto) {
+    const res = await axios.request({
+      url: `${baseApiOrg}/user/update`,
+      method: "post",
+      data: body,
+      headers: {
+        withCredentials: true,
+        "ltpatoken": Global.token
+      }
+    })
+    const data = res.data
+    if (data.code === 200 && data.success) {
+      return {
+        code: 200,
+        data: data.data
+      }
+    } else {
+      return data
+    }
+  }
+
   async deleteUsers(body: DeleteUsersDto) {
     const res = await axios.request({
       url: `${baseApiOrg}/user/delete`,

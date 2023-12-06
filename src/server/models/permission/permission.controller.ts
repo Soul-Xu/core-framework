@@ -102,9 +102,16 @@ export class PermissionController {
 
   // 组织架构--新增用户
   @Post("/addUsers")
-  addUsers(@Body() body: AddRolesDto) {
+  addUsers(@Body() body: AddUsersDto) {
     return this.permissionService.addUsers(body);
   }
+
+  // 组织架构--编辑用户
+  @Post("/updateUsers")
+  updateUsers(@Body() body: UpdateUsersDto) {
+    return this.permissionService.updateUsers(body);
+  }
+ 
 
   // 组织架构--新增用户
   @Post("/deleteUsers")
