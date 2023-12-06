@@ -6,7 +6,7 @@ interface Props {
   placeholder: string
 }
 
-// 模拟人员数据
+// 模拟用户数据
 const personData = [
   {
     value: '1',

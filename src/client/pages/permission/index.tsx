@@ -10,6 +10,7 @@ import RolesManage from "./components/rolesManage";
 import PermissionManage from "./components/permissionManage";
 import ModulesManage from "./components/modulesManage";
 import UsersManage from "./components/usersManage";
+import DeptsManage from "./components/deptsManage";
 /** css */
 import classnames from "classnames/bind";
 import styles from "./index.module.scss";
@@ -33,8 +34,13 @@ const items: TabsProps['items'] = [
   },
   {
     key: 'users',
-    label: '人员管理',
+    label: '用户管理',
     children: <UsersManage />,
+  },
+  {
+    key: 'depts',
+    label: '部门管理',
+    children: <DeptsManage />,
   },
 ];
 

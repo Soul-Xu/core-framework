@@ -155,22 +155,42 @@ const permission: Record<string, AsyncThunkValue> = {
     method: "post",
     url: "/apis/permission/addUsers"
   },
+  // 编辑用户
+  updateUsers: {
+    method: "post",
+    url: "/apis/permission/updateUsers"
+  },
+  // 删除用户
+  deleteUsers: {
+    method: "post",
+    url: "/apis/permission/deleteUsers"
+  },
   // 用户列表接口
   getUsers: {
     method: "post",
     url: "/apis/permission/getUsers"
   },
-  // 新增用户
+  // 新增部门
   addDepts: {
     method: "post",
     url: "/apis/permission/addDepts"
+  },
+  // 新增部门
+  updateDepts: {
+    method: "post",
+    url: "/apis/permission/updateDepts"
+  },
+  // 删除部门
+  deleteDepts: {
+    method: "post",
+    url: "/apis/permission/deleteDepts"
   },
   // 部门列表接口
   getDepts: {
     method: "post",
     url: "/apis/permission/getDepts"
   },
-  // 地址本接口（人员选择器）
+  // 地址本接口（用户选择器）
   getAddress: {
     method: "post",
     url: "/apis/permission/getAddress"
@@ -210,8 +230,11 @@ export type AsyncThunkMap =
   | "getRolesInfo"
   | "getRolesOption"
   | "addUsers"
+  | "updateDepts"
+  | "deleteUsers"
   | "getUsers"
   | "addDepts"
+  | "deleteDepts"
   | "getDepts"
   | "getAddress"
 

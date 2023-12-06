@@ -15,23 +15,32 @@ const classNames = classnames.bind(style);
 const { confirm } = Modal;
 
 /** components */
-import AddModules from './components/addModules';
+import AddDepts from './components/addDepts';
+import UpdateDepts from './components/updateDepts'
 
 const initialState = {
-  fdName: "", // 组织名称
-  dataList: [], // 组织列表
-  page: 1,
-  pageSize: 10,
-  total: 0
+  req: {
+    fdName: "",
+    fdNo: "",    
+    fdCellphone: "",
+    fdDisplayOrder: "",
+    fdRemark: "",
+    fdId: "",
+    page: 1,
+    pageSize: 10
+  },
+  dataList: [], // 部门列表
+  detail: {}, // 部门详情
 }
 
-const ModulesManage: NextPage = () => {
+const DeptsManage: NextPage = () => {
   const router = useRouter()
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
-  const { page, pageSize, dataList, fdName } = data
+  const { dataList, detail, req } = data
+  const { page, pageSize, fdName, fdNo, fdCellphone, fdDisplayOrder } = req
   const [showAddModal, setShowAddModal] = useState(false)
-  const permissionList = useSelector((state: any) => state.permission.permissionList)
+  const [showUpdateModal, setShowUpdateModal] = useState(false)
 
   /**
    * @description 数据处理函数
@@ -42,10 +51,13 @@ const ModulesManage: NextPage = () => {
       dispatch({ type, payload: val });
     }, [dispatch]);
 
+  const onSearch = () => {
+    dispatchRedux(asyncThunk.getDepts(req) as any);
+  };
+
   const onChangePagination = (page: number, pageSize: number) => {
     // 更新数据列表
     console.log("onChangePagination")
-    // updateDataList(page, pageSize);
   }
 
   // 新增弹窗
@@ -54,10 +66,32 @@ const ModulesManage: NextPage = () => {
   }
 
   const onHideAddModal = () => {
+    getDepts()
     setShowAddModal(false)
   }
 
-   // 删除数据的函数
+  // 编辑弹窗
+  const onShowUpdateModal = (record: any) => {
+    setState("update", {
+      detail: record
+    })
+    setShowUpdateModal(true)
+  }
+
+  const onHideUpdateModal = () => {
+    getDepts()
+    setShowUpdateModal(false)
+  }
+
+  /**
+   * @description 编辑数据的函数
+   * @param record 
+   */
+
+  /**
+   * @description 删除数据的函数
+   * @param record 
+   */
   const handleDelete = (record: any) => {
     // 弹出确认框，确保模块确认删除操作
     confirm({
@@ -71,7 +105,7 @@ const ModulesManage: NextPage = () => {
         </div>
       ),
       onOk() {
-        deleteModules(record?.fdId)
+        deleteDepts(record?.fdId)
       },
       onCancel() {
         // 用户取消删除操作
@@ -83,15 +117,15 @@ const ModulesManage: NextPage = () => {
   /**
    * @description 模块管理 - 删除模块
    */
-  const deleteModules = async (fdId: string) => {
+  const deleteDepts = async (fdId: string) => {
     const params = {
       fdId: fdId
     }
 
-    const res = await dispatchRedux(asyncThunk.deleteModules(params) as any);
+    const res = await dispatchRedux(asyncThunk.deleteDepts(params) as any);
     const data = res?.payload
     if (data.code === 200) {
-      getModules()
+      getDepts()
       message.success("删除成功")
     }
   }
@@ -99,13 +133,14 @@ const ModulesManage: NextPage = () => {
   /**
    * @description 模块管理 - 获取模块列表
    */
-  const getModules = async () => {
+  const getDepts = async (req?: any) => {
     const params = {
       page: 1,
-      pageSize: 20
+      pageSize: 20,
+      ...req
     }
 
-    const res = await dispatchRedux(asyncThunk.getModules(params) as any);
+    const res = await dispatchRedux(asyncThunk.getDepts(params) as any);
     const data = res?.payload
     if (data.code === 200) {
       const { content } = data.data;
@@ -132,19 +167,45 @@ const ModulesManage: NextPage = () => {
         type: 'input',
         key: 'fdName',
         value: fdName,
-        label: '权限名称',
+        label: '部门名称',
         name: 'fdName',
-        placeholder: '请输入模块名称',
+        placeholder: '请输入部门名称',
         callback: (e: any) => {
-          setState("update", {
+          setState("req", {
             fdName: e.target.value.trim()
+          })
+        }
+      },
+      {
+        type: 'input',
+        key: 'fdNo',
+        value: fdNo,
+        label: '部门编号',
+        name: 'fdNo',
+        placeholder: '请输入部门编号',
+        callback: (e: any) => {
+          setState("req", {
+            fdNo: e.target.value.trim()
+          })
+        }
+      },
+      {
+        type: 'input',
+        key: 'fdCellphone',
+        value: fdCellphone,
+        label: '联系方式',
+        name: 'fdCellphone',
+        placeholder: '请输入联系方式',
+        callback: (e: any) => {
+          setState("req", {
+            fdCellphone: e.target.value.trim()
           })
         }
       },
     ],
     customElements: () => (
       <section>
-        <Button className={classNames("btn-action")} onClick={() => console.log("search")} type='primary'>查询</Button>
+        <Button className={classNames("btn-action")} onClick={() => onSearch()} type='primary'>查询</Button>
         <Button className={classNames("btn-action")} onClick={() => onShowAddModal()}>添加</Button>
       </section>
     )
@@ -153,14 +214,27 @@ const ModulesManage: NextPage = () => {
   const tabelObj = {
     columns: [
       { title: "序号", dataIndex: "sort", key: "sort" },
-      { title: "模块名称", dataIndex: "fdName", key: "fdName" },
+      { title: "部门ID", dataIndex: "fdId", key: "fdId" },
+      { title: "部门名称", dataIndex: "fdName", key: "fdName" },
+      { title: "部门编号", dataIndex: "fdNo", key: "fdNo" },
+      { title: "联系方式", dataIndex: "fdCellphone", key: "fdCellphone" },
       { 
-        title: "描述", 
+        title: "上级部门", 
+        dataIndex: "fdParent", 
+        key: "fdParent",
+        render: (_: any, record: any) => {
+          return (
+            <div>{record?.fdParent ? record?.fdParent?.fdId : "无"}</div>
+          ) 
+        }
+      },
+      { 
+        title: "备注描述", 
         dataIndex: "fdRemark", 
         key: "fdRemark",
         render: (_: any, record: any) => {
           return (
-            <div style={{ width: "650px" }}>{record?.fdRemark}</div>
+            <div style={{ width: "350px" }}>{record?.fdRemark}</div>
           ) 
         }
       },
@@ -181,6 +255,7 @@ const ModulesManage: NextPage = () => {
         render: (_: any, record: any) => {
           return (
             <>
+              <Button className={classNames("btn-action")} onClick={() => onShowUpdateModal(record)}>编辑</Button>
               <Button className={classNames("btn-action")} onClick={() => handleDelete(record)}>删除</Button>
             </>
           )
@@ -199,7 +274,7 @@ const ModulesManage: NextPage = () => {
   }
 
   useEffect(() => {
-    getModules()
+    getDepts()
   }, [])
 
   return (
@@ -209,9 +284,10 @@ const ModulesManage: NextPage = () => {
           <SearchLayout formObj={formObj} tabelObj={tabelObj} />
         </div>
       </section>
-      <AddModules open={showAddModal} onCancel={() => onHideAddModal()}/>
+      <AddDepts open={showAddModal} onCancel={() => onHideAddModal()}/>
+      <UpdateDepts open={showUpdateModal} detail={detail} onCancel={() => onHideUpdateModal()}/>
     </div>
   )
 }
 
-export default ModulesManage
+export default DeptsManage

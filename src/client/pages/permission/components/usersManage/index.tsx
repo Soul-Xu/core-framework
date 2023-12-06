@@ -67,13 +67,15 @@ const UsersManage: NextPage = () => {
     confirm({
       title: "确认删除",
       icon: <ExclamationCircleFilled />,
-      content: `是否确定删除用户 ${record.permission}？`,
+      content: (
+        <div>
+          是否确定删除用户
+          <span style={{ color: "red" }}>{record.fdUserName}</span>
+          ？
+        </div>
+      ),
       onOk() {
-        // 创建新的数据列表，不包含要删除的数据项
-        const updatedDataList = dataList.filter((item: any) => item.key !== record.key);
-        // 更新数据列表状态
-        // setDataList(updatedDataList);
-        // 在这里可以执行删除请求到服务器，根据情况来更新服务器数据
+        deleteModules(record?.fdId)
         message.success("删除成功"); // 可以使用 Ant Design 的消息提示
       },
       onCancel() {
@@ -83,8 +85,24 @@ const UsersManage: NextPage = () => {
     });
   }
 
+    /**
+   * @description 用户管理 - 删除用户
+   */
+    const deleteModules = async (fdId: string) => {
+      const params = {
+        fdId: fdId
+      }
+  
+      const res = await dispatchRedux(asyncThunk.deleteUsers(params) as any);
+      const data = res?.payload
+      if (data.code === 200) {
+        getUsers()
+        message.success("删除成功")
+      }
+    }
+
   /**
-   * 人员管理 - 获取用户列表
+   * 用户管理 - 获取用户列表
    */
   const getUsers = async () => {
     const params = {
@@ -247,6 +265,18 @@ const UsersManage: NextPage = () => {
           )
         }
       },
+      {
+        title: "操作",
+        dataIndex: "action",
+        key: "action",
+        render: (_: any, record: any) => {
+          return (
+            <>
+              <Button className={classNames("btn-action")} onClick={() => handleDelete(record)}>删除</Button>
+            </>
+          )
+        }
+      }
     ],
     datasource: dataList,
     total: dataList.length,

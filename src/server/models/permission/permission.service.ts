@@ -27,12 +27,7 @@ export class PermissionService {
         data: data.data
       }
     } else {
-      return {
-        code: data.code,
-        data: data.data,
-        message: data.message,
-        success: data.success
-      }
+      return data
     }
   }
 
@@ -53,12 +48,7 @@ export class PermissionService {
         data: data.data
       }
     } else {
-      return {
-        code: data.code,
-        data: data.data,
-        message: data.message,
-        success: data.success
-      }
+      return data
     }
   }
 
@@ -79,12 +69,7 @@ export class PermissionService {
         data: data.data
       }
     } else {
-      return {
-        code: data.code,
-        data: data.data,
-        message: data.message,
-        success: data.success
-      }
+      return data
     }
   }
 
@@ -105,12 +90,7 @@ export class PermissionService {
         data: data.data
       }
     } else {
-      return {
-        code: data.code,
-        data: data.data,
-        message: data.message,
-        success: data.success
-      }
+      return data
     }
   }
 
@@ -131,12 +111,7 @@ export class PermissionService {
         data: data.data
       }
     } else {
-      return {
-        code: data.code,
-        data: data.data,
-        message: data.message,
-        success: data.success
-      }
+      return data
     }
   }
 
@@ -157,12 +132,7 @@ export class PermissionService {
         data: data.data
       }
     } else {
-      return {
-        code: data.code,
-        data: data.data,
-        message: data.message,
-        success: data.success
-      }
+      return data
     }
   }
 
@@ -183,12 +153,7 @@ export class PermissionService {
         data: data.data
       }
     } else {
-      return {
-        code: data.code,
-        data: data.data,
-        message: data.message,
-        success: data.success
-      }
+      return data
     }
   }
 
@@ -209,12 +174,7 @@ export class PermissionService {
         data: data.data
       }
     } else {
-      return {
-        code: data.code,
-        data: data.data,
-        message: data.message,
-        success: data.success
-      }
+      return data
     }
   }
 
@@ -235,12 +195,7 @@ export class PermissionService {
         data: data.data
       }
     } else {
-      return {
-        code: data.code,
-        data: data.data,
-        message: data.message,
-        success: data.success
-      }
+      return data
     }
   }
 
@@ -261,12 +216,7 @@ export class PermissionService {
         data: data.data
       }
     } else {
-      return {
-        code: data.code,
-        data: data.data,
-        message: data.message,
-        success: data.success
-      }
+      return data
     }
   }
 
@@ -287,12 +237,7 @@ export class PermissionService {
         data: data.data
       }
     } else {
-      return {
-        code: data.code,
-        data: data.data,
-        message: data.message,
-        success: data.success
-      }
+      return data
     }
   }
 
@@ -313,12 +258,7 @@ export class PermissionService {
         data: data.data
       }
     } else {
-      return {
-        code: data.code,
-        data: data.data,
-        message: data.message,
-        success: data.success
-      }
+      return data
     }
   }
 
@@ -339,12 +279,7 @@ export class PermissionService {
         data: data.data
       }
     } else {
-      return {
-        code: data.code,
-        data: data.data,
-        message: data.message,
-        success: data.success
-      }
+      return data
     }
   }
 
@@ -365,12 +300,28 @@ export class PermissionService {
         data: data.data
       }
     } else {
-      return {
-        code: data.code,
-        data: data.data,
-        message: data.message,
-        success: data.success
+      return data
+    }
+  }
+
+  async deleteUsers(body: DeleteUsersDto) {
+    const res = await axios.request({
+      url: `${baseApiOrg}/user/delete`,
+      method: "post",
+      data: body,
+      headers: {
+        withCredentials: true,
+        "ltpatoken": Global.token
       }
+    })
+    const data = res.data
+    if (data.code === 200 && data.success) {
+      return {
+        code: 200,
+        data: data.data
+      }
+    } else {
+      return data
     }
   }
 
@@ -391,18 +342,13 @@ export class PermissionService {
         data: data.data
       }
     } else {
-      return {
-        code: data.code,
-        data: data.data,
-        message: data.message,
-        success: data.success
-      }
+      return data
     }
   }
 
   async addDepts(body: AddDeptsDto) {
     const res = await axios.request({
-      url: `${baseApi}/dept/add`,
+      url: `${baseApiOrg}/dept/add`,
       method: "post",
       data: body,
       headers: {
@@ -417,18 +363,55 @@ export class PermissionService {
         data: data.data
       }
     } else {
-      return {
-        code: data.code,
-        data: data.data,
-        message: data.message,
-        success: data.success
+      return data
+    }
+  }
+
+  async updateDepts(body: UpdateDeptsDto) {
+    const res = await axios.request({
+      url: `${baseApiOrg}/dept/update`,
+      method: "post",
+      data: body,
+      headers: {
+        withCredentials: true,
+        "ltpatoken": Global.token
       }
+    })
+    const data = res.data
+    if (data.code === 200 && data.success) {
+      return {
+        code: 200,
+        data: data.data
+      }
+    } else {
+      return data
+    }
+  }
+
+  async deleteDepts(body: DeleteDeptsDto) {
+    const res = await axios.request({
+      url: `${baseApiOrg}/dept/delete`,
+      method: "post",
+      data: body,
+      headers: {
+        withCredentials: true,
+        "ltpatoken": Global.token
+      }
+    })
+    const data = res.data
+    if (data.code === 200 && data.success) {
+      return {
+        code: 200,
+        data: data.data
+      }
+    } else {
+      return data
     }
   }
 
   async getDepts(body: GetDeptsDto) {
     const res = await axios.request({
-      url: `${baseApi}/dept/list`,
+      url: `${baseApiOrg}/dept/list`,
       method: "post",
       data: body,
       headers: {
@@ -443,12 +426,7 @@ export class PermissionService {
         data: data.data
       }
     } else {
-      return {
-        code: data.code,
-        data: data.data,
-        message: data.message,
-        success: data.success
-      }
+      return data
     }
   }
 
@@ -469,12 +447,7 @@ export class PermissionService {
         data: data.data
       }
     } else {
-      return {
-        code: data.code,
-        data: data.data,
-        message: data.message,
-        success: data.success
-      }
+      return data
     }
   }
 }

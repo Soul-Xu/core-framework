@@ -2,13 +2,14 @@
  * 新建应用
  */
 /** external library */
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { useImmerReducer } from "use-immer";
 import { reducer } from "../../../../../../utils/reducer";
 import { Modal, Form, Input, message } from "antd"
 import asyncThunk from "../../../../../../store/asyncThunk";
+import { setDeptsList } from "../../../../../../store/modules/permissionSlice" 
 const Textarea = Input
 
 /** css */
@@ -37,16 +38,15 @@ const initialState = {
   fdEducation: "",
   fdCity: "",
   fdRemark: "",
-  // “fdParent":{
-  //         "fdId":"xxxx"
-  // },
+  fdId: "",
+  depts: []
 }
 
 const AddUsers = (props: Props) => {
   const router = useRouter()
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
-  const { fdNickName, fdUserName, fdPassword, fdEmail, fdCellphone, fdEducation, fdCity, fdRemark } = data
+  const { fdNickName, fdUserName, fdPassword, fdEmail, fdCellphone, fdEducation, fdCity, fdRemark, fdId, depts } = data
   const { open, onCancel } = props
 
   /**
@@ -82,7 +82,7 @@ const AddUsers = (props: Props) => {
       fdCity: fdCity,
       fdRemark: fdRemark,
       fdParent: {
-        fdId: "1hc2iasp01vuk8e93igqvu31g2aamj19"
+        fdId: fdId
       }
     }
 
@@ -101,6 +101,41 @@ const AddUsers = (props: Props) => {
     message.error("添加用户失败")
     onCancel()
   }
+
+  const getDepts = async () => {
+    const params = {
+      page: 1,
+      pageSize: 20
+    }
+
+    const res = await dispatchRedux(asyncThunk.getDepts(params) as any);
+    const data = res?.payload
+    if (data.code === 200) {
+      const { content } = data.data;
+      const depts = content.map((contentItem: any, index: number) => {
+          return {
+            ...contentItem,
+            sort: index + 1
+          }
+      })
+      console.log("getDepts", depts)
+      // setState("update", {
+      //   dataList: users
+      // })
+      dispatchRedux(setDeptsList({
+        deptsList: depts
+      }))
+    } else if (
+        data.code === 401 && 
+        data.success === false &&
+        data.message === "请先登录后再操作!") {
+      router.push("/login")
+    }
+  }
+
+  useEffect(() => {
+    getDepts()
+  }, [])
 
   return (
     <Modal 
@@ -167,6 +202,14 @@ const AddUsers = (props: Props) => {
           )} 
         >
           <Input placeholder="请选择城市" onChange={(e: any) => onHandleChange("fdCity", e)} />
+        </Form.Item>
+        <Form.Item 
+          name="fdId"
+          label={(
+            <div className={classNames("form-item-label")}>城市</div>
+          )} 
+        >
+          <Input placeholder="请选择城市" onChange={(e: any) => onHandleChange("fdId", e)} />
         </Form.Item>
         <Form.Item 
           name="fdRemark"

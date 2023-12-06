@@ -106,6 +106,12 @@ export class PermissionController {
     return this.permissionService.addUsers(body);
   }
 
+  // 组织架构--新增用户
+  @Post("/deleteUsers")
+  deleteUsers(@Body() body: AddRolesDto) {
+    return this.permissionService.deleteUsers(body);
+  }
+
   // 组织架构--用户列表接口
   @Post("/getUsers")
   getUsers(@Body() body: GetUsersDto) {
@@ -113,9 +119,21 @@ export class PermissionController {
   }
 
   // 组织架构--新增部门
-  @Post("/addUsers")
+  @Post("/addDepts")
   addDepts(@Body() body: AddDeptsDto) {
     return this.permissionService.addDepts(body);
+  }
+
+  // 组织架构--新增部门
+  @Post("/updateDepts")
+  updateDepts(@Body() body: AddDeptsDto) {
+    return this.permissionService.updateDepts(body);
+  }
+
+  // 组织架构--删除部门
+  @Post("/deleteDepts")
+  deleteDepts(@Body() body: DeleteDeptsDto) {
+    return this.permissionService.deleteDepts(body);
   }
 
   // 组织架构--部门列表接口
@@ -124,7 +142,7 @@ export class PermissionController {
     return this.permissionService.getDepts(body);
   }
 
-  // 地址本接口（人员选择器）
+  // 地址本接口（用户选择器）
   @Post("/getAddress")
   getAddress(@Body() body: AddPermissionDto) {
     return this.permissionService.getAddress(body);
