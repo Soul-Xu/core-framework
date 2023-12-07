@@ -12,7 +12,6 @@ export class LoginService {
       rememberMe: false
     }
     const res = await axios.post(`${baseApi}/login`, params)
-    console.log("22222222222222222222222-res.headers", res.headers)
 
     // 获取token的值
     const token = res.headers['ltpatoken']

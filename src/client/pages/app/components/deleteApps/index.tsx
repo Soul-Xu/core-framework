@@ -41,8 +41,9 @@ const DeleteApps = (props: Props) => {
     const params = {
       fdId: appId,
     }
+    console.log("params", params)
 
-    const res = await dispatchRedux(asyncThunk.deleteApp(params) as any);
+    const res = await dispatchRedux(asyncThunk.deleteApps(params) as any);
     const data = res?.payload;
     if (data.code === 200) {
       message.success("删除成功")

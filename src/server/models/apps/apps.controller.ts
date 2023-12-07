@@ -1,18 +1,6 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  HttpStatus,
-  Headers} from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { AppsService } from './apps.service';
-import { GetAppsDto } from './dto/getApps.dto'; 
-import { CreateAppDto } from './dto/createApp.dto';
-import { UpdateAppDto } from './dto/updateApp.dto';
-import { DeleteAppDto } from './dto/deleteApp.dto';
+import { AddAppsDto, UpdateAppsDto, DeleteAppsDto, GetAppsDto } from './dto/apps.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('/apis/apps')
@@ -20,27 +8,23 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 export class AppsController {
   constructor(private readonly appsService: AppsService) {}
 
+  @Post("/addApps")
+  addApps(@Body() body: AddAppsDto) {
+    return this.appsService.addApps(body);
+  }
+
+  @Post('/updateApps')
+  updateApps(@Body() body: UpdateAppsDto) {
+    return this.appsService.updateApps(body);
+  }
+
+  @Post('/deleteApps')
+  deleteApps(@Body() body: DeleteAppsDto) {
+    return this.appsService.deleteApps(body);
+  }
+
   @Post("/getApps")
-  getApps(@Body() body: GetAppsDto, @Headers() headers: any) {
+  getApps(@Body() body: GetAppsDto) {
     return this.appsService.getApps(body);
-  }
-
-  @Post("/createApp")
-  createApp(@Body() body: CreateAppDto) {
-    return this.appsService.createApp(body);
-  }
-
-  @Post('/updateApp/:id')
-  update(
-    @Body() body: UpdateAppDto,
-  ) {
-    return this.appsService.updateApp(body);
-  }
-
-  @Post('/updateApp/:id')
-  remove(
-    @Body() body: DeleteAppDto,
-  ) {
-    return this.appsService.remove(body);
   }
 }

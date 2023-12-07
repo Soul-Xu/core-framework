@@ -85,7 +85,7 @@ const AddApps = (props: Props) => {
       fdDisplayOrder: fdDisplayOrder
     }
 
-    const res = await dispatchRedux(asyncThunk.createApp(params) as any);
+    const res = await dispatchRedux(asyncThunk.addApps(params) as any);
     const data = res?.payload;
     if (data.code === 200) {
       onCancel()

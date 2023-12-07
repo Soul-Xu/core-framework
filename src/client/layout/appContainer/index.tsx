@@ -12,7 +12,7 @@ import {
   ExpandOutlined
  } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, Menu } from 'antd';
+import { Layout, Menu } from 'antd';
 const { Header, Content, Sider } = Layout;
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -68,25 +68,25 @@ interface PageContainerProps {
 }
 
 const AppContainer: NextPage<PageContainerProps> = ({ children }: any) => {
-  const [collapsed, setCollapsed] = useState(false)
-  const [selectKey, setSelectKey] = useState([''])
-  const router:any = useRouter()
+  const router: any = useRouter();
+  const [collapsed, setCollapsed] = useState(false);
+  const [selectKey, setSelectKey] = useState(['']);
 
   const onMenuClick = (menu: any) => {
-    if (menu.key !== "openAPI") {
-      setSelectKey([`${menu.key}`])
-      router.push(`/${menu.key}`)
-    } else {
-      console.log("openAPI")
-    }
-    // setSelectKey([`${menu.key}`])
-    // router.push(`/${menu.key}`)
-  }
+    // if (menu.key !== "openAPI") {
+    //   setSelectKey([`${menu.key}`]);
+    //   router.push(`/${menu.key}`);
+    // } else {
+    //   console.log("openAPI");
+    // }
+    setSelectKey([`${menu.key}`]);
+    router.push(`/${menu.key}`);
+  };
 
   useEffect(() => {
-    const currentPath = router.pathname.split("/")[1]
-    setSelectKey([`${currentPath}`])
-  }, [router.pathname])
+    const currentPath = router.pathname.split("/")[1];
+    setSelectKey([`${currentPath}`]);
+  }, [router.pathname]);
 
   return (
     <Layout>
@@ -97,9 +97,9 @@ const AppContainer: NextPage<PageContainerProps> = ({ children }: any) => {
       </Header>
       <Layout className={classNames("container-wrapper")}>
         <Sider
-          className={classNames("sider")} 
-          collapsible 
-          collapsed={collapsed} 
+          className={classNames("sider")}
+          collapsible
+          collapsed={collapsed}
           onCollapse={(value) => setCollapsed(value)}
           style={{
             overflow: "auto",
@@ -110,7 +110,21 @@ const AppContainer: NextPage<PageContainerProps> = ({ children }: any) => {
             width: collapsed ? "60px" : "200px"
           }}
         >
-          <Menu selectedKeys={selectKey} style={{ fontSize: "18px" }} defaultSelectedKeys={['app']} mode="inline" items={items} onClick={onMenuClick} />
+          <Menu 
+            selectedKeys={selectKey} 
+            style={{ fontSize: "18px" }} 
+            defaultSelectedKeys={['app']} 
+            mode="inline" 
+            // @ts-ignore
+            collapsed={collapsed}
+            onClick={onMenuClick}
+          >
+            {items.map((item: any) => (
+              <Menu.Item key={item.key} icon={item.icon}>
+                {collapsed ? null : item.label}
+              </Menu.Item>
+            ))}
+          </Menu>
         </Sider>
         <Content
           style={{

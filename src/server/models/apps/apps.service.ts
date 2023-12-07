@@ -1,10 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { baseApi, Global } from 'src/server/config';
-import { GetAppsDto } from './dto/getApps.dto'; 
-import { CreateAppDto } from './dto/createApp.dto';
-import { UpdateAppDto } from './dto/updateApp.dto';
-import { DeleteAppDto } from './dto/deleteApp.dto';
+import { AddAppsDto, UpdateAppsDto, DeleteAppsDto, GetAppsDto } from './dto/apps.dto';
 
 @Injectable()
 export class AppsService {
@@ -25,16 +22,11 @@ export class AppsService {
         data: data.data
       }
     } else {
-      return {
-        code: data.code,
-        data: data.data,
-        message: data.message,
-        success: data.success
-      }
+      return data
     }
   }
 
-  async createApp(body: CreateAppDto) {
+  async addApps(body: AddAppsDto) {
     const res = await axios.request({
       url: `${baseApi}/app-permission/add`,
       method: "post",
@@ -51,16 +43,11 @@ export class AppsService {
         data: data.data
       }
     } else {
-      return {
-        code: data.code,
-        data: data.data,
-        message: data.message,
-        success: data.success
-      }
+      return data
     }
   }
 
-  async updateApp(body: UpdateAppDto) {
+  async updateApps(body: UpdateAppsDto) {
     const res = await axios.request({
       url: `${baseApi}/app-permission/update`,
       method: "post",
@@ -77,18 +64,13 @@ export class AppsService {
         data: data.data
       }
     } else {
-      return {
-        code: data.code,
-        data: data.data,
-        message: data.message,
-        success: data.success
-      }
+      return data
     }
   }
 
-  async remove(body: DeleteAppDto) {
+  async deleteApps(body: DeleteAppsDto) {
     const res = await axios.request({
-      url: `${baseApi}/app-permission/update`,
+      url: `${baseApi}/app-permission/delete`,
       method: "post",
       data: body,
       headers: {
@@ -103,12 +85,7 @@ export class AppsService {
         data: data.data
       }
     } else {
-      return {
-        code: data.code,
-        data: data.data,
-        message: data.message,
-        success: data.success
-      }
+      return data
     }
   }
 }

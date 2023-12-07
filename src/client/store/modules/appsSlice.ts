@@ -6,6 +6,7 @@ export interface AppsState {
   appsList: Array<any>,
   appsConfig: {
     showCurrent: boolean,
+    showMyFavor: boolean,
     showMine: boolean
   }
 }
@@ -16,6 +17,7 @@ const initialState: AppsState = {
   appsList: [],
   appsConfig: {
     showCurrent: true,
+    showMyFavor: true,
     showMine: true
   }
 }

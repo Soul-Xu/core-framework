@@ -21,6 +21,7 @@ const classNames = classnames.bind(styles);
 import AppContainer from '../../layout/appContainer';
 import SearchApps from './components/searchApps';
 import RecentApps from './components/recentApps';
+import MyFavorApps from './components/myFavor';
 import MyApps from './components/myApps';
 
 const initialState = {
@@ -31,9 +32,8 @@ const App: NextPage = () => {
   const router = useRouter()
   const dispatchRedux = useDispatch();
   const appsConfig = useSelector((state: any) => state.apps.appsConfig)
-  const baseApi = useSelector((state: any) => state.common.baseApi)
   const [data, dispatch] = useImmerReducer(reducer, initialState);
-  const { showCurrent, showMine } = appsConfig
+  const { showCurrent, showMyFavor, showMine } = appsConfig
   const { appsList } = data
 
   /**
@@ -49,13 +49,14 @@ const App: NextPage = () => {
    * @description 获取当前应用列表
    * @param page: 当前页，pageSize: 每页显示数量，sort: 排序方式
    */
-  const getAppList = async () => {
+  const getAppList = async (req?: any) => {
     const params = {
       page: 1,
       pageSize: 999, // 默认size为20, 出于页面UI考虑，设定为999，即拿到所有的apps
       sort: {
         fdDisplayOrder: "desc"
-      }
+      },
+      ...req
     }
     const res = await dispatchRedux(asyncThunk.getApps(params) as any);
     const data = res?.payload
@@ -83,8 +84,9 @@ const App: NextPage = () => {
     <>
       <AppContainer>
         <div className={classNames("container")}>
-          <SearchApps />
+          <SearchApps getAppList={getAppList} />
           { showCurrent && <RecentApps appList={appsList}/> }
+          { showMyFavor && <MyFavorApps appList={appsList}/> }
           { showMine && <MyApps appList={appsList} onRefresh={() => getAppList()} /> }
         </div>
       </AppContainer>

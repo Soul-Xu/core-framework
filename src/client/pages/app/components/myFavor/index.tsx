@@ -20,7 +20,7 @@ import styles from "./index.module.scss";
 const classNames = classnames.bind(styles);
 
 /** images */
-import ImgRecentIcon from "public/images/apps/recent-icon.png"
+import ImgCollectIcon from "public/images/apps/collect-icon.png"
 
 /**
  * interface
@@ -39,7 +39,7 @@ interface Props {
   appList: Array<AppProps>
 }
 
-const RecentApps = (props: Props) => {
+const MyFavorApps = (props: Props) => {
   const { appList } = props
   const [isExpend, setIsExpanded] = useState(true)
   const [renderAppList, setRenderAppList] = useState([])
@@ -61,10 +61,10 @@ const RecentApps = (props: Props) => {
         </div>
         <div className={classNames("recent-apps-header-icon")}>
           <div className={classNames("recent-apps-header-icon-img")}>
-            <Image src={ImgRecentIcon} width={18} height={18} alt="ImgRecentIcon" />
+            <Image src={ImgCollectIcon} width={18} height={18} alt="ImgCollectIcon" />
           </div>
         </div>
-        <div className={classNames("recent-apps-header-title")}>最近使用</div>
+        <div className={classNames("recent-apps-header-title")}>我的收藏</div>
       </div>
       { isExpend && (
         <div className={classNames("recent-apps-list")}>
@@ -83,4 +83,4 @@ const RecentApps = (props: Props) => {
   )
 }
 
-export default RecentApps;
+export default MyFavorApps;

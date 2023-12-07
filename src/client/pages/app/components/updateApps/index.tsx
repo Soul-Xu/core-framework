@@ -12,8 +12,6 @@ const { TextArea } = Input;
 /** utils */
 import { reducer } from "../../../../utils/reducer";
 import asyncThunk from "../../../../store/asyncThunk"
-import axios from "axios";
-// import { baseApi } from "../../../../config";
 import _ from "lodash"
 
 /** css */
@@ -87,7 +85,7 @@ const UpdateApps = (props: Props) => {
       fdDisplayOrder: fdDisplayOrder
     }
 
-    const res = await dispatchRedux(asyncThunk.updateApp(params) as any);
+    const res = await dispatchRedux(asyncThunk.updateApps(params) as any);
     const data = res?.payload;
     if (data.code === 200) {
       onCancel()

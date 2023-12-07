@@ -4,9 +4,8 @@
 /** external library */
 import Image from "next/image";
 import Link from "next/link"
-import { NavLink } from 'react-router-dom';
 import React, { useState, useEffect } from "react";
-import { Modal, message } from "antd"
+import { Modal, message, Dropdown, Menu } from "antd"
 const confirm = Modal
 import { 
   CaretDownOutlined,
@@ -14,6 +13,7 @@ import {
   AppstoreOutlined,
   TagOutlined,
   RedEnvelopeOutlined,
+  UserOutlined,
   DeleteOutlined,
   EditOutlined,
   ExclamationCircleFilled
@@ -31,6 +31,11 @@ import { getRandomColor } from "../../../../utils/index";
 import classnames from "classnames/bind";
 import styles from "./index.module.scss";
 const classNames = classnames.bind(styles);
+
+/** images */
+import ImgMineIcon from "public/images/apps/mine-icon.png"
+import ImgCollect from "public/images/apps/collect.png"
+import ImgActions from "public/images/apps/actions.png"
 
 /**
  * interface
@@ -100,8 +105,8 @@ const MyApps = (props: Props) => {
    * @param
    */
   const onDeleteAppModal = (record: any) => {
-    // Event.preventDefault()
     setSelectId(record.fdId)
+    setShowDelelteModal(true)
   }
 
   useEffect(() => {
@@ -111,6 +116,21 @@ const MyApps = (props: Props) => {
   useEffect(() => {
     selectId !== "" && selectDetail !== null && setShowUpdateModal(true)
   }, [selectDetail])
+
+  const getDropdownMenu = (app, index) => (
+    <Menu>
+      <Menu.Item key="edit" onClick={() => onUpdateAppModal(app)}>
+        <span style={{ marginRight: "4px" }}><EditOutlined /></span>
+        <span>编辑</span>
+      </Menu.Item>
+      {index !== 0 && (
+        <Menu.Item key="delete" onClick={() => onDeleteAppModal(app)}>
+          <span style={{ marginRight: "4px" }}><DeleteOutlined /></span>
+          <span>删除</span>
+        </Menu.Item>
+      )}
+    </Menu>
+  );
 
   return (
     <div className={classNames("my-apps")}>
@@ -122,7 +142,7 @@ const MyApps = (props: Props) => {
       </div>
       <div className={classNames("my-apps-header-icon")}>
         <div className={classNames("my-apps-header-icon-img")}>
-          <AppstoreOutlined />
+          <Image src={ImgMineIcon} width={18} height={18} alt="ImgMineIcon" />
         </div>
       </div>
       <div className={classNames("my-apps-header-title")}>我的应用</div>
@@ -132,10 +152,19 @@ const MyApps = (props: Props) => {
       <div className={classNames("my-apps-list")}>
         { appList.map((app: any, index: number) => (
           <div className={classNames("my-apps-list-item")} key={app?.fdId}>
-            <div className={classNames("my-apps-list-item-btn")}>
-              <span onClick={() => onUpdateAppModal(app)}><EditOutlined /></span>
-              {index !== 0 && <span onClick={() => onDeleteAppModal(app)}><DeleteOutlined /></span>}
-            </div>
+            <section className={classNames("my-apps-list-item-btn")}>
+              <div className={classNames("btn-collect")}>
+                <Image src={ImgCollect} width={16} height={16} alt={"ImgCollect"} />
+              </div>
+              <div>
+                {/* @ts-ignore */}
+                <Dropdown menu={getDropdownMenu(app, index)} trigger={['click']} placement="bottomRight">
+                  <span>
+                    <Image src={ImgActions} width={16} height={16} alt={"ImgActions"} />
+                  </span>
+                </Dropdown>
+              </div>
+            </section>
             <Link href={`/app/${app.fdId}`} key={app.fdId}>
               <div className={classNames("my-apps-list-item-icon")} 
                 style={{ backgroundColor: app.navColor || getRandomColor(), color: app.iconColor || "#000"}}> 

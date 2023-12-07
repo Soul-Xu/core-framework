@@ -2,7 +2,7 @@
  * 设置应用组件
  */
 import React, {useCallback} from 'react';
-import { Input, Tooltip, Drawer, Switch, Divider } from 'antd';
+import { Drawer, Switch, Divider } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import { useImmerReducer } from "use-immer";
 /** store */
@@ -23,6 +23,7 @@ interface Props {
 
 const initialState = {
   showCurrent: true, // 显示最近使用
+  showMyFavor: true, // 显示我的收藏
   showMine: true // 显示我的
 }
 
@@ -30,7 +31,7 @@ const SettingApps = (props: Props) => {
   const { open, onClose } = props
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
-  const { showCurrent, showMine } = data as any;
+  const { showCurrent, showMyFavor, showMine } = data as any;
   const appsConfig = useSelector((state: any) => state.apps.appsConfig)
 
   /**
@@ -54,14 +55,25 @@ const SettingApps = (props: Props) => {
       })
       dispatchRedux(setAppsConfig({
         showCurrent: value,
+        showMyFavor: appsConfig.showMyFavor,
         showMine: appsConfig.showMine
       }))
-    } else {
+    } else if ((type === "favor")) {
+      setState("update", { 
+        showMyFavor: value
+      })
+      dispatchRedux(setAppsConfig({
+        showCurrent: appsConfig.showCurrent,
+        showMyFavor: value,
+        showMine: appsConfig.showMine
+      }))
+    } else if ((type === "mine")) {
       setState("update", { 
         showMine: value
       })
       dispatchRedux(setAppsConfig({
         showCurrent: appsConfig.showCurrent,
+        showMyFavor: appsConfig.showMyFavor,
         showMine: value
       }))
     }
@@ -75,6 +87,13 @@ const SettingApps = (props: Props) => {
             <span className={classNames("item-title")}>显示最近使用</span>
             <div className={classNames("item-switch")}>
               <Switch checked={showCurrent} onChange={(value: any) => onSwitchChange("current", value)} />
+            </div>
+          </div>
+          <Divider />
+          <div className={classNames("setting-container-item")}>
+            <span className={classNames("item-title")}>显示我的收藏</span>
+            <div className={classNames("item-switch")}>
+              <Switch checked={showMyFavor} onChange={(value: any) => onSwitchChange("favor", value)} />
             </div>
           </div>
           <Divider />

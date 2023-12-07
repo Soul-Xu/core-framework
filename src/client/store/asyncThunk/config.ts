@@ -8,53 +8,30 @@ export interface AsyncThunkValueObject {
 export type AsyncThunkValue = AsyncThunkValueObject | Method;
 
 /**
- * 默认url为 ''
- * 如果不使用默认url则需要传对象，否则传请求方式即可
- *
  * 需要将thunk名手动添加到 AsyncThunkMap 中，方便代码提示
  */
 
-// demo
-const demo: Record<string, AsyncThunkValue> = {
-  getDemo: {
-    method: "get",
-    url: "/api/demo"
-  },
-  batchDemo: {
-    method: "post",
-    url: "/api/demo/"
-  },
-  postDemo: {
-    method: "post",
-    url: "/api/demo"
-  },
-  deleteDemo: {
-    method: "delete",
-    url: "/api/demo/:id"
-  }
-};
-
 // 应用 - apps
 const apps: Record<string, AsyncThunkValue> = {
-  // 获取应用列表
+  // 应用列表
   getApps: {
     method: "post",
     url: "/apis/apps/getApps"
   },
   // 新建应用
-  createApp: {
+  addApps: {
     method: "post",
-    url: "/apis/apps/createApp"
+    url: "/apis/apps/addApps"
   },
   // 编辑应用
-  updateApp: {
+  updateApps: {
     method: "post",
-    url: "/apis/apps/updateApp/:id"
+    url: "/apis/apps/updateApps"
   },
   // 删除应用
-  deleteApp: {
-    method: "delete",
-    url: "/apis/apps/deleteApp/:id"
+  deleteApps: {
+    method: "post",
+    url: "/apis/apps/deleteApps"
   }
 };
 
@@ -63,22 +40,22 @@ const projects: Record<string, AsyncThunkValue> = {
   // 新建一级菜单
   createTab: {
     method: "post",
-    url: "/apis/apps/createApp"
+    url: "/apis/apps/addApps"
   },
   // 获取一级菜单列表
   getTabs: {
     method: "post",
-    url: "/apis/apps/createApp"
+    url: "/apis/apps/addApps"
   },
   // 新建二级菜单
   createMenu: {
     method: "post",
-    url: "/apis/apps/updateApp/:id"
+    url: "/apis/apps/updateApps/:id"
   },
   // 获取一级菜单列表
   getMenus: {
     method: "post",
-    url: "/apis/apps/createApp"
+    url: "/apis/apps/addApps"
   },
 };
 
@@ -202,7 +179,6 @@ const asyncThunkMap: Record<string, AsyncThunkValue> = {
     method: "post",
     url: "/apis/login"
   },
-  ...demo,
   ...apps,
   ...projects,
   ...permission
@@ -211,9 +187,9 @@ const asyncThunkMap: Record<string, AsyncThunkValue> = {
 export type AsyncThunkMap =
   | "login" 
   | "getApps"
-  | "createApp"
-  | "updateApp"
-  | "deleteApp"
+  | "addApps"
+  | "updateApps"
+  | "deleteApps"
   | "createTab"
   | "createMenu"
   | "addModules"

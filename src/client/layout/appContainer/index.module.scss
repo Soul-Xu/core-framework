@@ -1,5 +1,5 @@
 .header {
-  z-index: 16;
+  z-index: 1;
   display: block;
   padding: 0 !important;
   background: #fff;
@@ -9,7 +9,6 @@
     display: flex;
     align-items: center;
     height: 50px;
-    padding-left: 24px;
     background: rgb(255 255 255);
     box-shadow: rgb(0 0 0 / 16%) 0 1px 3px;
     -webkit-box-align: center;
@@ -22,7 +21,7 @@
       font-size: 18px;
       font-weight: 700;
       line-height: 1.5em;
-      background-image: url("../../public/images/app/logo.png");
+      background-image: url("../../public/images/apps/logo.png");
       background-repeat: no-repeat;
       background-position: 20px;
       background-size: contain;
