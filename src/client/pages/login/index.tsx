@@ -1,6 +1,7 @@
-
+/**
+ * 登录页面
+ */
 /** external library */
-import Image from 'next/image';
 import React, { useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from "react-redux";
@@ -11,13 +12,9 @@ import FormLayout from "../../components/formLayout";
 /** store */
 import { setAuthState } from "../../store/modules/authSlice";
 import { setUserInfo } from "../../store/modules/loginSlice"
-import { setToken, setBaseApi } from "../../store/modules/commonSlice"
-
 /** utils */
 import asyncThunk from "../../store/asyncThunk";
 import { reducer } from "../../utils/reducer";
-import axios from 'axios';
-// import { baseApi } from '../../config';
 /** css */
 import classnames from "classnames/bind";
 import styles from "./index.module.scss";
@@ -36,7 +33,6 @@ const initialState = {
 const Login: React.FC = () => {
   const router = useRouter()
   const dispatchRedux = useDispatch();
-  const baseApi = useSelector((state: any) => state.common.baseApi)
   const [data, dispatch] = useImmerReducer(reducer, initialState);
   const { username, password } = data as any;
 
@@ -55,7 +51,19 @@ const Login: React.FC = () => {
    * @param value 
    */
   const onHandleChange = (key: string, value: string) => {
-    setState("update", { [key]: value})
+    setState("update", { [key]: value.trim() });
+  }
+
+  /**
+   * @description 登录成功
+   * @param data 
+   */
+  const onLoginSuccess = (data: any) => {
+    dispatchRedux(setAuthState({ authState: true }));
+    dispatchRedux(setUserInfo({ userInfo: data.data }));
+    localStorage.setItem("token", data.token);
+    message.success("登录成功");
+    router.push("/app");
   }
 
   /**
@@ -64,12 +72,8 @@ const Login: React.FC = () => {
    * @param value 
    */
   const onLogin = useCallback(async () => {
-    if (!username) {
-      message.warning("账号不能为空");
-      return;
-    }
-    if (!password) {
-      message.warning("密码不能为空");
+    if (!username || !password) {
+      message.warning("账号和密码不能为空");
       return;
     }
     const params = {
@@ -83,15 +87,7 @@ const Login: React.FC = () => {
     const data = res?.payload
   
     if (data?.code === 0) {
-      dispatchRedux(setAuthState({
-        authState: true
-      }))
-      dispatchRedux(setUserInfo({
-        userInfo: data.data
-      }))
-      localStorage.setItem("token", data.token)
-      message.success("登录成功")
-      router.push("/app")
+      onLoginSuccess(data)
     } else {
       message.error("登录失败，请重试")
       return
@@ -155,21 +151,6 @@ const Login: React.FC = () => {
       </section>
     )
   }
-
-  useEffect(() => {
-    const hostName = window.location.hostname
-    const origin = window.location.origin
-    if (hostName === "localhost") {
-      const apiPre = "http://localhost:3001/api/sys-auth"
-      dispatchRedux(setBaseApi({
-        baseApi: apiPre
-      }))
-    } else {
-      dispatchRedux(setBaseApi({
-        baseApi: `${origin}/api/sys-auth`
-      }))
-    }
-  }, [])
 
   return (
     <section className={classNames("login-container")}>

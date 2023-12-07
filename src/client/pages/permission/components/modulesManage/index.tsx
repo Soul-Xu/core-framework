@@ -16,31 +16,39 @@ const { confirm } = Modal;
 
 /** components */
 import AddModules from './components/addModules';
+import UpdateModules from './components/updateModules';
 
 const initialState = {
-  fdName: "", // 组织名称
-  dataList: [], // 组织列表
-  page: 1,
-  pageSize: 10,
-  total: 0
+  req: {
+    fdName: "", // 组织名称
+    page: 1,
+    pageSize: 10,
+  },
+  dataList: [],
+  detail: {}
 }
 
 const ModulesManage: NextPage = () => {
   const router = useRouter()
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
-  const { page, pageSize, dataList, fdName } = data
+  const { req, dataList, detail } = data
+  const { page, pageSize, fdName } = req
   const [showAddModal, setShowAddModal] = useState(false)
-  const permissionList = useSelector((state: any) => state.permission.permissionList)
+  const [showUpdateModal, setShowUpdateModal] = useState(false)
 
   /**
    * @description 数据处理函数
    * @param key data字段
    * @param value data字段值
    */
-    const setState = useCallback((type: string, val: Record<string, any>) => {
-      dispatch({ type, payload: val });
-    }, [dispatch]);
+  const setState = useCallback((type: string, val: Record<string, any>) => {
+    dispatch({ type, payload: val });
+  }, [dispatch]);
+
+  const onSearch = () => {
+    getModules(req)
+  };
 
   const onChangePagination = (page: number, pageSize: number) => {
     // 更新数据列表
@@ -55,6 +63,19 @@ const ModulesManage: NextPage = () => {
 
   const onHideAddModal = () => {
     setShowAddModal(false)
+  }
+
+  // 编辑弹窗
+  const onShowUpdateModal = (record: any) => {
+    setState("update", {
+      detail: record
+    })
+    setShowUpdateModal(true)
+  }
+
+  const onHideUpdateModal = () => {
+    getModules()
+    setShowUpdateModal(false)
   }
 
    // 删除数据的函数
@@ -99,11 +120,14 @@ const ModulesManage: NextPage = () => {
   /**
    * @description 模块管理 - 获取模块列表
    */
-  const getModules = async () => {
+  const getModules = async (req?: any) => {
     const params = {
       page: 1,
-      pageSize: 20
+      pageSize: 20,
+      ...req
     }
+
+    console.log("req", params)
 
     const res = await dispatchRedux(asyncThunk.getModules(params) as any);
     const data = res?.payload
@@ -132,11 +156,11 @@ const ModulesManage: NextPage = () => {
         type: 'input',
         key: 'fdName',
         value: fdName,
-        label: '权限名称',
+        label: '模块名称',
         name: 'fdName',
         placeholder: '请输入模块名称',
         callback: (e: any) => {
-          setState("update", {
+          setState("req", {
             fdName: e.target.value.trim()
           })
         }
@@ -144,7 +168,7 @@ const ModulesManage: NextPage = () => {
     ],
     customElements: () => (
       <section>
-        <Button className={classNames("btn-action")} onClick={() => console.log("search")} type='primary'>查询</Button>
+        <Button className={classNames("btn-action")} onClick={() => onSearch()} type='primary'>查询</Button>
         <Button className={classNames("btn-action")} onClick={() => onShowAddModal()}>添加</Button>
       </section>
     )
@@ -181,6 +205,7 @@ const ModulesManage: NextPage = () => {
         render: (_: any, record: any) => {
           return (
             <>
+              <Button className={classNames("btn-action")} onClick={() => onShowUpdateModal(record)}>编辑</Button>
               <Button className={classNames("btn-action")} onClick={() => handleDelete(record)}>删除</Button>
             </>
           )
@@ -210,6 +235,7 @@ const ModulesManage: NextPage = () => {
         </div>
       </section>
       <AddModules open={showAddModal} onCancel={() => onHideAddModal()}/>
+      <UpdateModules open={showUpdateModal} detail={detail} onCancel={() => onHideUpdateModal()}/>
     </div>
   )
 }

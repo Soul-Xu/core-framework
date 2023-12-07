@@ -2,8 +2,8 @@
  * 新建应用
  */
 /** external library */
-import React, { useCallback } from "react";
-import { useRouter } from "next/router";
+import React, { useCallback, useEffect } from "react";
+import { useRouter } from 'next/router';
 import { useDispatch } from "react-redux";
 import { useImmerReducer } from "use-immer";
 import { reducer } from "../../../../../../utils/reducer";
@@ -17,6 +17,7 @@ import asyncThunk from "../../../../../../store/asyncThunk";
  */
 interface Props {
   title?: string,
+  detail: any
   open: boolean,
   onOk?: () => void,
   onCancel: () => void
@@ -33,7 +34,7 @@ const UpdateModules = (props: Props) => {
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
   const { fdName, fdModuleKey, fdRemark } = data
-  const { open, onCancel } = props
+  const { detail, open, onCancel } = props
 
   /**
    * @description 数据处理函数
@@ -65,7 +66,7 @@ const UpdateModules = (props: Props) => {
     const res = await dispatchRedux(asyncThunk.uniqueModules(params) as any);
     const data = res?.payload
     if (data.code === 200 && data.data === true) {
-      return true 
+      return true
     } else if (
         data.code === 401 && 
         data.success === false &&
@@ -89,7 +90,7 @@ const UpdateModules = (props: Props) => {
       fdRemark: fdRemark
     }
 
-    const res = await dispatchRedux(asyncThunk.addModules(params) as any);
+    const res = await dispatchRedux(asyncThunk.updateModules(params) as any);
     const data = res?.payload
     if (data.code === 200) {
       onCancel()
@@ -102,16 +103,32 @@ const UpdateModules = (props: Props) => {
     onCancel()
   }
 
+  useEffect(() => {
+    if (detail) {
+      // 将 detail 中的值赋给表单的初始值
+      dispatch({ type: "update", payload: detail });
+    }
+
+    // 清空 data 的状态为初始值
+    return () => {
+      setState("update", {
+        fdName: "",
+        fdModuleKey: "",
+        fdRemark: ""
+      })
+    };
+  }, [detail, dispatch]);
+
   return (
     <Modal 
-      title="添加模块"
+      title="编辑模块"
       style={{ textAlign: "center" }}
       open={open}
       onOk={onOk}
       onCancel={onCancel}
       okText="提交"
     >
-      <Form name="UpdateModules" style={{ marginTop: "30px" }}>
+      <Form name="UpdateModules" style={{ marginTop: "30px" }} initialValues={detail}>
         <Form.Item label="模块名称" name="fdName">
           <Input placeholder="请选择模块名称" onChange={(e: any) => onHandleChange("fdName", e)} />
         </Form.Item>
