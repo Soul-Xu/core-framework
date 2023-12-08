@@ -16,8 +16,8 @@
     &-icon {
       display: flex;
       align-items: center;
-      line-height: 18px;
       font-size: 18px;
+      line-height: 18px;
 
       &-img {
         margin-right: 8px;
@@ -38,16 +38,16 @@
     }
 
     &-title {
+      width: 72px;
+      height: 20px;
       overflow: hidden;
+      font-family: MicrosoftYaHei;
+      font-size: 18px;
+      line-height: 20px;
+      color: #373d47;
       text-overflow: ellipsis;
       white-space: nowrap;
       vertical-align: top;
-      width: 72px;
-      height: 20px;
-      font-size: 18px;
-      font-family: MicrosoftYaHei;
-      color: #373D47;
-      line-height: 20px;
     }
 
     &-number {
@@ -78,14 +78,14 @@
 
     &-item {
       position: relative;
-      height: 150px;
       width: 128px;
-      padding: 8px 8px 10px 8px;
+      height: 150px;
+      padding: 8px 8px 10px;
       margin: 0 8px;
+      margin-right: 24px;
       text-align: center;
       cursor: pointer;
       transition: 0.5s ease-out;
-      margin-right: 24px;
 
       &-btn {
         display: none;
@@ -99,9 +99,9 @@
         width: 80px;
         height: 80px;
         margin: 0 auto;
+        margin-bottom: 12px;
         cursor: pointer;
         border-radius: 50%;
-        margin-bottom: 12px;
 
         span {
           display: flex;
@@ -117,7 +117,7 @@
         overflow: hidden;
         font-size: 12px;
         line-height: 16px;
-        color: #373D47;
+        color: #373d47;
         text-overflow: ellipsis;
         word-break: break-all;
       }
@@ -125,14 +125,14 @@
 
     &-item:hover {
       box-sizing: border-box;
-      height: 150px;
       width: 128px;
-      padding: 8px 8px 10px 8px;
+      height: 150px;
+      padding: 8px 8px 10px;
+      margin-right: 24px;
       cursor: pointer;
       background-color: #f5f5f5;
       border-radius: 5px;
       transform: translate(0, -10px);
-      margin-right: 24px;
 
       .my-apps-list-item-btn {
         display: flex;
@@ -151,10 +151,10 @@
           width: 80px;
           height: 80px;
           margin: 0 auto;
+          margin-bottom: 12px;
           cursor: pointer;
           border-radius: 50%;
-          margin-bottom: 12px;
-  
+
           span {
             display: flex;
             align-items: center;
@@ -163,13 +163,13 @@
             color: #fff;
           }
         }
-  
+
         &-title {
           display: box;
           overflow: hidden;
           font-size: 12px;
           line-height: 16px;
-          color: #373D47;
+          color: #373d47;
           text-overflow: ellipsis;
           word-break: break-all;
         }
@@ -179,9 +179,9 @@
     &-add {
       position: relative;
       box-sizing: border-box;
-      height: 150px;
       width: 128px;
-      padding: 8px 8px 10px 8px;
+      height: 150px;
+      padding: 8px 8px 10px;
       margin: 0 8px;
       font-size: 12px;
       line-height: 16px;
@@ -194,7 +194,7 @@
         height: 80px;
         margin: 0 auto;
         margin-bottom: 12px;
-        color: #373D47;
+        color: #373d47;
         background-color: #f5f5f5;
         border-radius: 50%;
         transition: all 0.25s;

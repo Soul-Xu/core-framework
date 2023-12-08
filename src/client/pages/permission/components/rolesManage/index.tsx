@@ -18,19 +18,22 @@ const { confirm } = Modal;
 import AddRoles from './components/addRoles';
 
 const initialState = {
-  fdRoleName: "", // 角色名称
-  description: "", // 组织
+  req: {
+    fdRoleName: "", // 角色名称
+    description: "", // 组织
+    page: 1,
+    pageSize: 10,
+  },
   dataList: [], // 角色列表
-  page: 1,
-  pageSize: 10,
-  total: 0
+  detail: {}
 }
 
 const RolesManage: NextPage = () => {
   const router = useRouter()
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
-  const { page, pageSize, dataList, fdRoleName } = data
+  const { req, dataList } = data
+  const { page, pageSize, fdRoleName } = req
   const [showAddModal, setShowAddModal] = useState(false)
 
   /**
@@ -65,20 +68,29 @@ const RolesManage: NextPage = () => {
       icon: <ExclamationCircleFilled />,
       content: `是否确定删除用户 ${record.fdRoleName}？`,
       onOk() {
-        // 创建新的数据列表，不包含要删除的数据项
-        const updatedDataList = dataList.filter((item: any) => item.key !== record.key);
-        // 更新数据列表状态
-        setState("update", {
-          dataList: updatedDataList
-        })
-        // 在这里可以执行删除请求到服务器，根据情况来更新服务器数据
-        message.success("删除成功"); // 可以使用 Ant Design 的消息提示
+        deleteRoles(record?.fdId)
       },
       onCancel() {
         // 用户取消删除操作
         message.info("取消删除");
       }
     });
+  }
+
+  /**
+   * @description 角色管理 - 删除角色
+   */
+  const deleteRoles = async (fdId: string) => {
+    const params = {
+      fdId: fdId
+    }
+
+    const res = await dispatchRedux(asyncThunk.deleteRoles(params) as any);
+    const data = res?.payload
+    if (data.code === 200) {
+      getRoles()
+      message.success("删除成功")
+    }
   }
 
   /**
@@ -155,6 +167,19 @@ const RolesManage: NextPage = () => {
           )
         }
       },
+      {
+        title: "操作",
+        dataIndex: "action",
+        key: "action",
+        render: (_: any, record: any) => {
+          return (
+            <>
+              {/* <Button className={classNames("btn-action")} onClick={() => onShowUpdateModal(record)}>编辑</Button> */}
+              <Button className={classNames("btn-action")} onClick={() => handleDelete(record)}>删除</Button>
+            </>
+          )
+        }
+      }
     ],
     datasource: dataList,
     total: dataList.length,

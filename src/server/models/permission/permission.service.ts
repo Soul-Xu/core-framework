@@ -180,7 +180,49 @@ export class PermissionService {
 
   async addPermissions(body: AddPermissionsDto) {
     const res = await axios.request({
-      url: `${baseApi}/api-permission/list`,
+      url: `${baseApi}/api-permission/add`,
+      method: "post",
+      data: body,
+      headers: {
+        withCredentials: true,
+        "ltpatoken": Global.token
+      }
+    })
+    const data = res.data
+    if (data.code === 200 && data.success) {
+      return {
+        code: 200,
+        data: data.data
+      }
+    } else {
+      return data
+    }
+  }
+
+  async updatePermissions(body: UpdatePermissionsDto) {
+    const res = await axios.request({
+      url: `${baseApi}/api-permission/update`,
+      method: "post",
+      data: body,
+      headers: {
+        withCredentials: true,
+        "ltpatoken": Global.token
+      }
+    })
+    const data = res.data
+    if (data.code === 200 && data.success) {
+      return {
+        code: 200,
+        data: data.data
+      }
+    } else {
+      return data
+    }
+  }
+
+  async deletePermissions(body: DeletePermissionsDto) {
+    const res = await axios.request({
+      url: `${baseApi}/api-permission/delete`,
       method: "post",
       data: body,
       headers: {
@@ -223,6 +265,48 @@ export class PermissionService {
   async addRoles(body: AddRolesDto) {
     const res = await axios.request({
       url: `${baseApi}/role/add`,
+      method: "post",
+      data: body,
+      headers: {
+        withCredentials: true,
+        "ltpatoken": Global.token
+      }
+    })
+    const data = res.data
+    if (data.code === 200 && data.success) {
+      return {
+        code: 200,
+        data: data.data
+      }
+    } else {
+      return data
+    }
+  }
+
+  async updateRoles(body: UpdateRolesDto) {
+    const res = await axios.request({
+      url: `${baseApi}/role/update`,
+      method: "post",
+      data: body,
+      headers: {
+        withCredentials: true,
+        "ltpatoken": Global.token
+      }
+    })
+    const data = res.data
+    if (data.code === 200 && data.success) {
+      return {
+        code: 200,
+        data: data.data
+      }
+    } else {
+      return data
+    }
+  }
+
+  async deleteRoles(body: DeleteRolesDto) {
+    const res = await axios.request({
+      url: `${baseApi}/role/delete`,
       method: "post",
       data: body,
       headers: {

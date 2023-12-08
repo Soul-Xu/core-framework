@@ -86,20 +86,20 @@ const permission: Record<string, AsyncThunkValue> = {
     method: "post",
     url: "/apis/permission/getModules"
   },
-  // 功能权限定义接口
-  addFuncs: {
-    method: "post",
-    url: "/apis/permission/addFuncs"
-  },
-  // 功能权限定义--获取可选模块
-  getFuncs: {
-    method: "post",
-    url: "/apis/permission/getFuncs"
-  },
   // 权限管理--新增权限
-   addPermissions: {
+  addPermissions: {
     method: "post",
     url: "/apis/permission/addPermissions"
+  },
+  // 权限管理--编辑权限
+  updatePermissions: {
+    method: "post",
+    url: "/apis/permission/updatePermissions"
+  },
+  // 权限管理--编辑权限
+  deletePermissions: {
+    method: "post",
+    url: "/apis/permission/deletePermissions"
   },
   // 权限管理--获取权限列表
   getPermissions: {
@@ -115,6 +115,16 @@ const permission: Record<string, AsyncThunkValue> = {
   addRoles: {
     method: "post",
     url: "/apis/permission/addRoles"
+  },
+  // 角色管理--编辑角色
+  updateRoles: {
+    method: "post",
+    url: "/apis/permission/updateRoles"
+  },
+  // 角色管理--编辑角色
+  deleteRoles: {
+    method: "post",
+    url: "/apis/permission/deleteRoles"
   },
   // 角色管理--获取角色列表
   getRoles: {
@@ -157,7 +167,7 @@ const permission: Record<string, AsyncThunkValue> = {
     method: "post",
     url: "/apis/permission/addDepts"
   },
-  // 新增部门
+  // 编辑部门
   updateDepts: {
     method: "post",
     url: "/apis/permission/updateDepts"
@@ -202,12 +212,14 @@ export type AsyncThunkMap =
   | "deleteModules"
   | "uniqueModules"
   | "getModules"
-  | "addFuncs"
-  | "getFuncs"
   | "addPermissions"
+  | "updatePermissions"
+  | "deletePermissions"
   | "getPermissions"
   | "uniquePermissions"
   | "addRoles"
+  | "updateRoles"
+  | "deleteRoles"
   | "getRoles"
   | "getRolesInfo"
   | "getRolesOption"

@@ -82,13 +82,25 @@ export class PermissionController {
     return this.permissionService.uniquePermissions(body);
   }
 
-  // 角色管理--获取角色列表
+  // 角色管理--新增角色
   @Post("/addRoles")
   addRoles(@Body() body: AddUsersDto) {
     return this.permissionService.addRoles(body);
   }
 
   // 角色管理--新增角色
+  @Post("/updateRoles")
+  updateRoles(@Body() body: UpdateUsersDto) {
+    return this.permissionService.updateRoles(body);
+  }
+
+  // 角色管理--新增角色
+  @Post("/deleteRoles")
+  deleteRoles(@Body() body: UpdateUsersDto) {
+    return this.permissionService.deleteRoles(body);
+  }
+
+  // 角色管理--获取角色列表
   @Post("/getRoles")
   getRoles(@Body() body: GetRolesDto) {
     return this.permissionService.getRoles(body);
@@ -117,7 +129,6 @@ export class PermissionController {
   updateUsers(@Body() body: UpdateUsersDto) {
     return this.permissionService.updateUsers(body);
   }
- 
 
   // 组织架构--新增用户
   @Post("/deleteUsers")

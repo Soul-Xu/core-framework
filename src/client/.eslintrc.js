@@ -41,7 +41,8 @@ module.exports = {
     "multiline-ternary": 0,
     "react/no-unescaped-entities": "off",
     indent: 0,
-    "linebreak-style": 0
+    "linebreak-style": 0,
+    "react-hooks/exhaustive-deps": 0
   },
   settings: {
     react: {

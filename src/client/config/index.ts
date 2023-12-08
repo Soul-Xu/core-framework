@@ -1,1 +1,0 @@
-export const baseApi = "http://localhost:3001/api/sys-auth"

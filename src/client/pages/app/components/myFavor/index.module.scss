@@ -16,8 +16,8 @@
     &-icon {
       display: flex;
       align-items: center;
-      line-height: 18px;
       font-size: 18px;
+      line-height: 18px;
 
       &-img {
         margin-right: 8px;
@@ -38,16 +38,16 @@
     }
 
     &-title {
+      width: 72px;
+      height: 20px;
       overflow: hidden;
+      font-family: MicrosoftYaHei;
+      font-size: 18px;
+      line-height: 20px;
+      color: #373d47;
       text-overflow: ellipsis;
       white-space: nowrap;
       vertical-align: top;
-      width: 72px;
-      height: 20px;
-      font-size: 18px;
-      font-family: MicrosoftYaHei;
-      color: #373D47;
-      line-height: 20px;
     }
 
     &-number {
@@ -81,8 +81,8 @@
       align-items: center;
       width: 150px;
       padding: 8px;
-      cursor: pointer;
       margin-right: 24px;
+      cursor: pointer;
 
       &-icon {
         position: relative;
