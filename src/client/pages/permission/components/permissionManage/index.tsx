@@ -53,6 +53,10 @@ const PermissionManage: NextPage = () => {
     // updateDataList(page, pageSize);
   }
 
+  const onSearch = () => {
+    getPermissions(req)
+  };
+
   // 新增弹窗
   const onShowAddModal = () => {
     setShowAddModal(true)
@@ -168,7 +172,7 @@ const PermissionManage: NextPage = () => {
     ],
     customElements: () => (
       <section>
-        <Button className={classNames("btn-action")} onClick={() => console.log("search")} type='primary'>查询</Button>
+        <Button className={classNames("btn-action")} onClick={() => onSearch()} type='primary'>查询</Button>
         <Button className={classNames("btn-action")} onClick={() => onShowAddModal()}>添加</Button>
       </section>
     )
