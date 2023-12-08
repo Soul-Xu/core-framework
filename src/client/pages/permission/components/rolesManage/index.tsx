@@ -45,6 +45,11 @@ const RolesManage: NextPage = () => {
     dispatch({ type, payload: val });
   }, [dispatch]);
 
+  const onSearch = () => {
+    getRoles(req)
+  };
+
+
   const onChangePagination = (page: number, pageSize: number) => {
     // 更新数据列表
     console.log("page")
@@ -57,6 +62,7 @@ const RolesManage: NextPage = () => {
   }
 
   const onHideAddModal = () => {
+    getRoles()
     setShowAddModal(false)
   }
 
@@ -66,7 +72,13 @@ const RolesManage: NextPage = () => {
     confirm({
       title: "确认删除",
       icon: <ExclamationCircleFilled />,
-      content: `是否确定删除用户 ${record.fdRoleName}？`,
+      content: (
+        <div>
+          是否确定删除角色
+          <span style={{ color: "red" }}>{record.fdRoleName}</span>
+          ？
+        </div>
+      ),
       onOk() {
         deleteRoles(record?.fdId)
       },
@@ -96,10 +108,11 @@ const RolesManage: NextPage = () => {
   /**
    * 权限管理 - 获取角色列表
    */
-  const getRoles = async () => {
+  const getRoles = async (req?: any) => {
     const params = {
       page: 1,
-      pageSize: 20
+      pageSize: 20,
+      ...req
     }
 
     const res = await dispatchRedux(asyncThunk.getRoles(params) as any);
@@ -146,7 +159,7 @@ const RolesManage: NextPage = () => {
     ],
     customElements: () => (
       <section>
-        <Button className={classNames("btn-action")} onClick={() => console.log("search")} type='primary'>查询</Button>
+        <Button className={classNames("btn-action")} onClick={() => onSearch()} type='primary'>查询</Button>
         <Button className={classNames("btn-action")} onClick={() => onShowAddModal()}>添加</Button>
       </section>
     )

@@ -84,8 +84,7 @@ const AddPermissions = (props: Props) => {
     const res = await dispatchRedux(asyncThunk.addPermissions(params) as any);
     const data = res?.payload
     if (data.code === 200) {
- 
-      console.log("permission-modules", data)
+      onCancel()
     } else if (
         data.code === 401 && 
         data.success === false &&
@@ -118,12 +117,8 @@ const AddPermissions = (props: Props) => {
     const res = await dispatchRedux(asyncThunk.getModules(params) as any);
       const data = res?.payload
       if (data.code === 200) {
-
         const { content } = data.data
         const options: any = onHandleModules(content)
-        console.log("modules-data", data)
-        console.log("modules-content", content)
-        console.log("hanlde-modules", options)
         setState("update", {
           modules: options
         })

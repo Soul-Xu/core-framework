@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
-import { Cascader, Tree } from 'antd';
-// import 'antd/dist/antd.css';
+import { Cascader, Tree, Input, Button } from 'antd';
+const { Search } = Input;
+
+/** css */
+import classnames from 'classnames/bind';
+import style from './index.module.scss';
+const classNames = classnames.bind(style);
 
 const { TreeNode } = Tree;
 
@@ -38,7 +43,7 @@ const treeData = [
   },
 ];
 
-const OrganizationSelector = () => {
+const UsersSelector = () => {
   const [selectedOrg, setSelectedOrg] = useState([]);
 
   const onSelect = (selectedKeys, info) => {
@@ -51,19 +56,22 @@ const OrganizationSelector = () => {
   };
 
   return (
-    <div style={{ display: "flex" }}>
-      <div style={{ width: "50%" }}>
-        <Tree onSelect={onSelect}>
-          {renderTreeNodes(treeData)}
-        </Tree>
-      </div>
-      <div>
-        <Cascader
-          options={treeData}
-          onChange={onChange}
-          placeholder="请选择组织"
-          value={selectedOrg}
-        />
+    <div className={classNames("container")}>
+      <div className={classNames("content")}>
+        <section className={classNames("content-tree")}>
+          <Tree onSelect={onSelect}>
+            {renderTreeNodes(treeData)}
+          </Tree>
+        </section>
+        <section className={classNames("content-list")}>
+          <div className={classNames("content-list-title")}>
+            <span>共4项</span>
+            <span className={classNames("content-list-title-action")}>清空所选</span>
+          </div>
+          <div className={classNames("content-list-main")}>
+            
+          </div>
+        </section>
       </div>
     </div>
   );
@@ -82,4 +90,4 @@ const renderTreeNodes = data => {
   });
 };
 
-export default OrganizationSelector;
+export default UsersSelector;

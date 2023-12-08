@@ -55,7 +55,7 @@ const Permission = () => {
       <AppContainer>
         <div className={classNames("container")}>
           <section className={classNames("tabs")}>
-            <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
+            <Tabs defaultActiveKey="roles" items={items} onChange={onChange} />
           </section>
         </div>
       </AppContainer>
