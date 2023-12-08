@@ -12,7 +12,7 @@ const { Search } = Input;
 import SettingApps from "../settingApps"
 
 /** utils */
-import { reducer } from "utils/reducer";
+import { reducer } from "../../../../utils/reducer";
 
 /** 
  * css 

@@ -1,8 +1,8 @@
-export class AddPermissionDto {}
+export class AddPermissionsDto {}
 
-export class UpdatePermissionDto {}
+export class UpdatePermissionsDto {}
 
-export class DeletePermissionDto {}
+export class DeletePermissionsDto {}
 
 export class UniquePermissionsDto {}
 

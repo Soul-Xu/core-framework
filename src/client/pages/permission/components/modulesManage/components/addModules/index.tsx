@@ -48,7 +48,6 @@ const AddModules = (props: Props) => {
    * @description 处理变量值变化函数
    */
   const onHandleChange = (type: string, e: any) => {
-    console.log("eeee", e.target.value)
     setState("update", {
       [type]: e.target.value
     })

@@ -12,7 +12,7 @@ import { PermissionService } from './permission.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AddModulesDto, UpdateModulesDto, DeleteModulesDto, UniqueModulesDto, GetModulesDto } from './dto/modules.dto'
 import { AddFuncsDto, UpdateFuncsDto, DeleteFuncsDto, GetFuncsDto } from './dto/funcs.dto';
-import { AddPermissionDto, UpdatePermissionDto, DeletePermissionDto, UniquePermissionsDto, GetPermissionsDto } from './dto/permissions.dto'
+import { AddPermissionsDto, UpdatePermissionsDto, DeletePermissionsDto, UniquePermissionsDto, GetPermissionsDto } from './dto/permissions.dto'
 import { AddRolesDto, UpdateRolesDto, DeleteRolesDto, GetRolesDto, GetRolesInfoDto, GetRolesOptionDto } from './dto/roles.dto'
 import { AddUsersDto, UpdateUsersDto, DeleteUsersDto, GetUsersDto } from './dto/users.dto';
 import { AddDeptsDto, UpdateDeptsDto, DeleteDeptsDto, GetDeptsDto } from './dto/depts.dto';
@@ -62,6 +62,12 @@ export class PermissionController {
   @Post("/getFuncs")
   getFuncs(@Body() body: GetFuncsDto) {
     return this.permissionService.getFuncs(body);
+  }
+
+  // 权限管理--获取权限列表
+  @Post("/addPermissions")
+  addPermissions(@Body() body: AddPermissionsDto) {
+    return this.permissionService.addPermissions(body);
   }
 
   // 权限管理--获取权限列表
@@ -151,7 +157,7 @@ export class PermissionController {
 
   // 地址本接口（用户选择器）
   @Post("/getAddress")
-  getAddress(@Body() body: AddPermissionDto) {
+  getAddress(@Body() body: AddPermissionsDto) {
     return this.permissionService.getAddress(body);
   }
 }

@@ -96,6 +96,11 @@ const permission: Record<string, AsyncThunkValue> = {
     method: "post",
     url: "/apis/permission/getFuncs"
   },
+  // 权限管理--新增权限
+   addPermissions: {
+    method: "post",
+    url: "/apis/permission/addPermissions"
+  },
   // 权限管理--获取权限列表
   getPermissions: {
     method: "post",
@@ -199,6 +204,7 @@ export type AsyncThunkMap =
   | "getModules"
   | "addFuncs"
   | "getFuncs"
+  | "addPermissions"
   | "getPermissions"
   | "uniquePermissions"
   | "addRoles"

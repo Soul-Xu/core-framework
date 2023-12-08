@@ -3,7 +3,7 @@ import axios from 'axios';
 import { baseApi, baseApiOrg, Global } from 'src/server/config';
 import { AddModulesDto, UpdateModulesDto, DeleteModulesDto, UniqueModulesDto, GetModulesDto } from './dto/modules.dto'
 import { AddFuncsDto, UpdateFuncsDto, DeleteFuncsDto, GetFuncsDto } from './dto/funcs.dto';
-import { AddPermissionDto, UpdatePermissionDto, DeletePermissionDto, UniquePermissionsDto, GetPermissionsDto } from './dto/permissions.dto'
+import { AddPermissionsDto, UpdatePermissionsDto, DeletePermissionsDto, UniquePermissionsDto, GetPermissionsDto } from './dto/permissions.dto'
 import { AddRolesDto, UpdateRolesDto, DeleteRolesDto, GetRolesDto, GetRolesInfoDto, GetRolesOptionDto } from './dto/roles.dto'
 import { AddUsersDto, UpdateUsersDto, DeleteUsersDto, GetUsersDto } from './dto/users.dto';
 import { AddDeptsDto, UpdateDeptsDto, DeleteDeptsDto, GetDeptsDto } from './dto/depts.dto';
@@ -158,6 +158,27 @@ export class PermissionService {
   }
 
   async uniquePermissions(body: UniquePermissionsDto) {
+    const res = await axios.request({
+      url: `${baseApi}/api-permission/list`,
+      method: "post",
+      data: body,
+      headers: {
+        withCredentials: true,
+        "ltpatoken": Global.token
+      }
+    })
+    const data = res.data
+    if (data.code === 200 && data.success) {
+      return {
+        code: 200,
+        data: data.data
+      }
+    } else {
+      return data
+    }
+  }
+
+  async addPermissions(body: AddPermissionsDto) {
     const res = await axios.request({
       url: `${baseApi}/api-permission/list`,
       method: "post",
@@ -451,7 +472,7 @@ export class PermissionService {
     }
   }
 
-  async getAddress(body: AddPermissionDto) {
+  async getAddress(body: AddPermissionsDto) {
     const res = await axios.request({
       url: `${baseApi}/address/tree`,
       method: "post",

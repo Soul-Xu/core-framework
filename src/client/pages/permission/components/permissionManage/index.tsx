@@ -15,23 +15,28 @@ const classNames = classnames.bind(style);
 const { confirm } = Modal;
 
 /** components */
-import AddPermission from './components/addPermission';
+import AddPermissions from './components/addPermissions';
+import UpdatePermissions from './components/updatePermissions';
 
 const initialState = {
-  fdApiName: "", // 用户名
-  description: "", // 组织
+  req: {
+    fdApiName: "", // 用户名
+    description: "", // 组织
+    page: 1,
+    pageSize: 10,
+  },
   dataList: [], // 权限列表
-  page: 1,
-  pageSize: 10,
-  total: 0
+  detail: {}
 }
 
 const PermissionManage: NextPage = () => {
   const router = useRouter()
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
-  const { page, pageSize, dataList, fdApiName } = data
+  const { req, dataList, detail } = data
+  const { page, pageSize, fdApiName } = req
   const [showAddModal, setShowAddModal] = useState(false)
+  const [showUpdateModal, setShowUpdateModal] = useState(false)
 
   /**
    * @description 数据处理函数
@@ -57,20 +62,34 @@ const PermissionManage: NextPage = () => {
     setShowAddModal(false)
   }
 
+  // 编辑弹窗
+  const onShowUpdateModal = (record: any) => {
+    setState("update", {
+      detail: record
+    })
+    setShowUpdateModal(true)
+  }
+
+  const onHideUpdateModal = () => {
+    getPermissions()
+    setShowUpdateModal(false)
+  }
+
    // 删除数据的函数
   const handleDelete = (record: any) => {
     // 弹出确认框，确保用户确认删除操作
     confirm({
       title: "确认删除",
       icon: <ExclamationCircleFilled />,
-      content: `是否确定删除用户 ${record.permission}？`,
+      content: (
+        <div>
+          是否确定删除权限
+          <span style={{ color: "red" }}>{record.fdApiName}</span>
+          ？
+        </div>
+      ),
       onOk() {
-        // 创建新的数据列表，不包含要删除的数据项
-        const updatedDataList = dataList.filter((item: any) => item.key !== record.key);
-        // 更新数据列表状态
-        // setDataList(updatedDataList);
-        // 在这里可以执行删除请求到服务器，根据情况来更新服务器数据
-        message.success("删除成功"); // 可以使用 Ant Design 的消息提示
+        deleteModules(record?.fdId)
       },
       onCancel() {
         // 用户取消删除操作
@@ -80,12 +99,29 @@ const PermissionManage: NextPage = () => {
   }
 
   /**
+   * @description 模块管理 - 删除模块
+   */
+   const deleteModules = async (fdId: string) => {
+    const params = {
+      fdId: fdId
+    }
+
+    const res = await dispatchRedux(asyncThunk.deleteModules(params) as any);
+    const data = res?.payload
+    if (data.code === 200) {
+      getPermissions()
+      message.success("删除成功")
+    }
+  }
+
+  /**
    * 权限管理 - 获取权限列表
    */
-  const getPermissions = async () => {
+  const getPermissions = async (req?: any) => {
     const params = {
       page: 1,
-      pageSize: 20
+      pageSize: 20,
+      ...req
     }
 
     const res = await dispatchRedux(asyncThunk.getPermissions(params) as any);
@@ -124,7 +160,7 @@ const PermissionManage: NextPage = () => {
         name: 'fdApiName',
         placeholder: '请输入权限名称',
         callback: (e: any) => {
-          setState("update", {
+          setState("req", {
             fdApiName: e.target.value.trim()
           })
         }
@@ -163,6 +199,19 @@ const PermissionManage: NextPage = () => {
           ) 
         }
       },
+      {
+        title: "操作",
+        dataIndex: "action",
+        key: "action",
+        render: (_: any, record: any) => {
+          return (
+            <>
+              <Button className={classNames("btn-action")} onClick={() => onShowUpdateModal(record)}>编辑</Button>
+              <Button className={classNames("btn-action")} onClick={() => handleDelete(record)}>删除</Button>
+            </>
+          )
+        }
+      }
     ],
     datasource: dataList,
     total: dataList.length,
@@ -186,7 +235,8 @@ const PermissionManage: NextPage = () => {
           <SearchLayout formObj={formObj} tabelObj={tabelObj} />
         </div>
       </section>
-      <AddPermission open={showAddModal} onCancel={() => onHideAddModal()}/>
+      <AddPermissions open={showAddModal} onCancel={() => onHideAddModal()}/>
+      <UpdatePermissions open={showUpdateModal} detail={detail} onCancel={() => onHideUpdateModal()}/>
     </div>
   )
 }

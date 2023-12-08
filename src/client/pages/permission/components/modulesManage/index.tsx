@@ -29,7 +29,6 @@ const initialState = {
 }
 
 const ModulesManage: NextPage = () => {
-  const router = useRouter()
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
   const { req, dataList, detail } = data
@@ -126,8 +125,6 @@ const ModulesManage: NextPage = () => {
       pageSize: 20,
       ...req
     }
-
-    console.log("req", params)
 
     const res = await dispatchRedux(asyncThunk.getModules(params) as any);
     const data = res?.payload
