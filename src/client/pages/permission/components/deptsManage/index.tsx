@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useImmerReducer } from "use-immer";
 import asyncThunk from "../../../../store/asyncThunk";
-import { setRolesList, setPermissionsList } from "../../../../store/modules/permissionSlice";
+import { setDeptsList } from "../../../../store/modules/permissionSlice";
 import { Button, Tag, Modal, message } from "antd";
 import { reducer } from "../../../../utils/reducer";
 import classnames from 'classnames/bind';
@@ -93,13 +93,13 @@ const DeptsManage: NextPage = () => {
    * @param record 
    */
   const handleDelete = (record: any) => {
-    // 弹出确认框，确保模块确认删除操作
+    // 弹出确认框，确保部门确认删除操作
     confirm({
       title: "确认删除",
       icon: <ExclamationCircleFilled />,
       content: (
         <div>
-          是否确定删除模块
+          是否确定删除部门
           <span style={{ color: "red" }}>{record.fdName}</span>
           ？
         </div>
@@ -115,7 +115,7 @@ const DeptsManage: NextPage = () => {
   }
 
   /**
-   * @description 模块管理 - 删除模块
+   * @description 部门管理 - 删除部门
    */
   const deleteDepts = async (fdId: string) => {
     const params = {
@@ -131,7 +131,7 @@ const DeptsManage: NextPage = () => {
   }
 
   /**
-   * @description 模块管理 - 获取模块列表
+   * @description 部门管理 - 获取部门列表
    */
   const getDepts = async (req?: any) => {
     const params = {
@@ -144,17 +144,17 @@ const DeptsManage: NextPage = () => {
     const data = res?.payload
     if (data.code === 200) {
       const { content } = data.data;
-      const roles = content.map((contentItem: any, index: number) => {
+      const Depts = content.map((contentItem: any, index: number) => {
         return {
           ...contentItem,
           sort: index + 1
         }
      })
       setState("update", {
-        dataList: roles
+        dataList: Depts
       })
-      dispatchRedux(setRolesList({
-        rolesList: roles
+      dispatchRedux(setDeptsList({
+        DeptsList: Depts
       }))
     }
   }

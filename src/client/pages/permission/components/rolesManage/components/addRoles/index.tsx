@@ -12,7 +12,7 @@ import { reducer } from "../../../../../../utils/reducer";
 const Textarea = Input
 
 /** components */
-import UsersTree from "../../../../../../components/usersSelect";
+import UsersTree from "../usersTree";
 import asyncThunk from "../../../../../../store/asyncThunk";
 import { setPermissionsList } from "../../../../../../store/modules/permissionSlice";
 
@@ -35,7 +35,11 @@ const initialState = {
     fdUserList: [],
     fdPermissionList: []
   },
-  permissionsList: []
+  permissionsList: [],
+  modulesList: [],
+  usersList: [],
+  treeData: [],
+  roles: ""
 }
 
 const AddRoles = (props: Props) => {
@@ -43,9 +47,10 @@ const AddRoles = (props: Props) => {
   const router = useRouter()
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
-  const { req, permissionsList } = data
+  const { req, permissionsList, modulesList, usersList, roles } = data
   const { fdRoleName, fdRemark, fdUserList, fdPermissionList } = req
   const permissions = useSelector((state: any) => state.permission.permissionsList)
+  const selectUsers = useSelector((state: any) => state.permission.selectUsers)
 
   /**
    * @description 数据处理函数
@@ -91,12 +96,7 @@ const AddRoles = (props: Props) => {
     const params = {
       fdRoleName: fdRoleName,
       fdRemark: fdRemark,
-      fdUserList: [                   //用户列表
-          {
-              "fdId": "211",
-              "fdName": "admin"
-          }
-      ],
+      fdUserList: selectUsers,
       fdPermissionList: fdPermissionList
     }
 
@@ -157,6 +157,15 @@ const AddRoles = (props: Props) => {
     getPermissions()
   }, [])
 
+  useEffect(() => {
+    if (selectUsers.length > 0) {
+      const res = selectUsers.map(user => user.fdName).join(', ');
+      setState("update", {
+        roles: res
+      })
+    }
+  }, [selectUsers])
+
   return (
     <section>
       <Modal 
@@ -176,7 +185,7 @@ const AddRoles = (props: Props) => {
           </Form.Item>
           <Form.Item label="角色组成员" name="fdUserList">
             <div style={{ display: "flex" }}>
-              <Input style={{ marginRight: "10px" }} disabled  placeholder="请选择角色组成员" onChange={() => console.log("请选择角色组成员")} />
+              <Input style={{ marginRight: "10px" }} value={roles} disabled  placeholder="请选择角色组成员" />
               <UsersTree />
             </div>
           </Form.Item>
@@ -196,25 +205,60 @@ const AddRoles = (props: Props) => {
 
 export default AddRoles
 
-const data1 = [
+const users = [
   {
-    value: "authapi1",
-    label: "系统管理"
+    "fdId": "110",
+    "fdUserId": "6",
+    "fdUserName": "user3@126.com",
+    "fdNickName": "user3",
+    "fdPassword": "ae2a2f18656334fab7d3ea71c6bc55ce",
+    "fdEmail": "user3@126.com",
+    "fdCellphone": "",
+    "fdGender": 0,
+    "fdCity": null,
+    "fdEducation": null,
+    "fdCreateTime": "2023-07-18 16:20:58",
+    "fdAvatarURL": "",
+    "fdSalt": "ec764e",
+    "fdStatus": 1,
+    "fdRemark": "",
+    "fdParent": null,
+    "fdImportInfo": null
   },
   {
-    value: "authapi2",
-    label: "系统管理2"
+      "fdId": "112",
+      "fdUserId": "5",
+      "fdUserName": "user2@126.com",
+      "fdNickName": "user2",
+      "fdPassword": "4f9c512e8ca73e1285a5617fb843e609",
+      "fdEmail": "user2@126.com",
+      "fdCellphone": "",
+      "fdGender": 0,
+      "fdCity": null,
+      "fdEducation": null,
+      "fdCreateTime": "2023-07-18 15:10:22",
+      "fdAvatarURL": "",
+      "fdSalt": "558d9a",
+      "fdStatus": 1,
+      "fdRemark": "",
+      "fdParent": null,
+      "fdImportInfo": null
+  }
+]
+
+const userSelect = [
+  "110", "112"
+]
+
+const user2 = [
+  {
+    "fdId": "110",
+    "fdName": "user3@126.com"
   },
   {
-    value: "authapi3",
-    label: "系统管理3"
-  },
-  {
-    value: "authapi4",
-    label: "系统管理4"
-  },
-  {
-    value: "authapi5",
-    label: "系统管理5"
+    "fdId": "112",
+    "fdName": "user3@126.com"
   },
 ]
+
+const res = "user3@126.com, user3@126.com"

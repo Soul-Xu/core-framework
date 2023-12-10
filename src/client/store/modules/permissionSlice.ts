@@ -7,6 +7,7 @@ export interface PermissionState {
   modulesList: Array<any>
   usersList: Array<any>
   deptsList: Array<any>
+  selectUsers: Array<any>
 }
 
 // Initial state
@@ -15,7 +16,8 @@ const initialState: PermissionState = {
   permissionsList: [],
   modulesList: [],
   usersList: [],
-  deptsList: []
+  deptsList: [],
+  selectUsers: []
 }
 
 // Actual Slice
@@ -39,9 +41,12 @@ export const permissionSlice = createSlice({
     setDeptsList(state, action) {
       state.deptsList = action.payload.deptsList
     },
+    setSelectUsers(state, action) {
+      state.selectUsers = action.payload.selectUsers
+    },
   }
 })
 
-export const { setRolesList, setPermissionsList, setModulesList, setUsersList, setDeptsList } = permissionSlice.actions
+export const { setRolesList, setPermissionsList, setModulesList, setUsersList, setDeptsList, setSelectUsers } = permissionSlice.actions
 
 export default permissionSlice.reducer
