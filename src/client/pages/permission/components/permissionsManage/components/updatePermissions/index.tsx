@@ -12,6 +12,10 @@ import asyncThunk from "../../../../../../store/asyncThunk";
 
 const TextArea = Input
 
+/** http */
+import axios from 'axios';
+import { baseApi } from "../../../../../../config"
+
 /**
  * interface
  * @param props 
@@ -42,6 +46,7 @@ const UpdatePermissions = (props: Props) => {
   const [data, dispatch] = useImmerReducer(reducer, initialState);
   const { req, modules } = data
   const { fdApiName, fdModuleId, fdPermission, fdRemark } = req
+  const token = useSelector((state: any) => state.common.token)
 
     /**
    * @description 数据处理函数
@@ -79,18 +84,34 @@ const UpdatePermissions = (props: Props) => {
       fdRemark: fdRemark,
     }
 
-    console.log("adddd", params)
+    await axios.request({
+      url: `${baseApi}/api-permission/update`,
+      method: "post",
+      data: params,
+      withCredentials: true,  
+      headers: {
+        'Content-Type': 'application/json', // 设置为 application/json
+        'ltpatoken': token
+      },
+    }).then((res: any) => {
+      const data = res.data
+      if (data.code === 200) {
+        onCancel()
+      }
+    }).catch((err: any) => {
+      console.log("add-permission", err)
+    })
 
-    const res = await dispatchRedux(asyncThunk.addPermissions(params) as any);
-    const data = res?.payload
-    if (data.code === 200) {
-      onCancel()
-    } else if (
-        data.code === 401 && 
-        data.success === false &&
-        data.message === "请先登录后再操作!") {
-      router.push("/login")
-    }
+    // const res = await dispatchRedux(asyncThunk.updatePermissions(params) as any);
+    // const data = res?.payload
+    // if (data.code === 200) {
+    //   onCancel()
+    // } else if (
+    //     data.code === 401 && 
+    //     data.success === false &&
+    //     data.message === "请先登录后再操作!") {
+    //   router.push("/login")
+    // }
 
     onCancel()
   }

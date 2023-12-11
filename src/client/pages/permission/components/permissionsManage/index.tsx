@@ -18,6 +18,10 @@ const { confirm } = Modal;
 import AddPermissions from './components/addPermissions';
 import UpdatePermissions from './components/updatePermissions';
 
+/** http */
+import axios from 'axios';
+import { baseApi } from "../../../../config"
+
 const initialState = {
   req: {
     fdApiName: "", // 用户名
@@ -37,6 +41,7 @@ const PermissionManage: NextPage = () => {
   const { page, pageSize, fdApiName } = req
   const [showAddModal, setShowAddModal] = useState(false)
   const [showUpdateModal, setShowUpdateModal] = useState(false)
+  const token = useSelector((state: any) => state.common.token)
 
   /**
    * @description 数据处理函数
@@ -110,12 +115,30 @@ const PermissionManage: NextPage = () => {
       fdId: fdId
     }
 
-    const res = await dispatchRedux(asyncThunk.deleteModules(params) as any);
-    const data = res?.payload
-    if (data.code === 200) {
-      getPermissions()
-      message.success("删除成功")
-    }
+    await axios.request({
+      url: `${baseApi}/api-permission/delete`,
+      method: "post",
+      data: params,
+      withCredentials: true,  
+      headers: {
+        'Content-Type': 'application/json', // 设置为 application/json
+        'ltpatoken': token
+      },
+    }).then((res: any) => {
+      const data = res.data
+      if (data.code === 200) {
+        getPermissions()
+        message.success("删除成功")
+      }
+    }).catch((err: any) => {
+      console.log("axios-app-err", err)
+    })
+    // const res = await dispatchRedux(asyncThunk.deleteModules(params) as any);
+    // const data = res?.payload
+    // if (data.code === 200) {
+    //   getPermissions()
+    //   message.success("删除成功")
+    // }
   }
 
   /**
@@ -128,28 +151,59 @@ const PermissionManage: NextPage = () => {
       ...req
     }
 
-    const res = await dispatchRedux(asyncThunk.getPermissions(params) as any);
-    const data = res?.payload
-    if (data.code === 200) {
-      const { content } = data.data;
-      const permissions = content.map((contentItem: any, index: number) => {
-        return {
-          ...contentItem,
-          sort: index + 1
-        }
-     })
-      setState("update", {
-        dataList: permissions
-      })
-      dispatchRedux(setRolesList({
-        permissionsList: permissions
-      }))
-    } else if (
-        data.code === 401 && 
-        data.success === false &&
-        data.message === "请先登录后再操作!") {
-      router.push("/login")
-    }
+    await axios.request({
+      url: `${baseApi}/api-permission/list`,
+      method: "post",
+      data: params,
+      withCredentials: true,  
+      headers: {
+        'Content-Type': 'application/json', // 设置为 application/json
+        'ltpatoken': token
+      },
+    }).then((res: any) => {
+      const data = res.data
+      if (data.code === 200) {
+        const { content } = data.data;
+        const permissions = content.map((contentItem: any, index: number) => {
+          return {
+            ...contentItem,
+            sort: index + 1
+          }
+       })
+        setState("update", {
+          dataList: permissions
+        })
+        dispatchRedux(setRolesList({
+          permissionsList: permissions
+        }))
+      }
+    }).catch((err: any) => {
+      console.log("add-permission", err)
+    })
+
+
+    // const res = await dispatchRedux(asyncThunk.getPermissions(params) as any);
+    // const data = res?.payload
+    // if (data.code === 200) {
+    //   const { content } = data.data;
+    //   const permissions = content.map((contentItem: any, index: number) => {
+    //     return {
+    //       ...contentItem,
+    //       sort: index + 1
+    //     }
+    //  })
+    //   setState("update", {
+    //     dataList: permissions
+    //   })
+    //   dispatchRedux(setRolesList({
+    //     permissionsList: permissions
+    //   }))
+    // } else if (
+    //     data.code === 401 && 
+    //     data.success === false &&
+    //     data.message === "请先登录后再操作!") {
+    //   router.push("/login")
+    // }
   }
 
   const formObj = {

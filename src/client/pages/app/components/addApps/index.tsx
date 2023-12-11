@@ -13,6 +13,10 @@ const { TextArea } = Input
 import { reducer } from "../../../../utils/reducer";
 import asyncThunk from "../../../../store/asyncThunk"
 
+/** http */
+import axios from 'axios';
+import { baseApi } from "../../../../config"
+
 /**
  * interface
  * @param props 
@@ -46,7 +50,7 @@ const initialState = {
 const AddApps = (props: Props) => {
   const router = useRouter()
   const dispatchRedux = useDispatch();
-  const baseApi = useSelector((state: any) => state.common.baseApi)
+  const token = useSelector((state: any) => state.common.token)
   const [data, dispatch] = useImmerReducer(reducer, initialState);
   const { open, onCancel } = props
   const { fdAppName, fdIcon, fdUrl, fdRemark, fdDisplayOrder } = data
@@ -85,16 +89,34 @@ const AddApps = (props: Props) => {
       fdDisplayOrder: fdDisplayOrder
     }
 
-    const res = await dispatchRedux(asyncThunk.addApps(params) as any);
-    const data = res?.payload;
-    if (data.code === 200) {
-      onCancel()
-    } else if (
-        data.code === 401 && 
-        data.success === false &&
-        data.message === "请先登录后再操作!") {
-      router.push("/login")
-    }
+    await axios.request({
+      url: `${baseApi}/app-permission/add`,
+      method: "post",
+      data: params,
+      withCredentials: true,  
+      headers: {
+        'Content-Type': 'application/json', // 设置为 application/json
+        'ltpatoken': token
+      },
+    }).then((res: any) => {
+      const data = res.data
+      if (data.code === 200) {
+        onCancel()
+      }
+    }).catch((err: any) => {
+      console.log("axios-app-err", err)
+    })
+
+    // const res = await dispatchRedux(asyncThunk.addApps(params) as any);
+    // const data = res?.payload;
+    // if (data.code === 200) {
+    //   onCancel()
+    // } else if (
+    //     data.code === 401 && 
+    //     data.success === false &&
+    //     data.message === "请先登录后再操作!") {
+    //   router.push("/login")
+    // }
     onCancel()
   }
 

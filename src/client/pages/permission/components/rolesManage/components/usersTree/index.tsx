@@ -7,9 +7,6 @@ import classnames from 'classnames/bind';
 import style from './index.module.scss';
 const classNames = classnames.bind(style);
 
-/** images */
-import ImgCloseIcon from "public/images/common/close_icon.png"
-
 const UsersTree = () => {
   const [visible, setVisible] = useState(false);
 

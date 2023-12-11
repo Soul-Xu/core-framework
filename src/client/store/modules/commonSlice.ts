@@ -15,9 +15,14 @@ export const commonSlice = createSlice({
   name: "common",
   initialState,
   reducers: {
+    // Action to set the authentication status
+    setToken(state, action) {
+      state.token = action.payload.token
+    }
   }
 })
 
+export const { setToken } = commonSlice.actions
 export const token = (state: AppState) => state.common.token
 
 export default commonSlice.reducer

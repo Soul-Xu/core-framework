@@ -146,11 +146,11 @@ const MyApps = (props: Props) => {
         </div>
       </div>
       <div className={classNames("my-apps-header-title")}>我的应用</div>
-      <div className={classNames("my-apps-header-number")}>{appList.length}</div>
+      <div className={classNames("my-apps-header-number")}>{appList?.length}</div>
     </div>
     { isExpend && (
       <div className={classNames("my-apps-list")}>
-        { appList.map((app: any, index: number) => (
+        { appList?.map((app: any, index: number) => (
           <div className={classNames("my-apps-list-item")} key={app?.fdId}>
             <section className={classNames("my-apps-list-item-btn")}>
               <div className={classNames("btn-collect")}>

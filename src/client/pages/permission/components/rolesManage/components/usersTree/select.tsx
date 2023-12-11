@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useImmerReducer } from "use-immer";
 import { Tree, Table, Radio } from "antd";
 import classnames from "classnames/bind";
@@ -14,6 +14,10 @@ import { setSelectUsers } from "../../../../../../store/modules/permissionSlice"
 
 const { TreeNode } = Tree;
 
+/** http */
+import axios from 'axios';
+import { baseApi, baseApiOrg } from "../../../../../../config"
+
 const initialState = {
   deptsList: [],
   usersList: [],
@@ -26,6 +30,7 @@ const UsersSelector = () => {
   const [data, dispatch] = useImmerReducer(reducer, initialState);
   const { deptsList, usersList, treeData } = data;
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const token = useSelector((state: any) => state.common.token)
 
   const setState = useCallback((type: string, val: Record<string, any>) => {
     dispatch({ type, payload: val });
@@ -37,24 +42,50 @@ const UsersSelector = () => {
   };
 
   const getUsers = async (deptId: string) => {
-    try {
-      // 请替换为实际的接口调用
-      const res = await dispatchRedux(asyncThunk.getUsers({ deptId }) as any);
-      const data = res?.payload;
+    await axios.request({
+      url: `${baseApiOrg}/user/list`,
+      method: "post",
+      data: {
+        deptId
+      },
+      withCredentials: true,  
+      headers: {
+        'Content-Type': 'application/json', // 设置为 application/json
+        'ltpatoken': token
+      },
+    }).then((res: any) => {
+      const data = res.data
       if (data.code === 200) {
         const { content } = data.data;
         const users = content.map((contentItem: any, index: number) => {
-          return {
-            ...contentItem,
-            sort: index + 1
-          }
-      })
-        console.log("usersList", users)
+            return {
+              ...contentItem,
+              sort: index + 1
+            }
+        })
         setState("update", { usersList: users });
       }
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
+    }).catch((err: any) => {
+      console.log("add-module", err)
+    })
+
+      // 请替换为实际的接口调用
+    //   const res = await dispatchRedux(asyncThunk.getUsers({ deptId }) as any);
+    //   const data = res?.payload;
+    //   if (data.code === 200) {
+    //     const { content } = data.data;
+    //     const users = content.map((contentItem: any, index: number) => {
+    //       return {
+    //         ...contentItem,
+    //         sort: index + 1
+    //       }
+    //   })
+    //     console.log("usersList", users)
+    //     setState("update", { usersList: users });
+    //   }
+    // } catch (error) {
+    //   console.error("Error fetching user data:", error);
+    // }
   };
 
   useEffect(() => {
@@ -63,14 +94,33 @@ const UsersSelector = () => {
 
   const getDepts = async () => {
     try {
+      await axios.request({
+        url: `${baseApiOrg}/dept/list`,
+        method: "post",
+        data: {},
+        withCredentials: true,  
+        headers: {
+          'Content-Type': 'application/json', // 设置为 application/json
+          'ltpatoken': token
+        },
+      }).then((res: any) => {
+        const data = res.data
+        if (data.code === 200) {
+          const { content } = data.data;
+          const treeData = buildTree(content);
+          setState("update", { deptsList: treeData });
+        }
+      }).catch((err: any) => {
+        console.log("add-module", err)
+      })
       // 请替换为实际的接口调用
-      const res = await dispatchRedux(asyncThunk.getDepts() as any);
-      const data = res?.payload;
-      if (data.code === 200) {
-        const { content } = data.data;
-        const treeData = buildTree(content);
-        setState("update", { deptsList: treeData });
-      }
+      // const res = await dispatchRedux(asyncThunk.getDepts() as any);
+      // const data = res?.payload;
+      // if (data.code === 200) {
+      //   const { content } = data.data;
+      //   const treeData = buildTree(content);
+      //   setState("update", { deptsList: treeData });
+      // }
     } catch (error) {
       console.error("Error fetching department data:", error);
     }
@@ -199,4 +249,4 @@ const UsersSelector = () => {
   );
 };
 
-export default UsersSelector;
+export default UsersSelector

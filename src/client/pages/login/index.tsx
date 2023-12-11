@@ -12,6 +12,7 @@ import FormLayout from "../../components/formLayout";
 /** store */
 import { setAuthState } from "../../store/modules/authSlice";
 import { setUserInfo } from "../../store/modules/loginSlice"
+import { setToken } from "../../store/modules/commonSlice"
 /** utils */
 import asyncThunk from "../../store/asyncThunk";
 import { reducer } from "../../utils/reducer";
@@ -19,6 +20,9 @@ import { reducer } from "../../utils/reducer";
 import classnames from "classnames/bind";
 import styles from "./index.module.scss";
 const classNames = classnames.bind(styles);
+/** http */
+import axios from 'axios';
+import { baseApi } from "../../config"
 
 type FieldType = {
   username?: string;
@@ -82,16 +86,51 @@ const Login: React.FC = () => {
       rememberMe: false
     }
 
-    // redux-toolkit方式
-    const res = await dispatchRedux(asyncThunk.login(params) as any);
-    const data = res?.payload
+    // axios原生方式
+    await axios.request({
+      url: `${baseApi}/login`,
+      method: "post",
+      data: params,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    }).then((res) => {
+      const data = res?.data
+      const ltpatoken = res.headers["ltpatoken"]
+
+      console.log("data-res", data)
+
+      if (data?.code === 200) {
+        dispatchRedux(setAuthState({
+          authState: true
+        }))
+        dispatchRedux(setUserInfo({
+          userInfo: data.data
+        }))
+        dispatchRedux(setToken({
+          token: ltpatoken
+        }))
+
+        message.success("登录成功")
+        router.push("/app")
+      } else {
+        message.error("登录失败，请重试")
+        return
+      }
+    }).catch((err: any) => {
+      console.log("axios-login-catch", err)
+    })
+
+    // // redux-toolkit方式
+    // const res = await dispatchRedux(asyncThunk.login(params) as any);
+    // const data = res?.payload
   
-    if (data?.code === 0) {
-      onLoginSuccess(data)
-    } else {
-      message.error("登录失败，请重试")
-      return
-    }
+    // if (data?.code === 0) {
+    //   onLoginSuccess(data)
+    // } else {
+    //   message.error("登录失败，请重试")
+    //   return
+    // }
   }, [password, username, dispatchRedux, router])
 
   /**

@@ -3,7 +3,7 @@ import SearchLayout from '../../../../components/searchLayout/'
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from 'next/router';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useImmerReducer } from "use-immer";
 import asyncThunk from "../../../../store/asyncThunk";
 import { setRolesList } from "../../../../store/modules/permissionSlice";
@@ -16,6 +16,10 @@ const { confirm } = Modal;
 
 /** components */
 import AddRoles from './components/addRoles';
+
+/** http */
+import axios from 'axios';
+import { baseApi } from "../../../../config"
 
 const initialState = {
   req: {
@@ -35,6 +39,7 @@ const RolesManage: NextPage = () => {
   const { req, dataList } = data
   const { page, pageSize, fdRoleName } = req
   const [showAddModal, setShowAddModal] = useState(false)
+  const token = useSelector((state: any) => state.common.token)
 
   /**
    * @description 数据处理函数
@@ -97,12 +102,30 @@ const RolesManage: NextPage = () => {
       fdId: fdId
     }
 
-    const res = await dispatchRedux(asyncThunk.deleteRoles(params) as any);
-    const data = res?.payload
-    if (data.code === 200) {
-      getRoles()
-      message.success("删除成功")
-    }
+    await axios.request({
+      url: `${baseApi}/role/delete`,
+      method: "post",
+      data: params,
+      withCredentials: true,  
+      headers: {
+        'Content-Type': 'application/json', // 设置为 application/json
+        'ltpatoken': token
+      },
+    }).then((res: any) => {
+      const data = res.data
+      if (data.code === 200) {
+        getRoles()
+        message.success("删除成功")
+      }
+    }).catch((err: any) => {
+      console.log("axios-app-err", err)
+    })
+    // const res = await dispatchRedux(asyncThunk.deleteRoles(params) as any);
+    // const data = res?.payload
+    // if (data.code === 200) {
+    //   getRoles()
+    //   message.success("删除成功")
+    // }
   }
 
   /**
@@ -115,61 +138,59 @@ const RolesManage: NextPage = () => {
       ...req
     }
 
-    const res = await dispatchRedux(asyncThunk.getRoles(params) as any);
-    const data = res?.payload
-    if (data.code === 200) {
-      const { content } = data.data;
-      const roles = content.map((contentItem: any, index: number) => {
-          return {
-            ...contentItem,
-            sort: index + 1
-          }
-      })
-      setState("update", {
-        dataList: roles
-      })
-      dispatchRedux(setRolesList({
-        rolesList: roles
-      }))
-    } else if (
-        data.code === 401 && 
-        data.success === false &&
-        data.message === "请先登录后再操作!") {
-      router.push("/login")
-    }
+    await axios.request({
+      url: `${baseApi}/role/list`,
+      method: "post",
+      data: params,
+      withCredentials: true,  
+      headers: {
+        'Content-Type': 'application/json', // 设置为 application/json
+        'ltpatoken': token
+      },
+    }).then((res: any) => {
+      const data = res.data
+      if (data.code === 200) {
+        const { content } = data.data;
+        const roles = content.map((contentItem: any, index: number) => {
+            return {
+              ...contentItem,
+              sort: index + 1
+            }
+        })
+        setState("update", {
+          dataList: roles
+        })
+        dispatchRedux(setRolesList({
+          rolesList: roles
+        }))
+      }
+    }).catch((err: any) => {
+      console.log("add-module", err)
+    })
+
+    // const res = await dispatchRedux(asyncThunk.getRoles(params) as any);
+    // const data = res?.payload
+    // if (data.code === 200) {
+    //   const { content } = data.data;
+    //   const roles = content.map((contentItem: any, index: number) => {
+    //       return {
+    //         ...contentItem,
+    //         sort: index + 1
+    //       }
+    //   })
+    //   setState("update", {
+    //     dataList: roles
+    //   })
+    //   dispatchRedux(setRolesList({
+    //     rolesList: roles
+    //   }))
+    // } else if (
+    //     data.code === 401 && 
+    //     data.success === false &&
+    //     data.message === "请先登录后再操作!") {
+    //   router.push("/login")
+    // }
   }
-
-  const getAddress = async () => {
-    const params = {
-      fdParentId: null,
-      fdOrgType: "all"
-    }
-
-    const res = await dispatchRedux(asyncThunk.getAddress(params) as any);
-    const data = res?.payload
-    console.log("dddddddd0", data)
-    if (data.code === 200) {
-      const { content } = data.data;
-      // const roles = content.map((contentItem: any, index: number) => {
-      //     return {
-      //       ...contentItem,
-      //       sort: index + 1
-      //     }
-      // })
-      // setState("update", {
-      //   dataList: roles
-      // })
-      // dispatchRedux(setRolesList({
-      //   rolesList: roles
-      // }))
-    } else if (
-        data.code === 401 && 
-        data.success === false &&
-        data.message === "请先登录后再操作!") {
-      router.push("/login")
-    }
-  }
-
 
   const formObj = {
     name: 'roles-form',
@@ -238,7 +259,6 @@ const RolesManage: NextPage = () => {
   }
 
   useEffect(() => {
-    getAddress()
     getRoles()
   }, [])
 

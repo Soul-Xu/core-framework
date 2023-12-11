@@ -16,6 +16,9 @@ import { setAppsList } from '../../store/modules/appsSlice';
 import classnames from "classnames/bind";
 import styles from "./index.module.scss";
 const classNames = classnames.bind(styles);
+/** http */
+import axios from 'axios';
+import { baseApi } from "../../config"
 
 /** components */
 import AppContainer from '../../layout/appContainer';
@@ -34,6 +37,7 @@ const App: NextPage = () => {
   const appsConfig = useSelector((state: any) => state.apps.appsConfig)
   const [data, dispatch] = useImmerReducer(reducer, initialState);
   const { showCurrent, showMyFavor, showMine } = appsConfig
+  const token = useSelector((state: any) => state.common.token)
   const { appsList } = data
 
   /**
@@ -58,22 +62,47 @@ const App: NextPage = () => {
       },
       ...req
     }
-    const res = await dispatchRedux(asyncThunk.getApps(params) as any);
-    const data = res?.payload
-    if (data.code === 200) {
-      const { content } = data.data
-      setState("update", {
-        appsList: content
-      }) 
-      dispatchRedux(setAppsList({
-        appsList: content
-      }))
-    } else if (
-        data.code === 401 && 
-        data.success === false &&
-        data.message === "请先登录后再操作!") {
-      router.push("/login")
-    }
+
+    await axios.request({
+      url: `${baseApi}/app-permission/list-view`,
+      method: "post",
+      data: params,
+      withCredentials: true,  
+      headers: {
+        'Content-Type': 'application/json', // 设置为 application/json
+        'ltpatoken': token
+      },
+    }).then((res: any) => {
+      const data = res.data
+      if (data.code === 200) {
+        const list = data.data
+        setState("update", {
+          appsList: list
+        }) 
+        dispatchRedux(setAppsList({
+          appsList: list
+        }))
+      }
+
+    }).catch((err: any) => {
+      console.log("axios-app-err", err)
+    })
+    // const res = await dispatchRedux(asyncThunk.getApps(params) as any);
+    // const data = res?.payload
+    // if (data.code === 200) {
+    //   const { content } = data.data
+    //   setState("update", {
+    //     appsList: content
+    //   }) 
+    //   dispatchRedux(setAppsList({
+    //     appsList: content
+    //   }))
+    // } else if (
+    //     data.code === 401 && 
+    //     data.success === false &&
+    //     data.message === "请先登录后再操作!") {
+    //   router.push("/login")
+    // }
   }
 
   useEffect(() => {

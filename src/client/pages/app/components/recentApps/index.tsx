@@ -45,7 +45,7 @@ const RecentApps = (props: Props) => {
   const [renderAppList, setRenderAppList] = useState([])
 
   useEffect(() => {
-    if (appList.length > 0) {
+    if (appList?.length > 0) {
       const list: any = [...appList].reverse()
       setRenderAppList(list)
     }

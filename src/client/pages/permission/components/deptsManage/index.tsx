@@ -21,6 +21,10 @@ import classnames from 'classnames/bind';
 import style from './index.module.scss';
 const classNames = classnames.bind(style);
 
+/** http */
+import axios from 'axios';
+import { baseApiOrg } from "../../../../config"
+
 const initialState = {
   req: {
     fdName: "",
@@ -44,6 +48,7 @@ const DeptsManage: NextPage = () => {
   const { page, pageSize, fdName, fdNo, fdCellphone, fdDisplayOrder } = req
   const [showAddModal, setShowAddModal] = useState(false)
   const [showUpdateModal, setShowUpdateModal] = useState(false)
+  const token = useSelector((state: any) => state.common.token)
 
   /**
    * @description 数据处理函数
@@ -125,12 +130,30 @@ const DeptsManage: NextPage = () => {
       fdId: fdId
     }
 
-    const res = await dispatchRedux(asyncThunk.deleteDepts(params) as any);
-    const data = res?.payload
-    if (data.code === 200) {
-      getDepts()
-      message.success("删除成功")
-    }
+    await axios.request({
+      url: `${baseApiOrg}/dept/delete`,
+      method: "post",
+      data: params,
+      withCredentials: true,  
+      headers: {
+        'Content-Type': 'application/json', // 设置为 application/json
+        'ltpatoken': token
+      },
+    }).then((res: any) => {
+      const data = res.data
+      if (data.code === 200) {
+        getDepts()
+        message.success("删除成功")
+      }
+    }).catch((err: any) => {
+      console.log("axios-app-err", err)
+    })
+    // const res = await dispatchRedux(asyncThunk.deleteDepts(params) as any);
+    // const data = res?.payload
+    // if (data.code === 200) {
+    //   getDepts()
+    //   message.success("删除成功")
+    // }
   }
 
   /**
@@ -143,23 +166,52 @@ const DeptsManage: NextPage = () => {
       ...req
     }
 
-    const res = await dispatchRedux(asyncThunk.getDepts(params) as any);
-    const data = res?.payload
-    if (data.code === 200) {
-      const { content } = data.data;
-      const Depts = content.map((contentItem: any, index: number) => {
-        return {
-          ...contentItem,
-          sort: index + 1
-        }
-     })
-      setState("update", {
-        dataList: Depts
-      })
-      dispatchRedux(setDeptsList({
-        DeptsList: Depts
-      }))
-    }
+    await axios.request({
+      url: `${baseApiOrg}/dept/list`,
+      method: "post",
+      data: params,
+      withCredentials: true,  
+      headers: {
+        'Content-Type': 'application/json', // 设置为 application/json
+        'ltpatoken': token
+      },
+    }).then((res: any) => {
+      const data = res.data
+      if (data.code === 200) {
+        const { content } = data.data;
+        const Depts = content.map((contentItem: any, index: number) => {
+          return {
+            ...contentItem,
+            sort: index + 1
+          }
+       })
+        setState("update", {
+          dataList: Depts
+        })
+        dispatchRedux(setDeptsList({
+          DeptsList: Depts
+        }))
+      }
+    }).catch((err: any) => {
+      console.log("add-permission", err)
+    })
+    // const res = await dispatchRedux(asyncThunk.getDepts(params) as any);
+    // const data = res?.payload
+    // if (data.code === 200) {
+    //   const { content } = data.data;
+    //   const Depts = content.map((contentItem: any, index: number) => {
+    //     return {
+    //       ...contentItem,
+    //       sort: index + 1
+    //     }
+    //  })
+    //   setState("update", {
+    //     dataList: Depts
+    //   })
+    //   dispatchRedux(setDeptsList({
+    //     DeptsList: Depts
+    //   }))
+    // }
   }
 
   const formObj = {

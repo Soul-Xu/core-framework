@@ -16,6 +16,10 @@ import UsersTree from "../usersTree";
 import asyncThunk from "../../../../../../store/asyncThunk";
 import { setPermissionsList } from "../../../../../../store/modules/permissionSlice";
 
+/** http */
+import axios from 'axios';
+import { baseApi } from "../../../../../../config"
+
 /**
  * interface
  * @param props 
@@ -51,6 +55,7 @@ const AddRoles = (props: Props) => {
   const { fdRoleName, fdRemark, fdUserList, fdPermissionList } = req
   const permissions = useSelector((state: any) => state.permission.permissionsList)
   const selectUsers = useSelector((state: any) => state.permission.selectUsers)
+  const token = useSelector((state: any) => state.common.token)
 
   /**
    * @description 数据处理函数
@@ -100,17 +105,35 @@ const AddRoles = (props: Props) => {
       fdPermissionList: fdPermissionList
     }
 
-    const res = await dispatchRedux(asyncThunk.addRoles(params) as any)
-    const data = res?.payload
-    if (data.code === 200) {
-      message.success("添加角色成功")
-      onCancel()
-    } else if (
-        data.code === 401 && 
-        data.success === false &&
-        data.message === "请先登录后再操作!") {
-      router.push("/login")
-    }
+    await axios.request({
+      url: `${baseApi}/api-module/add`,
+      method: "post",
+      data: params,
+      withCredentials: true,  
+      headers: {
+        'Content-Type': 'application/json', // 设置为 application/json
+        'ltpatoken': token
+      },
+    }).then((res: any) => {
+      const data = res.data
+      if (data.code === 200) {
+        onCancel()
+      }
+    }).catch((err: any) => {
+      console.log("add-module", err)
+    })
+
+    // const res = await dispatchRedux(asyncThunk.addRoles(params) as any)
+    // const data = res?.payload
+    // if (data.code === 200) {
+    //   message.success("添加角色成功")
+    //   onCancel()
+    // } else if (
+    //     data.code === 401 && 
+    //     data.success === false &&
+    //     data.message === "请先登录后再操作!") {
+    //   router.push("/login")
+    // }
 
     onCancel()
   }

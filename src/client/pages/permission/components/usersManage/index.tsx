@@ -18,6 +18,10 @@ const { confirm } = Modal;
 import AddUsers from './components/addUsers';
 import UpdateUsers from './components/updateUsers'
 
+/** http */
+import axios from 'axios';
+import { baseApiOrg } from "../../../../config"
+
 const initialState = {
   req: {
     fdNickName: "", // 昵称
@@ -41,6 +45,7 @@ const UsersManage: NextPage = () => {
   const { page, pageSize, fdNickName, fdUserName, fdEmail, fdCellphone, fdEducation, fdCity } = req
   const [showAddModal, setShowAddModal] = useState(false)
   const [showUpdateModal, setShowUpdateModal] = useState(false)
+  const token = useSelector((state: any) => state.common.token)
 
   /**
    * @description 数据处理函数
@@ -97,7 +102,7 @@ const UsersManage: NextPage = () => {
         </div>
       ),
       onOk() {
-        deleteModules(record?.fdId)
+        deleteUsers(record?.fdId)
       },
       onCancel() {
         // 用户取消删除操作
@@ -109,22 +114,41 @@ const UsersManage: NextPage = () => {
     /**
    * @description 用户管理 - 删除用户
    */
-    const deleteModules = async (fdId: string) => {
+    const deleteUsers = async (fdId: string) => {
       const params = {
         fdId: fdId
       }
+
+      await axios.request({
+        url: `${baseApiOrg}/user/delete`,
+        method: "post",
+        data: params,
+        withCredentials: true,  
+        headers: {
+          'Content-Type': 'application/json', // 设置为 application/json
+          'ltpatoken': token
+        },
+      }).then((res: any) => {
+        const data = res.data
+        if (data.code === 200) {
+          getUsers()
+          message.success("删除成功")
+        }
+      }).catch((err: any) => {
+        console.log("add-module", err)
+      })
   
-      const res = await dispatchRedux(asyncThunk.deleteUsers(params) as any);
-      const data = res?.payload
-      if (data.code === 200) {
-        getUsers()
-        message.success("删除成功")
-      } else if (
-          data.code === 401 && 
-          data.success === false &&
-          data.message === "请先登录后再操作!") {
-        router.push("/login")
-      }
+      // const res = await dispatchRedux(asyncThunk.deleteUsers(params) as any);
+      // const data = res?.payload
+      // if (data.code === 200) {
+      //   getUsers()
+      //   message.success("删除成功")
+      // } else if (
+      //     data.code === 401 && 
+      //     data.success === false &&
+      //     data.message === "请先登录后再操作!") {
+      //   router.push("/login")
+      // }
     }
 
   /**
@@ -137,28 +161,58 @@ const UsersManage: NextPage = () => {
       ...req
     }
 
-    const res = await dispatchRedux(asyncThunk.getUsers(params) as any);
-    const data = res?.payload
-    if (data.code === 200) {
-      const { content } = data.data;
-      const users = content.map((contentItem: any, index: number) => {
+    await axios.request({
+      url: `${baseApiOrg}/user/list`,
+      method: "post",
+      data: params,
+      withCredentials: true,  
+      headers: {
+        'Content-Type': 'application/json', // 设置为 application/json
+        'ltpatoken': token
+      },
+    }).then((res: any) => {
+      const data = res.data
+      if (data.code === 200) {
+        const { content } = data.data;
+        const users = content.map((contentItem: any, index: number) => {
           return {
             ...contentItem,
             sort: index + 1
           }
-      })
-      setState("update", {
-        dataList: users
-      })
-      dispatchRedux(setUsersList({
-        usersList: users
-      }))
-    } else if (
-        data.code === 401 && 
-        data.success === false &&
-        data.message === "请先登录后再操作!") {
-      router.push("/login")
-    }
+        })
+        setState("update", {
+          dataList: users
+        })
+        dispatchRedux(setUsersList({
+          usersList: users
+        }))
+      }
+    }).catch((err: any) => {
+      console.log("add-permission", err)
+    })
+
+    // const res = await dispatchRedux(asyncThunk.getUsers(params) as any);
+    // const data = res?.payload
+    // if (data.code === 200) {
+    //   const { content } = data.data;
+    //   const users = content.map((contentItem: any, index: number) => {
+    //       return {
+    //         ...contentItem,
+    //         sort: index + 1
+    //       }
+    //   })
+    //   setState("update", {
+    //     dataList: users
+    //   })
+    //   dispatchRedux(setUsersList({
+    //     usersList: users
+    //   }))
+    // } else if (
+    //     data.code === 401 && 
+    //     data.success === false &&
+    //     data.message === "请先登录后再操作!") {
+    //   router.push("/login")
+    // }
   }
 
   const formObj = {

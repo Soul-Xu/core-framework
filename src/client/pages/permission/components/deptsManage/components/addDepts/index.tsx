@@ -4,7 +4,7 @@
 /** external library */
 import React, { useCallback } from "react";
 import { useRouter } from 'next/router';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useImmerReducer } from "use-immer";
 import { reducer } from "../../../../../../utils/reducer";
 import { Modal, Form, Input, InputNumber } from "antd"
@@ -15,6 +15,10 @@ import asyncThunk from "../../../../../../store/asyncThunk";
 import classnames from 'classnames/bind';
 import style from '../../index.module.scss';
 const classNames = classnames.bind(style);
+
+/** http */
+import axios from 'axios';
+import { baseApiOrg } from "../../../../../../config"
 
 /**
  * interface
@@ -42,6 +46,7 @@ const AddDepts = (props: Props) => {
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
   const { fdName, fdNo, fdCellphone, fdDisplayOrder, fdRemark, fdId } = data
+  const token = useSelector((state: any) => state.common.token)
   const { open, onCancel } = props
 
   /**
@@ -82,16 +87,33 @@ const AddDepts = (props: Props) => {
       fdParent: null
     }
 
-    const res = await dispatchRedux(asyncThunk.addDepts(params) as any);
-    const data = res?.payload
-    if (data.code === 200) {
-      onCancel()
-    } else if (
-        data.code === 401 && 
-        data.success === false &&
-        data.message === "请先登录后再操作!") {
-      router.push("/login")
-    }
+    await axios.request({
+      url: `${baseApiOrg}/dept/add`,
+      method: "post",
+      data: params,
+      withCredentials: true,  
+      headers: {
+        'Content-Type': 'application/json', // 设置为 application/json
+        'ltpatoken': token
+      },
+    }).then((res: any) => {
+      const data = res.data
+      if (data.code === 200) {
+        onCancel()
+      }
+    }).catch((err: any) => {
+      console.log("add-permission", err)
+    })
+    // const res = await dispatchRedux(asyncThunk.addDepts(params) as any);
+    // const data = res?.payload
+    // if (data.code === 200) {
+    //   onCancel()
+    // } else if (
+    //     data.code === 401 && 
+    //     data.success === false &&
+    //     data.message === "请先登录后再操作!") {
+    //   router.push("/login")
+    // }
     onCancel()
   }
 
