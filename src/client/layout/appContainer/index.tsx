@@ -122,7 +122,6 @@ const AppContainer: NextPage<PageContainerProps> = ({ children }: any) => {
             style={{ fontSize: "18px" }} 
             defaultSelectedKeys={['app']} 
             mode="inline" 
-            // @ts-ignore
             collapsed={collapsed}
             onClick={onMenuClick}
           >

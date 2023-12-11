@@ -68,7 +68,6 @@ const SearchApps = (props: Props) => {
   };
 
   useEffect(() => {
-    // @ts-ignore
     getAppList(req)
   }, [req])
 

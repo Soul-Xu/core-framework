@@ -157,7 +157,6 @@ const MyApps = (props: Props) => {
                 <Image src={ImgCollect} width={16} height={16} alt={"ImgCollect"} />
               </div>
               <div>
-                {/* @ts-ignore */}
                 <Dropdown menu={getDropdownMenu(app, index)} trigger={['click']} placement="bottomRight">
                   <span>
                     <Image src={ImgActions} width={16} height={16} alt={"ImgActions"} />

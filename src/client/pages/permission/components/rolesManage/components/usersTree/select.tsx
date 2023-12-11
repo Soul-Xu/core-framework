@@ -90,7 +90,6 @@ const UsersSelector = () => {
         const parent = map.get(item.fdParent.fdId);
         parent.children.push(node);
       } else {
-        // @ts-ignore
         tree.push(node);
       }
     });
