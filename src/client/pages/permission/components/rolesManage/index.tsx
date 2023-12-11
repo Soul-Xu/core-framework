@@ -3,11 +3,11 @@ import SearchLayout from '../../../../components/searchLayout/'
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useImmerReducer } from "use-immer";
 import asyncThunk from "../../../../store/asyncThunk";
-import { setRolesList, setPermissionsList } from "../../../../store/modules/permissionSlice";
-import { Button, Tag, Modal, message } from "antd";
+import { setRolesList } from "../../../../store/modules/permissionSlice";
+import { Button, Modal, message } from "antd";
 import { reducer } from "../../../../utils/reducer";
 import classnames from 'classnames/bind';
 import style from './index.module.scss';
@@ -139,16 +139,48 @@ const RolesManage: NextPage = () => {
     }
   }
 
+  const getAddress = async () => {
+    const params = {
+      fdParentId: null,
+      fdOrgType: "all"
+    }
+
+    const res = await dispatchRedux(asyncThunk.getAddress(params) as any);
+    const data = res?.payload
+    console.log("dddddddd0", data)
+    if (data.code === 200) {
+      const { content } = data.data;
+      // const roles = content.map((contentItem: any, index: number) => {
+      //     return {
+      //       ...contentItem,
+      //       sort: index + 1
+      //     }
+      // })
+      // setState("update", {
+      //   dataList: roles
+      // })
+      // dispatchRedux(setRolesList({
+      //   rolesList: roles
+      // }))
+    } else if (
+        data.code === 401 && 
+        data.success === false &&
+        data.message === "请先登录后再操作!") {
+      router.push("/login")
+    }
+  }
+
+
   const formObj = {
-    name: 'role-list',
+    name: 'roles-form',
     layout: 'inline',
     items: [
       {
         type: 'input',
-        key: 'role',
+        key: 'roles',
         value: fdRoleName,
         label: '角色名称',
-        name: 'role',
+        name: 'roles',
         placeholder: '请输入角色名称',
         callback: (e: any) => {
           setState("update", {
@@ -196,6 +228,7 @@ const RolesManage: NextPage = () => {
     ],
     datasource: dataList,
     total: dataList.length,
+    rowKey: "fdId",
     pagination: {
       page: page,
       pageSize: pageSize,
@@ -205,6 +238,7 @@ const RolesManage: NextPage = () => {
   }
 
   useEffect(() => {
+    getAddress()
     getRoles()
   }, [])
 

@@ -9,14 +9,17 @@ import asyncThunk from "../../../../store/asyncThunk";
 import { setDeptsList } from "../../../../store/modules/permissionSlice";
 import { Button, Tag, Modal, message } from "antd";
 import { reducer } from "../../../../utils/reducer";
-import classnames from 'classnames/bind';
-import style from './index.module.scss';
-const classNames = classnames.bind(style);
+
 const { confirm } = Modal;
 
 /** components */
 import AddDepts from './components/addDepts';
 import UpdateDepts from './components/updateDepts'
+
+/** css */
+import classnames from 'classnames/bind';
+import style from './index.module.scss';
+const classNames = classnames.bind(style);
 
 const initialState = {
   req: {
@@ -160,7 +163,7 @@ const DeptsManage: NextPage = () => {
   }
 
   const formObj = {
-    name: 'permission-list',
+    name: 'depts-form',
     layout: 'inline',
     items: [
       {
@@ -193,9 +196,9 @@ const DeptsManage: NextPage = () => {
         type: 'input',
         key: 'fdCellphone',
         value: fdCellphone,
-        label: '联系方式',
+        label: '电话号码',
         name: 'fdCellphone',
-        placeholder: '请输入联系方式',
+        placeholder: '请输入电话号码',
         callback: (e: any) => {
           setState("req", {
             fdCellphone: e.target.value.trim()
@@ -214,7 +217,7 @@ const DeptsManage: NextPage = () => {
   const tabelObj = {
     columns: [
       { title: "序号", dataIndex: "sort", key: "sort" },
-      { title: "部门ID", dataIndex: "fdId", key: "fdId" },
+      // { title: "部门ID", dataIndex: "fdId", key: "fdId" },
       { title: "部门名称", dataIndex: "fdName", key: "fdName" },
       { title: "部门编号", dataIndex: "fdNo", key: "fdNo" },
       { title: "联系方式", dataIndex: "fdCellphone", key: "fdCellphone" },
@@ -264,6 +267,7 @@ const DeptsManage: NextPage = () => {
     ],
     datasource: dataList,
     total: dataList.length,
+    rowKey: "fdId",
     api: 'db/appid',
     pagination: {
       page: page,

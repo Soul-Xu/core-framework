@@ -29,6 +29,7 @@ interface IChangePageFunc {
 interface ITableObjProps {
   columns?: Array<any>,
   datasource?: any,
+  rowKey?: string,
   api?: string,
   customElements?: any,
   pagination: IPagination,
@@ -50,6 +51,7 @@ const SearchLayout = ({
   tabelObj = {
     columns: [],
     datasource: [],
+    rowKey: "",
     api: '',
     customElements: () => (<></>),
     pagination: {
@@ -116,7 +118,7 @@ const SearchLayout = ({
   }
 
   const TableComponent = () => {
-    const { columns, datasource, customElements, pagination, onChangePage } = tabelObj
+    const { columns, datasource, rowKey, customElements, pagination, onChangePage } = tabelObj
     const { page, pageSize, total } = pagination
 
     return (
@@ -137,6 +139,7 @@ const SearchLayout = ({
                   onChangePage && onChangePage(page, pageSize)
                 }
               }}
+              rowKey={(record) => record.fdId || Math.random()}
             />
           </div>
         </>

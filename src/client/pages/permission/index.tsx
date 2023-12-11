@@ -7,7 +7,7 @@ import type { TabsProps } from 'antd';
 /** component */
 import AppContainer from "../../layout/appContainer"
 import RolesManage from "./components/rolesManage";
-import PermissionManage from "./components/permissionManage";
+import PermissionManage from "./components/permissionsManage";
 import ModulesManage from "./components/modulesManage";
 import UsersManage from "./components/usersManage";
 import DeptsManage from "./components/deptsManage";
@@ -33,29 +33,24 @@ const items: TabsProps['items'] = [
     children: <ModulesManage />,
   },
   {
-    key: 'users',
-    label: '用户管理',
-    children: <UsersManage />,
-  },
-  {
     key: 'depts',
     label: '部门管理',
     children: <DeptsManage />,
   },
+  {
+    key: 'users',
+    label: '用户管理',
+    children: <UsersManage />,
+  },
 ];
 
-
 const Permission = () => {
-  const onChange = (key: string) => {
-    console.log(key);
-  };
-
   return (
     <>
       <AppContainer>
         <div className={classNames("container")}>
           <section className={classNames("tabs")}>
-            <Tabs defaultActiveKey="roles" items={items} onChange={onChange} />
+            <Tabs defaultActiveKey="roles" items={items} />
           </section>
         </div>
       </AppContainer>

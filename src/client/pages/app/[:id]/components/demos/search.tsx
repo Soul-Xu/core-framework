@@ -103,7 +103,7 @@ const SearchDemo: NextPage = () => {
   }
 
   const formObj = {
-    name: 'review-list',
+    name: 'demos-form',
     layout: 'inline',
     items: [
       {

@@ -558,7 +558,7 @@ export class PermissionService {
 
   async getAddress(body: AddPermissionsDto) {
     const res = await axios.request({
-      url: `${baseApi}/address/tree`,
+      url: `${baseApiOrg}/address/tree`,
       method: "post",
       data: body,
       headers: {

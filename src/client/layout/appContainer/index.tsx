@@ -76,18 +76,19 @@ interface PageContainerProps {
 
 const AppContainer: NextPage<PageContainerProps> = ({ children }: any) => {
   const router: any = useRouter();
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState("");
   const [selectKey, setSelectKey] = useState(['']);
 
   const onMenuClick = (menu: any) => {
-    // if (menu.key !== "openAPI") {
-    //   setSelectKey([`${menu.key}`]);
-    //   router.push(`/${menu.key}`);
-    // } else {
-    //   console.log("openAPI");
-    // }
-    setSelectKey([`${menu.key}`]);
-    router.push(`/${menu.key}`);
+    if (menu.key !== "openAPI") {
+      setSelectKey([`${menu.key}`]);
+      router.push(`/${menu.key}`);
+    } else {
+      console.log("openAPI");
+      window.open("http://localhost:3030/", "_blank");
+    }
+    // setSelectKey([`${menu.key}`]);
+    // router.push(`/${menu.key}`);
   };
 
   useEffect(() => {
@@ -106,12 +107,12 @@ const AppContainer: NextPage<PageContainerProps> = ({ children }: any) => {
         <Sider
           className={classNames("sider")}
           collapsible
-          collapsed={collapsed}
+          // @ts-ignore
+          collapsed={collapsed.toString()}
+          // @ts-ignore
           onCollapse={(value) => setCollapsed(value)}
           style={{
-            overflow: "auto",
             height: "100vh",
-            position: "fixed",
             fontSize: "18px",
             left: 0,
             width: collapsed ? "60px" : "200px"
@@ -122,6 +123,7 @@ const AppContainer: NextPage<PageContainerProps> = ({ children }: any) => {
             style={{ fontSize: "18px" }} 
             defaultSelectedKeys={['app']} 
             mode="inline" 
+            // @ts-ignore
             collapsed={collapsed}
             onClick={onMenuClick}
           >
@@ -136,7 +138,7 @@ const AppContainer: NextPage<PageContainerProps> = ({ children }: any) => {
           style={{
             padding: 24,
             margin: 0,
-            marginLeft: collapsed ? "80px" : "200px",
+            // marginLeft: collapsed ? "80px" : "200px",
             minHeight: 280,
             background: "#fff",
           }}

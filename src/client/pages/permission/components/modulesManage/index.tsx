@@ -146,7 +146,7 @@ const ModulesManage: NextPage = () => {
   }
 
   const formObj = {
-    name: 'permission-list',
+    name: 'modules-form',
     layout: 'inline',
     items: [
       {

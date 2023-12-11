@@ -101,7 +101,6 @@ const AddUsers = (props: Props) => {
 
     const res = await dispatchRedux(asyncThunk.addUsers(params) as any);
     const data = res?.payload
-    console.log("addUsers", data)
     if (data.code === 200) {
       message.success("添加用户成功")
       onCancel()

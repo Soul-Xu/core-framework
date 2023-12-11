@@ -1,5 +1,5 @@
 import { NextPage } from 'next'
-import SearchLayout from '../../../../components/searchLayout/'
+import SearchLayout from '../../../../components/searchLayout'
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
@@ -153,7 +153,7 @@ const PermissionManage: NextPage = () => {
   }
 
   const formObj = {
-    name: 'permission-list',
+    name: 'permission-form',
     layout: 'inline',
     items: [
       {

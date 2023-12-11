@@ -98,7 +98,7 @@ const UpdateDepts = (props: Props) => {
     <Modal 
       title="添加部门"
       style={{ textAlign: "center" }}
-      visible={open}
+      open={open}
       onOk={onOk}
       onCancel={onCancel}
       okText="提交"

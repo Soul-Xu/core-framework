@@ -14,13 +14,6 @@ interface IPagination {
   total: number
 }
 
-interface IFormObjProps {
-  name: string,
-  layout?: string | any,
-  items: Array<any>,
-  customElements: any
-}
-
 interface IChangePageFunc {
   (page: number, pageSize: number): void
 }
@@ -28,6 +21,7 @@ interface IChangePageFunc {
 interface ITableObjProps {
   columns?: Array<any>,
   datasource?: any,
+  rowKey?: string,
   api?: string,
   customElements?: any,
   pagination: IPagination,
@@ -42,6 +36,7 @@ const TableLayout = ({
   tableObj = {
     columns: [],
     datasource: [],
+    rowKey: "",
     api: '',
     customElements: () => (<></>),
     pagination: {
@@ -53,7 +48,7 @@ const TableLayout = ({
   }
 }: TableLayoutProps) => {
   const TableComponent = () => {
-    const { columns, datasource, customElements, pagination, onChangePage } = tableObj
+    const { columns, datasource, rowKey, customElements, pagination, onChangePage } = tableObj
     const { page, pageSize, total } = pagination
 
     return (
@@ -74,6 +69,7 @@ const TableLayout = ({
                   onChangePage(page, pageSize)
                 }
               }}
+              rowKey={rowKey}
             />
           </div>
         </>

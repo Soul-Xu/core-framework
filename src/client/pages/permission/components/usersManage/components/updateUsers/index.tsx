@@ -89,7 +89,6 @@ const AddUsers = (props: Props) => {
 
     const res = await dispatchRedux(asyncThunk.updateUsers(params) as any);
     const data = res?.payload
-    console.log("addUsers", data)
     if (data.code === 200) {
       message.success("编辑用户成功")
       onCancel()
@@ -119,10 +118,6 @@ const AddUsers = (props: Props) => {
             sort: index + 1
           }
       })
-      console.log("getDepts", depts)
-      // setState("update", {
-      //   dataList: users
-      // })
       dispatchRedux(setDeptsList({
         deptsList: depts
       }))
