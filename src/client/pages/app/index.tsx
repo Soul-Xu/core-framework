@@ -60,49 +60,51 @@ const App: NextPage = () => {
       sort: {
         fdDisplayOrder: "desc"
       },
-      ...req
+      conditions: {
+        ...req
+      }
     }
 
-    await axios.request({
-      url: `${baseApi}/app-permission/list-view`,
-      method: "post",
-      data: params,
-      withCredentials: true,  
-      headers: {
-        'Content-Type': 'application/json', // 设置为 application/json
-        'ltpatoken': token
-      },
-    }).then((res: any) => {
-      const data = res.data
-      if (data.code === 200) {
-        const list = data.data
-        setState("update", {
-          appsList: list
-        }) 
-        dispatchRedux(setAppsList({
-          appsList: list
-        }))
-      }
+    // await axios.request({
+    //   url: `${baseApi}/app-permission/list-view`,
+    //   method: "post",
+    //   data: params,
+    //   withCredentials: true,  
+    //   headers: {
+    //     'Content-Type': 'application/json', // 设置为 application/json
+    //     'ltpatoken': token
+    //   },
+    // }).then((res: any) => {
+    //   const data = res.data
+    //   if (data.code === 200) {
+    //     const list = data.data
+    //     setState("update", {
+    //       appsList: list
+    //     }) 
+    //     dispatchRedux(setAppsList({
+    //       appsList: list
+    //     }))
+    //   }
 
-    }).catch((err: any) => {
-      console.log("axios-app-err", err)
-    })
-    // const res = await dispatchRedux(asyncThunk.getApps(params) as any);
-    // const data = res?.payload
-    // if (data.code === 200) {
-    //   const { content } = data.data
-    //   setState("update", {
-    //     appsList: content
-    //   }) 
-    //   dispatchRedux(setAppsList({
-    //     appsList: content
-    //   }))
-    // } else if (
-    //     data.code === 401 && 
-    //     data.success === false &&
-    //     data.message === "请先登录后再操作!") {
-    //   router.push("/login")
-    // }
+    // }).catch((err: any) => {
+    //   console.log("axios-app-err", err)
+    // })
+    const res = await dispatchRedux(asyncThunk.getApps(params) as any);
+    const data = res?.payload
+    if (data.code === 200) {
+      const { content } = data.data
+      setState("update", {
+        appsList: content
+      }) 
+      dispatchRedux(setAppsList({
+        appsList: content
+      }))
+    } else if (
+        data.code === 401 && 
+        data.success === false &&
+        data.message === "请先登录后再操作!") {
+      router.push("/login")
+    }
   }
 
   useEffect(() => {

@@ -25,9 +25,9 @@ import { baseApi } from "../../../../config"
 const initialState = {
   req: {
     fdName: "", // 组织名称
-    page: 1,
-    pageSize: 10,
   },
+  page: 1,
+  pageSize: 20,
   dataList: [],
   detail: {}
 }
@@ -36,8 +36,8 @@ const ModulesManage: NextPage = () => {
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
   const token = useSelector((state: any) => state.common.token)
-  const { req, dataList, detail } = data
-  const { page, pageSize, fdName } = req
+  const { page, pageSize, req, dataList, detail } = data
+  const { fdName } = req
   const [showAddModal, setShowAddModal] = useState(false)
   const [showUpdateModal, setShowUpdateModal] = useState(false)
 
@@ -113,30 +113,30 @@ const ModulesManage: NextPage = () => {
       fdId: fdId
     }
 
-    await axios.request({
-      url: `${baseApi}/api-module/delete`,
-      method: "post",
-      data: params,
-      withCredentials: true,  
-      headers: {
-        'Content-Type': 'application/json', // 设置为 application/json
-        'ltpatoken': token
-      },
-    }).then((res: any) => {
-      const data = res.data
-      if (data.code === 200) {
-        getModules()
-        message.success("删除成功")
-      }
-    }).catch((err: any) => {
-      console.log("axios-app-err", err)
-    })
-    // const res = await dispatchRedux(asyncThunk.deleteModules(params) as any);
-    // const data = res?.payload
-    // if (data.code === 200) {
-    //   getModules()
-    //   message.success("删除成功")
-    // }
+    // await axios.request({
+    //   url: `${baseApi}/api-module/delete`,
+    //   method: "post",
+    //   data: params,
+    //   withCredentials: true,  
+    //   headers: {
+    //     'Content-Type': 'application/json', // 设置为 application/json
+    //     'ltpatoken': token
+    //   },
+    // }).then((res: any) => {
+    //   const data = res.data
+    //   if (data.code === 200) {
+    //     getModules()
+    //     message.success("删除成功")
+    //   }
+    // }).catch((err: any) => {
+    //   console.log("axios-app-err", err)
+    // })
+    const res = await dispatchRedux(asyncThunk.deleteModules(params) as any);
+    const data = res?.payload
+    if (data.code === 200) {
+      getModules()
+      message.success("删除成功")
+    }
   }
 
   /**
@@ -146,56 +146,58 @@ const ModulesManage: NextPage = () => {
     const params = {
       page: 1,
       pageSize: 20,
-      ...req
+      conditions: {
+        ...req
+      }
     }
 
-    await axios.request({
-      url: `${baseApi}/api-module/list`,
-      method: "post",
-      data: params,
-      withCredentials: true,  
-      headers: {
-        'Content-Type': 'application/json', // 设置为 application/json
-        'ltpatoken': token
-      },
-    }).then((res: any) => {
-      const data = res.data
-      if (data.code === 200) {
-        const { content } = data.data;
-        const modules = content.map((contentItem: any, index: number) => {
-          return {
-            ...contentItem,
-            sort: index + 1
-          }
-        })
-        setState("update", {
-          dataList: modules
-        })
-        dispatchRedux(setModulesList({
-          modulesList: modules
-        }))
-      }
-    }).catch((err: any) => {
-      console.log("update-module", err)
-    })
+    // await axios.request({
+    //   url: `${baseApi}/api-module/list`,
+    //   method: "post",
+    //   data: params,
+    //   withCredentials: true,  
+    //   headers: {
+    //     'Content-Type': 'application/json', // 设置为 application/json
+    //     'ltpatoken': token
+    //   },
+    // }).then((res: any) => {
+    //   const data = res.data
+    //   if (data.code === 200) {
+    //     const { content } = data.data;
+    //     const modules = content.map((contentItem: any, index: number) => {
+    //       return {
+    //         ...contentItem,
+    //         sort: index + 1
+    //       }
+    //     })
+    //     setState("update", {
+    //       dataList: modules
+    //     })
+    //     dispatchRedux(setModulesList({
+    //       modulesList: modules
+    //     }))
+    //   }
+    // }).catch((err: any) => {
+    //   console.log("update-module", err)
+    // })
 
-    // const res = await dispatchRedux(asyncThunk.getModules(params) as any);
-    // const data = res?.payload
-    // if (data.code === 200) {
-    //   const { content } = data.data;
-    //   const modules = content.map((contentItem: any, index: number) => {
-    //     return {
-    //       ...contentItem,
-    //       sort: index + 1
-    //     }
-    //   })
-    //   setState("update", {
-    //     dataList: modules
-    //   })
-    //   dispatchRedux(setModulesList({
-    //     modulesList: modules
-    //   }))
-    // }
+    const res = await dispatchRedux(asyncThunk.getModules(params) as any);
+    const data = res?.payload
+    if (data.code === 200) {
+      const { content } = data.data;
+      const modules = content.map((contentItem: any, index: number) => {
+        return {
+          ...contentItem,
+          sort: index + 1
+        }
+      })
+      setState("update", {
+        dataList: modules
+      })
+      dispatchRedux(setModulesList({
+        modulesList: modules
+      }))
+    }
   }
 
   const formObj = {

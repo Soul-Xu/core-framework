@@ -24,9 +24,9 @@ import { baseApi } from "../../../../config"
 const initialState = {
   req: {
     fdRoleName: "", // 角色名称
-    page: 1,
-    pageSize: 10,
   },
+  page: 1,
+  pageSize: 10,
   dataList: [], // 角色列表
   detail: {}
 }
@@ -35,8 +35,8 @@ const RolesManage: NextPage = () => {
   const router = useRouter()
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
-  const { req, dataList } = data
-  const { page, pageSize, fdRoleName } = req
+  const { req, dataList, page, pageSize } = data
+  const { fdRoleName } = req
   const [showAddModal, setShowAddModal] = useState(false)
   const token = useSelector((state: any) => state.common.token)
 
@@ -101,30 +101,30 @@ const RolesManage: NextPage = () => {
       fdId: fdId
     }
 
-    await axios.request({
-      url: `${baseApi}/role/delete`,
-      method: "post",
-      data: params,
-      withCredentials: true,  
-      headers: {
-        'Content-Type': 'application/json', // 设置为 application/json
-        'ltpatoken': token
-      },
-    }).then((res: any) => {
-      const data = res.data
-      if (data.code === 200) {
-        getRoles()
-        message.success("删除成功")
-      }
-    }).catch((err: any) => {
-      console.log("axios-app-err", err)
-    })
-    // const res = await dispatchRedux(asyncThunk.deleteRoles(params) as any);
-    // const data = res?.payload
-    // if (data.code === 200) {
-    //   getRoles()
-    //   message.success("删除成功")
-    // }
+    // await axios.request({
+    //   url: `${baseApi}/role/delete`,
+    //   method: "post",
+    //   data: params,
+    //   withCredentials: true,  
+    //   headers: {
+    //     'Content-Type': 'application/json', // 设置为 application/json
+    //     'ltpatoken': token
+    //   },
+    // }).then((res: any) => {
+    //   const data = res.data
+    //   if (data.code === 200) {
+    //     getRoles()
+    //     message.success("删除成功")
+    //   }
+    // }).catch((err: any) => {
+    //   console.log("axios-app-err", err)
+    // })
+    const res = await dispatchRedux(asyncThunk.deleteRoles(params) as any);
+    const data = res?.payload
+    if (data.code === 200) {
+      getRoles()
+      message.success("删除成功")
+    }
   }
 
   /**
@@ -134,61 +134,63 @@ const RolesManage: NextPage = () => {
     const params = {
       page: 1,
       pageSize: 20,
-      ...req
+      conditions: {
+        ...req
+      }
     }
 
-    await axios.request({
-      url: `${baseApi}/role/list`,
-      method: "post",
-      data: params,
-      withCredentials: true,  
-      headers: {
-        'Content-Type': 'application/json', // 设置为 application/json
-        'ltpatoken': token
-      },
-    }).then((res: any) => {
-      const data = res.data
-      if (data.code === 200) {
-        const { content } = data.data;
-        const roles = content.map((contentItem: any, index: number) => {
-            return {
-              ...contentItem,
-              sort: index + 1
-            }
-        })
-        setState("update", {
-          dataList: roles
-        })
-        dispatchRedux(setRolesList({
-          rolesList: roles
-        }))
-      }
-    }).catch((err: any) => {
-      console.log("add-module", err)
-    })
+    // await axios.request({
+    //   url: `${baseApi}/role/list`,
+    //   method: "post",
+    //   data: params,
+    //   withCredentials: true,  
+    //   headers: {
+    //     'Content-Type': 'application/json', // 设置为 application/json
+    //     'ltpatoken': token
+    //   },
+    // }).then((res: any) => {
+    //   const data = res.data
+    //   if (data.code === 200) {
+    //     const { content } = data.data;
+    //     const roles = content.map((contentItem: any, index: number) => {
+    //         return {
+    //           ...contentItem,
+    //           sort: index + 1
+    //         }
+    //     })
+    //     setState("update", {
+    //       dataList: roles
+    //     })
+    //     dispatchRedux(setRolesList({
+    //       rolesList: roles
+    //     }))
+    //   }
+    // }).catch((err: any) => {
+    //   console.log("add-module", err)
+    // })
 
-    // const res = await dispatchRedux(asyncThunk.getRoles(params) as any);
-    // const data = res?.payload
-    // if (data.code === 200) {
-    //   const { content } = data.data;
-    //   const roles = content.map((contentItem: any, index: number) => {
-    //       return {
-    //         ...contentItem,
-    //         sort: index + 1
-    //       }
-    //   })
-    //   setState("update", {
-    //     dataList: roles
-    //   })
-    //   dispatchRedux(setRolesList({
-    //     rolesList: roles
-    //   }))
-    // } else if (
-    //     data.code === 401 && 
-    //     data.success === false &&
-    //     data.message === "请先登录后再操作!") {
-    //   router.push("/login")
-    // }
+    const res = await dispatchRedux(asyncThunk.getRoles(params) as any);
+    const data = res?.payload
+    if (data.code === 200) {
+      const { content } = data.data;
+      const roles = content.map((contentItem: any, index: number) => {
+          return {
+            ...contentItem,
+            sort: index + 1
+          }
+      })
+      setState("update", {
+        dataList: roles
+      })
+      dispatchRedux(setRolesList({
+        rolesList: roles
+      }))
+    } else if (
+        data.code === 401 && 
+        data.success === false &&
+        data.message === "请先登录后再操作!") {
+      router.push("/login")
+    }
   }
 
   const formObj = {

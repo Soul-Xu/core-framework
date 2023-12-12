@@ -113,55 +113,55 @@ const AddUsers = (props: Props) => {
       pageSize: 20
     }
 
-    await axios.request({
-      url: `${baseApiOrg}/dept/list`,
-      method: "post",
-      data: params,
-      withCredentials: true,  
-      headers: {
-        'Content-Type': 'application/json', // 设置为 application/json
-        'ltpatoken': token
-      },
-    }).then((res: any) => {
-      const data = res.data
-      if (data.code === 200) {
-        const { content } = data.data;
-        const Depts = content.map((contentItem: any, index: number) => {
-          return {
-            ...contentItem,
-            sort: index + 1
-          }
-       })
-        setState("update", {
-          dataList: Depts
-        })
-        dispatchRedux(setDeptsList({
-          DeptsList: Depts
-        }))
-      }
-    }).catch((err: any) => {
-      console.log("add-permission", err)
-    })
-
-    // const res = await dispatchRedux(asyncThunk.getDepts(params) as any);
-    // const data = res?.payload
-    // if (data.code === 200) {
-    //   const { content } = data.data;
-    //   const depts = content.map((contentItem: any, index: number) => {
+    // await axios.request({
+    //   url: `${baseApiOrg}/dept/list`,
+    //   method: "post",
+    //   data: params,
+    //   withCredentials: true,  
+    //   headers: {
+    //     'Content-Type': 'application/json', // 设置为 application/json
+    //     'ltpatoken': token
+    //   },
+    // }).then((res: any) => {
+    //   const data = res.data
+    //   if (data.code === 200) {
+    //     const { content } = data.data;
+    //     const Depts = content.map((contentItem: any, index: number) => {
     //       return {
     //         ...contentItem,
     //         sort: index + 1
     //       }
-    //   })
-    //   dispatchRedux(setDeptsList({
-    //     deptsList: depts
-    //   }))
-    // } else if (
-    //     data.code === 401 && 
-    //     data.success === false &&
-    //     data.message === "请先登录后再操作!") {
-    //   router.push("/login")
-    // }
+    //    })
+    //     setState("update", {
+    //       dataList: Depts
+    //     })
+    //     dispatchRedux(setDeptsList({
+    //       DeptsList: Depts
+    //     }))
+    //   }
+    // }).catch((err: any) => {
+    //   console.log("add-permission", err)
+    // })
+
+    const res = await dispatchRedux(asyncThunk.getDepts(params) as any);
+    const data = res?.payload
+    if (data.code === 200) {
+      const { content } = data.data;
+      const depts = content.map((contentItem: any, index: number) => {
+          return {
+            ...contentItem,
+            sort: index + 1
+          }
+      })
+      dispatchRedux(setDeptsList({
+        deptsList: depts
+      }))
+    } else if (
+        data.code === 401 && 
+        data.success === false &&
+        data.message === "请先登录后再操作!") {
+      router.push("/login")
+    }
   }
 
   useEffect(() => {

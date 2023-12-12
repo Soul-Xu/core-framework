@@ -68,34 +68,34 @@ const UpdateModules = (props: Props) => {
       fdName: fdName
     }
 
-    await axios.request({
-      url: `${baseApi}/api-module/is-moduleKey-unique`,
-      method: "post",
-      data: params,
-      withCredentials: true,  
-      headers: {
-        'Content-Type': 'application/json', // 设置为 application/json
-        'ltpatoken': token
-      },
-    }).then((res: any) => {
-      const data = res.data
-      if (data.code === 200) {
-        return true
-      }
-    }).catch((err: any) => {
-      console.log("uniqueModules", err)
-    })
+    // await axios.request({
+    //   url: `${baseApi}/api-module/is-moduleKey-unique`,
+    //   method: "post",
+    //   data: params,
+    //   withCredentials: true,  
+    //   headers: {
+    //     'Content-Type': 'application/json', // 设置为 application/json
+    //     'ltpatoken': token
+    //   },
+    // }).then((res: any) => {
+    //   const data = res.data
+    //   if (data.code === 200) {
+    //     return true
+    //   }
+    // }).catch((err: any) => {
+    //   console.log("uniqueModules", err)
+    // })
 
-    // const res = await dispatchRedux(asyncThunk.uniqueModules(params) as any);
-    // const data = res?.payload
-    // if (data.code === 200 && data.data === true) {
-    //   return true
-    // } else if (
-    //     data.code === 401 && 
-    //     data.success === false &&
-    //     data.message === "请先登录后再操作!") {
-    //   router.push("/login")
-    // }
+    const res = await dispatchRedux(asyncThunk.uniqueModules(params) as any);
+    const data = res?.payload
+    if (data.code === 200 && data.data === true) {
+      return true
+    } else if (
+        data.code === 401 && 
+        data.success === false &&
+        data.message === "请先登录后再操作!") {
+      router.push("/login")
+    }
     return false
   }
 
@@ -113,34 +113,34 @@ const UpdateModules = (props: Props) => {
       fdRemark: fdRemark
     }
 
-    await axios.request({
-      url: `${baseApi}/api-module/update`,
-      method: "post",
-      data: params,
-      withCredentials: true,  
-      headers: {
-        'Content-Type': 'application/json', // 设置为 application/json
-        'ltpatoken': token
-      },
-    }).then((res: any) => {
-      const data = res.data
-      if (data.code === 200) {
-        onCancel()
-      }
-    }).catch((err: any) => {
-      console.log("update-module", err)
-    })
+    // await axios.request({
+    //   url: `${baseApi}/api-module/update`,
+    //   method: "post",
+    //   data: params,
+    //   withCredentials: true,  
+    //   headers: {
+    //     'Content-Type': 'application/json', // 设置为 application/json
+    //     'ltpatoken': token
+    //   },
+    // }).then((res: any) => {
+    //   const data = res.data
+    //   if (data.code === 200) {
+    //     onCancel()
+    //   }
+    // }).catch((err: any) => {
+    //   console.log("update-module", err)
+    // })
 
-    // const res = await dispatchRedux(asyncThunk.updateModules(params) as any);
-    // const data = res?.payload
-    // if (data.code === 200) {
-    //   onCancel()
-    // } else if (
-    //     data.code === 401 && 
-    //     data.success === false &&
-    //     data.message === "请先登录后再操作!") {
-    //   router.push("/login")
-    // }
+    const res = await dispatchRedux(asyncThunk.updateModules(params) as any);
+    const data = res?.payload
+    if (data.code === 200) {
+      onCancel()
+    } else if (
+        data.code === 401 && 
+        data.success === false &&
+        data.message === "请先登录后再操作!") {
+      router.push("/login")
+    }
     onCancel()
   }
 

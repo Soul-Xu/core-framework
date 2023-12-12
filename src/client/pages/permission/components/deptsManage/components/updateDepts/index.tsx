@@ -67,34 +67,34 @@ const UpdateDepts = (props: Props) => {
       fdParent: detail?.fdParent || null
     };
 
-    await axios.request({
-      url: `${baseApiOrg}/dept/update`,
-      method: "post",
-      data: params,
-      withCredentials: true,  
-      headers: {
-        'Content-Type': 'application/json', // 设置为 application/json
-        'ltpatoken': token
-      },
-    }).then((res: any) => {
-      const data = res.data
-      if (data.code === 200) {
-        onCancel()
-      }
-    }).catch((err: any) => {
-      console.log("add-permission", err)
-    })
+    // await axios.request({
+    //   url: `${baseApiOrg}/dept/update`,
+    //   method: "post",
+    //   data: params,
+    //   withCredentials: true,  
+    //   headers: {
+    //     'Content-Type': 'application/json', // 设置为 application/json
+    //     'ltpatoken': token
+    //   },
+    // }).then((res: any) => {
+    //   const data = res.data
+    //   if (data.code === 200) {
+    //     onCancel()
+    //   }
+    // }).catch((err: any) => {
+    //   console.log("add-permission", err)
+    // })
 
-    // const res = await dispatchRedux(asyncThunk.updateDepts(params) as any);
-    // const data = res?.payload;
-    // if (data.code === 200) {
-    //   onCancel();
-    // } else if (
-    //     data.code === 401 &&
-    //     data.success === false &&
-    //     data.message === "请先登录后再操作!") {
-    //   router.push("/login");
-    // }
+    const res = await dispatchRedux(asyncThunk.updateDepts(params) as any);
+    const data = res?.payload;
+    if (data.code === 200) {
+      onCancel();
+    } else if (
+        data.code === 401 &&
+        data.success === false &&
+        data.message === "请先登录后再操作!") {
+      router.push("/login");
+    }
     onCancel();
   };
 
