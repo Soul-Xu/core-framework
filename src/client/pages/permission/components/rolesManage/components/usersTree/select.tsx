@@ -220,6 +220,11 @@ const UsersSelector = () => {
     });
   };
 
+  const clearSelected = () => {
+    setSelectedRowKeys([]); // 清空已选中的行
+    dispatchRedux(setSelectUsers({ selectUsers: [] })); // 清空选择的用户
+  };
+
   return (
     <div className={classNames("container")}>
       <div className={classNames("content")}>
@@ -228,9 +233,12 @@ const UsersSelector = () => {
         </section>
         <section className={classNames("content-list")}>
           <div className={classNames("content-list-title")}>
-            <span>共{usersList.length}项</span>
-            <span className={classNames("content-list-title-action")}>
-              清空所选
+            <div>
+              <span style={{ marginRight: "8px" }}>共{deptsList.length}项</span>
+              <span>已选{selectedRowKeys.length}项</span>
+            </div>
+            <span className={classNames("content-list-title-action")} onClick={clearSelected}>
+              清空所选x x
             </span>
           </div>
           <div className={classNames("content-list-main")}>

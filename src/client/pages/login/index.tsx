@@ -98,8 +98,6 @@ const Login: React.FC = () => {
       const data = res?.data
       const ltpatoken = res.headers["ltpatoken"]
 
-      console.log("data-res", data)
-
       if (data?.code === 200) {
         dispatchRedux(setAuthState({
           authState: true

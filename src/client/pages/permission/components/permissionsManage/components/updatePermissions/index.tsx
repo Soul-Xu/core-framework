@@ -9,6 +9,7 @@ import { reducer } from "../../../../../../utils/reducer";
 import { Modal, Form, Input, Checkbox, Select } from "antd"
 import { useRouter } from "next/router";
 import asyncThunk from "../../../../../../store/asyncThunk";
+import { setModulesList } from "../../../../../../store/modules/permissionSlice";
 
 const TextArea = Input
 
@@ -135,21 +136,51 @@ const UpdatePermissions = (props: Props) => {
       pageSize: 10
     }
 
-    const res = await dispatchRedux(asyncThunk.getModules(params) as any);
-      const data = res?.payload
+    await axios.request({
+      url: `${baseApi}/api-module/list`,
+      method: "post",
+      data: params,
+      withCredentials: true,  
+      headers: {
+        'Content-Type': 'application/json', // 设置为 application/json
+        'ltpatoken': token
+      },
+    }).then((res: any) => {
+      const data = res.data
       if (data.code === 200) {
-
-        const { content } = data.data
-        const options: any = onHandleModules(content)
-        setState("update", {
-          modules: options
+        const { content } = data.data;
+        const modules = content.map((contentItem: any, index: number) => {
+          return {
+            ...contentItem,
+            sort: index + 1
+          }
         })
-      } else if (
-          data.code === 401 && 
-          data.success === false &&
-          data.message === "请先登录后再操作!") {
-        router.push("/login")
+        setState("update", {
+          dataList: modules
+        })
+        dispatchRedux(setModulesList({
+          modulesList: modules
+        }))
       }
+    }).catch((err: any) => {
+      console.log("update-module", err)
+    })
+
+      // const res = await dispatchRedux(asyncThunk.getModules(params) as any);
+      // const data = res?.payload
+      // if (data.code === 200) {
+
+      //   const { content } = data.data
+      //   const options: any = onHandleModules(content)
+      //   setState("update", {
+      //     modules: options
+      //   })
+      // } else if (
+      //     data.code === 401 && 
+      //     data.success === false &&
+      //     data.message === "请先登录后再操作!") {
+      //   router.push("/login")
+      // }
   }
 
   useEffect(() => {

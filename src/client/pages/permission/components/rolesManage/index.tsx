@@ -24,7 +24,6 @@ import { baseApi } from "../../../../config"
 const initialState = {
   req: {
     fdRoleName: "", // 角色名称
-    description: "", // 组织
     page: 1,
     pageSize: 10,
   },
@@ -198,13 +197,13 @@ const RolesManage: NextPage = () => {
     items: [
       {
         type: 'input',
-        key: 'roles',
+        key: 'fdRoleName',
         value: fdRoleName,
         label: '角色名称',
-        name: 'roles',
+        name: 'fdRoleName',
         placeholder: '请输入角色名称',
         callback: (e: any) => {
-          setState("update", {
+          setState("req", {
             fdRoleName: e.target.value.trim()
           })
         }

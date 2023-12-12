@@ -142,30 +142,71 @@ const AddUsers = (props: Props) => {
       pageSize: 20
     }
 
-    const res = await dispatchRedux(asyncThunk.getDepts(params) as any);
-    const data = res?.payload
-    if (data.code === 200) {
-      const { content } = data.data;
-      const options: any = []
-      const depts = content.map((contentItem: any, index: number) => {
-        options.push({
-          value: contentItem?.fdId,
-          label: contentItem?.fdName
+    await axios.request({
+      url: `${baseApiOrg}/dept/list`,
+      method: "post",
+      data: params,
+      withCredentials: true,  
+      headers: {
+        'Content-Type': 'application/json', // 设置为 application/json
+        'ltpatoken': token
+      },
+    }).then((res: any) => {
+      const data = res.data
+      if (data.code === 200) {
+        const { content } = data.data;
+        const depts = content.map((contentItem: any, index: number) => {
+          return {
+            ...contentItem,
+            sort: index + 1
+          }
         })
-      })
-      setState("update", {
-        depts: options
-      })
-      dispatchRedux(setDeptsList({
-        deptsList: depts
-      }))
-    } else if (
-        data.code === 401 && 
-        data.success === false &&
-        data.message === "请先登录后再操作!") {
-      router.push("/login")
-    }
+        const selectDepts = onHandleData(content)
+        setState("update", {
+          depts: selectDepts
+        })
+        dispatchRedux(setDeptsList({
+          deptsList: depts
+        }))
+      }
+    }).catch((err: any) => {
+      console.log("add-permission", err)
+    })
+
+    // const res = await dispatchRedux(asyncThunk.getDepts(params) as any);
+    // const data = res?.payload
+    // if (data.code === 200) {
+    //   const { content } = data.data;
+    //   const options: any = []
+    //   const depts = content.map((contentItem: any, index: number) => {
+    //     options.push({
+    //       value: contentItem?.fdId,
+    //       label: contentItem?.fdName
+    //     })
+    //   })
+    //   setState("update", {
+    //     depts: options
+    //   })
+    //   dispatchRedux(setDeptsList({
+    //     deptsList: depts
+    //   }))
+    // } else if (
+    //     data.code === 401 && 
+    //     data.success === false &&
+    //     data.message === "请先登录后再操作!") {
+    //   router.push("/login")
+    // }
   }
+
+    /**
+   * 将depts转化成select组件所需数据
+   */
+    const onHandleData = (items: any) => {
+      return items?.map(item => ({
+        value: item.fdId,
+        label: item.fdName
+      }));
+    }
 
   useEffect(() => {
     getDepts()
@@ -175,8 +216,7 @@ const AddUsers = (props: Props) => {
     <Modal 
       title="添加用户"
       style={{ textAlign: "center" }}
-      // open={open}
-      visible={open}
+      open={open}
       onOk={onOk}
       onCancel={onCancel}
       okText="提交"

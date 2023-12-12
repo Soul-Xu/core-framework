@@ -78,12 +78,12 @@ const AddRoles = (props: Props) => {
   /**
    * 将permissions转化成select组件所需数据
    */
-    const onHandlePermissions = (items: any) => {
-      return items?.map(item => ({
-        value: item.fdId,
-        label: item.fdApiName
-      }));
-    }
+  const onHandlePermissions = (items: any) => {
+    return items?.map(item => ({
+      value: item.fdId,
+      label: item.fdApiName
+    }));
+  }
 
   /**
    * 将select组件选中的数据转化成接口所需数据
@@ -147,23 +147,53 @@ const AddRoles = (props: Props) => {
       pageSize: 20,
     }
 
-    const res = await dispatchRedux(asyncThunk.getPermissions(params) as any);
-    const data = res?.payload
-    if (data.code === 200) {
-      const { content } = data.data;
-      const permissions = onHandlePermissions(content)
-      setState("update", {
-        permissionsList: permissions
-      })
-      dispatchRedux(setPermissionsList({
-        permissionsList: permissions
-      }))
-    } else if (
-        data.code === 401 && 
-        data.success === false &&
-        data.message === "请先登录后再操作!") {
-      router.push("/login")
-    }
+    await axios.request({
+      url: `${baseApi}/api-permission/list`,
+      method: "post",
+      data: params,
+      withCredentials: true,  
+      headers: {
+        'Content-Type': 'application/json', // 设置为 application/json
+        'ltpatoken': token
+      },
+    }).then((res: any) => {
+      const data = res.data
+      if (data.code === 200) {
+        const { content } = data.data;
+        const permissions = content.map((contentItem: any, index: number) => {
+          return {
+            ...contentItem,
+            sort: index + 1
+          }
+       })
+        setState("update", {
+          dataList: permissions
+        })
+        dispatchRedux(setPermissionsList({
+          permissionsList: permissions
+        }))
+      }
+    }).catch((err: any) => {
+      console.log("add-permission", err)
+    })
+
+    // const res = await dispatchRedux(asyncThunk.getPermissions(params) as any);
+    // const data = res?.payload
+    // if (data.code === 200) {
+    //   const { content } = data.data;
+    //   const permissions = onHandlePermissions(content)
+    //   setState("update", {
+    //     permissionsList: permissions
+    //   })
+    //   dispatchRedux(setPermissionsList({
+    //     permissionsList: permissions
+    //   }))
+    // } else if (
+    //     data.code === 401 && 
+    //     data.success === false &&
+    //     data.message === "请先登录后再操作!") {
+    //   router.push("/login")
+    // }
   }
 
   /**

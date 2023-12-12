@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useImmerReducer } from "use-immer";
 import asyncThunk from "../../../../store/asyncThunk";
-import { setRolesList, setPermissionsList } from "../../../../store/modules/permissionSlice";
+import { setPermissionsList } from "../../../../store/modules/permissionSlice";
 import { Button, Tag, Modal, message } from "antd";
 import { reducer } from "../../../../utils/reducer";
 import classnames from 'classnames/bind';
@@ -173,7 +173,7 @@ const PermissionManage: NextPage = () => {
         setState("update", {
           dataList: permissions
         })
-        dispatchRedux(setRolesList({
+        dispatchRedux(setPermissionsList({
           permissionsList: permissions
         }))
       }

@@ -2,7 +2,7 @@
  * 新建应用
  */
 /** external library */
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from "react-redux";
 import { useImmerReducer } from "use-immer";
@@ -15,6 +15,9 @@ import asyncThunk from "../../../../../../store/asyncThunk";
 import classnames from 'classnames/bind';
 import style from '../../index.module.scss';
 const classNames = classnames.bind(style);
+
+/** components */
+import DeptsTree from "../deptsTree";
 
 /** http */
 import axios from 'axios';
@@ -33,20 +36,25 @@ interface Props {
 }
 
 const initialState = {
-  fdName: "",
-  fdNo: "",    
-  fdCellphone: "",
-  fdDisplayOrder: "",
-  fdRemark: "",
-  fdId: ""
+  req: {
+    fdName: "",
+    fdNo: "",    
+    fdCellphone: "",
+    fdDisplayOrder: "",
+    fdRemark: "",
+    fdId: ""
+  },
+  depts: ""
 }
 
 const AddDepts = (props: Props) => {
   const router = useRouter()
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
-  const { fdName, fdNo, fdCellphone, fdDisplayOrder, fdRemark, fdId } = data
+  const { req, depts } = data
+  const { fdName, fdNo, fdCellphone, fdDisplayOrder, fdRemark, fdId } = req
   const token = useSelector((state: any) => state.common.token)
+  const selectDepts = useSelector((state: any) => state.permission.selectDepts)
   const { open, onCancel } = props
 
   /**
@@ -63,11 +71,11 @@ const AddDepts = (props: Props) => {
    */
   const onHandleChange = (type: string, e: any) => {
     if (type === "fdDisplayOrder") {
-      setState("update", {
+      setState("req", {
         [type]: e
       })
     } else {
-      setState("update", {
+      setState("req", {
         [type]: e.target.value
       })
     }
@@ -84,7 +92,9 @@ const AddDepts = (props: Props) => {
       fdCellphone: fdCellphone,
       fdDisplayOrder: fdDisplayOrder,
       fdRemark: fdRemark,
-      fdParent: null
+      fdParent: {
+        fdId: selectDepts[0].fdId
+      }
     }
 
     await axios.request({
@@ -116,6 +126,14 @@ const AddDepts = (props: Props) => {
     // }
     onCancel()
   }
+
+  useEffect(() => {
+    if (selectDepts) {
+      setState("update", {
+        depts: selectDepts[0].fdName
+      })
+    }
+  }, [selectDepts])
 
   return (
     <Modal 
@@ -159,6 +177,17 @@ const AddDepts = (props: Props) => {
         >
           <InputNumber style={{ width: "378px", textAlign: "left" }} placeholder="请输入排序" onChange={(e: any) => onHandleChange("fdDisplayOrder", e)} />
         </Form.Item>
+        <Form.Item 
+          name="fdUserList"
+          label={(
+            <div className={classNames("form-item-label")}>上级部门</div>
+          )}
+        >
+            <div style={{ display: "flex" }}>
+              <Input style={{ marginRight: "10px" }} value={depts} disabled  placeholder="请选择上级部门" />
+              <DeptsTree />
+            </div>
+          </Form.Item>
         <Form.Item 
           name="fdRemark"
           label={(

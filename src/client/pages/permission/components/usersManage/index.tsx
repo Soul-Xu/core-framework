@@ -57,7 +57,7 @@ const UsersManage: NextPage = () => {
   }, [dispatch]);
 
   const onSearch = () => {
-    dispatchRedux(getUsers(req) as any);
+    getUsers(req)
   };
 
   const onChangePagination = (page: number, pageSize: number) => {
@@ -227,7 +227,7 @@ const UsersManage: NextPage = () => {
         name: 'fdNickName',
         placeholder: '请输入用户昵称',
         callback: (e: any) => {
-          setState("update", {
+          setState("req", {
             fdNickName: e.target.value.trim()
           })
         }
@@ -240,7 +240,7 @@ const UsersManage: NextPage = () => {
         name: 'fdUserName',
         placeholder: '请输入用户名称',
         callback: (e: any) => {
-          setState("update", {
+          setState("req", {
             fdUserName: e.target.value.trim()
           })
         }
@@ -253,7 +253,7 @@ const UsersManage: NextPage = () => {
         name: 'fdEmail',
         placeholder: '请输入邮箱',
         callback: (e: any) => {
-          setState("update", {
+          setState("req", {
             fdEmail: e.target.value.trim()
           })
         }
@@ -266,7 +266,7 @@ const UsersManage: NextPage = () => {
         name: 'fdCellphone',
         placeholder: '请输入电话号码',
         callback: (e: any) => {
-          setState("update", {
+          setState("req", {
             fdCellphone: e.target.value.trim()
           })
         }
@@ -279,7 +279,7 @@ const UsersManage: NextPage = () => {
         name: 'fdEducation',
         placeholder: '请输入教育背景',
         callback: (e: any) => {
-          setState("update", {
+          setState("req", {
             fdEducation: e.target.value.trim()
           })
         }
@@ -292,7 +292,7 @@ const UsersManage: NextPage = () => {
         name: 'fdCity',
         placeholder: '请输入城市',
         callback: (e: any) => {
-          setState("update", {
+          setState("req", {
             fdCity: e.target.value.trim()
           })
         }

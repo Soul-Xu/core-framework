@@ -4,7 +4,7 @@
 /** external library */
 import React, { useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useImmerReducer } from "use-immer";
 import { reducer } from "../../../../../../utils/reducer";
 import { Modal, Form, Input, message } from "antd"
@@ -16,6 +16,10 @@ const Textarea = Input
 import classnames from 'classnames/bind';
 import style from '../../index.module.scss';
 const classNames = classnames.bind(style);
+
+/** http */
+import axios from 'axios';
+import { baseApiOrg } from "../../../../../../config"
 
 /**
  * interface
@@ -47,6 +51,7 @@ const AddUsers = (props: Props) => {
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
   const { fdNickName, fdUserName, fdPassword, fdEmail, fdCellphone, fdEducation, fdCity, fdRemark, fdId } = data
+  const token = useSelector((state: any) => state.common.token)
   const { detail, open, onCancel } = props
 
   /**
@@ -108,25 +113,55 @@ const AddUsers = (props: Props) => {
       pageSize: 20
     }
 
-    const res = await dispatchRedux(asyncThunk.getDepts(params) as any);
-    const data = res?.payload
-    if (data.code === 200) {
-      const { content } = data.data;
-      const depts = content.map((contentItem: any, index: number) => {
+    await axios.request({
+      url: `${baseApiOrg}/dept/list`,
+      method: "post",
+      data: params,
+      withCredentials: true,  
+      headers: {
+        'Content-Type': 'application/json', // 设置为 application/json
+        'ltpatoken': token
+      },
+    }).then((res: any) => {
+      const data = res.data
+      if (data.code === 200) {
+        const { content } = data.data;
+        const Depts = content.map((contentItem: any, index: number) => {
           return {
             ...contentItem,
             sort: index + 1
           }
-      })
-      dispatchRedux(setDeptsList({
-        deptsList: depts
-      }))
-    } else if (
-        data.code === 401 && 
-        data.success === false &&
-        data.message === "请先登录后再操作!") {
-      router.push("/login")
-    }
+       })
+        setState("update", {
+          dataList: Depts
+        })
+        dispatchRedux(setDeptsList({
+          DeptsList: Depts
+        }))
+      }
+    }).catch((err: any) => {
+      console.log("add-permission", err)
+    })
+
+    // const res = await dispatchRedux(asyncThunk.getDepts(params) as any);
+    // const data = res?.payload
+    // if (data.code === 200) {
+    //   const { content } = data.data;
+    //   const depts = content.map((contentItem: any, index: number) => {
+    //       return {
+    //         ...contentItem,
+    //         sort: index + 1
+    //       }
+    //   })
+    //   dispatchRedux(setDeptsList({
+    //     deptsList: depts
+    //   }))
+    // } else if (
+    //     data.code === 401 && 
+    //     data.success === false &&
+    //     data.message === "请先登录后再操作!") {
+    //   router.push("/login")
+    // }
   }
 
   useEffect(() => {
