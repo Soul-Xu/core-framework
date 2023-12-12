@@ -117,19 +117,37 @@ const MyApps = (props: Props) => {
     selectId !== "" && selectDetail !== null && setShowUpdateModal(true)
   }, [selectDetail])
 
+  // 在组件中使用
+  const contextMenuItems = (app, index) => {
+    return [
+      {
+        label: '编辑',
+        icon: <EditOutlined />,
+        onClick: () => onUpdateAppModal(app),
+      },
+      index !== 0 && {
+        label: '删除',
+        icon: <DeleteOutlined />,
+        onClick: () => onDeleteAppModal(app),
+      },
+    ].filter(Boolean); // 过滤掉 null 或 undefined
+  }
+
   const getDropdownMenu = (app, index) => (
-    <Menu>
-      <Menu.Item key="edit" onClick={() => onUpdateAppModal(app)}>
-        <span style={{ marginRight: "4px" }}><EditOutlined /></span>
-        <span>编辑</span>
-      </Menu.Item>
-      {index !== 0 && (
-        <Menu.Item key="delete" onClick={() => onDeleteAppModal(app)}>
-          <span style={{ marginRight: "4px" }}><DeleteOutlined /></span>
-          <span>删除</span>
-        </Menu.Item>
-      )}
-    </Menu>
+    // <Menu>
+    //   <Menu.Item key="edit" onClick={() => onUpdateAppModal(app)}>
+    //     <span style={{ marginRight: "4px" }}><EditOutlined /></span>
+    //     <span>编辑</span>
+    //   </Menu.Item>
+    //   {index !== 0 && (
+    //     <Menu.Item key="delete" onClick={() => onDeleteAppModal(app)}>
+    //       <span style={{ marginRight: "4px" }}><DeleteOutlined /></span>
+    //       <span>删除</span>
+    //     </Menu.Item>
+    //   )}
+    // </Menu>
+    // @ts-ignore
+    <Menu items={contextMenuItems(app, index)} />
   );
 
   return (
@@ -158,13 +176,14 @@ const MyApps = (props: Props) => {
               </div>
               <div>
                 {/* @ts-ignore */}
-                <Dropdown menu={getDropdownMenu(app, index)} trigger={['click']} placement="bottomRight">
+                <Dropdown overlay={getDropdownMenu(app, index)} trigger={['click']} placement="bottomRight">
                   <span>
                     <Image src={ImgActions} width={16} height={16} alt={"ImgActions"} />
                   </span>
                 </Dropdown>
               </div>
             </section>
+            {/* @ts-ignore */}
             <Link href={`/app/${app.fdId}`} key={app.fdId}>
               <div className={classNames("my-apps-list-item-icon")} 
                 style={{ backgroundColor: app.navColor || getRandomColor(), color: app.iconColor || "#000"}}> 

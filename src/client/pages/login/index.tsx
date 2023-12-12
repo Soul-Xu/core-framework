@@ -122,8 +122,8 @@ const Login: React.FC = () => {
     // redux-toolkit方式
     const res = await dispatchRedux(asyncThunk.login(params) as any);
     const data = res?.payload
-  
-    if (data?.code === 0) {
+
+    if (data?.code === 200) {
       onLoginSuccess(data)
     } else {
       message.error("登录失败，请重试")

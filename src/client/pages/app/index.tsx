@@ -28,6 +28,9 @@ import MyFavorApps from './components/myFavor';
 import MyApps from './components/myApps';
 
 const initialState = {
+  req: {
+    fdAppName: ""
+  },
   appsList: []
 }
 
@@ -38,7 +41,8 @@ const App: NextPage = () => {
   const [data, dispatch] = useImmerReducer(reducer, initialState);
   const { showCurrent, showMyFavor, showMine } = appsConfig
   const token = useSelector((state: any) => state.common.token)
-  const { appsList } = data
+  const { req, appsList } = data
+  const { fdAppName } = req
 
   /**
    * @description 数据处理函数
@@ -85,25 +89,29 @@ const App: NextPage = () => {
     //       appsList: list
     //     }))
     //   }
-
     // }).catch((err: any) => {
     //   console.log("axios-app-err", err)
     // })
-    const res = await dispatchRedux(asyncThunk.getApps(params) as any);
-    const data = res?.payload
-    if (data.code === 200) {
-      const { content } = data.data
-      setState("update", {
-        appsList: content
-      }) 
-      dispatchRedux(setAppsList({
-        appsList: content
-      }))
-    } else if (
-        data.code === 401 && 
-        data.success === false &&
-        data.message === "请先登录后再操作!") {
-      router.push("/login")
+
+    try {
+      const res = await dispatchRedux(asyncThunk.getApps(params) as any);
+      const data = res?.payload
+      if (data.code === 200) {
+        const { content } = data.data
+        setState("update", {
+          appsList: content
+        }) 
+        dispatchRedux(setAppsList({
+          appsList: content
+        }))
+      } else if (
+          data.code === 401 && 
+          data.success === false &&
+          data.message === "请先登录后再操作!") {
+        router.push("/login")
+      }
+    } catch(err) {
+      // console.log("app-err", err)
     }
   }
 
@@ -115,7 +123,7 @@ const App: NextPage = () => {
     <>
       <AppContainer>
         <div className={classNames("container")}>
-          <SearchApps getAppList={getAppList} />
+          <SearchApps onSearch={getAppList} />
           { showCurrent && <RecentApps appList={appsList}/> }
           { showMyFavor && <MyFavorApps appList={appsList}/> }
           { showMine && <MyApps appList={appsList} onRefresh={() => getAppList()} /> }

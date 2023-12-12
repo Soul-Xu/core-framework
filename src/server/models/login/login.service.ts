@@ -19,16 +19,15 @@ export class LoginService {
     const data = res.data
     if (data.code === 200 && data.success) {
       return {
-        code: 0,
+        code: data.code,
         data: data.data,
-        token: token,
-        message: "登录成功"
+        message: data.message
       }
     } else {
       return {
-        code: 500,
+        code: data.code,
         data: data.data,
-        message: "登录失败"
+        message: data.message
       }
     }
   }

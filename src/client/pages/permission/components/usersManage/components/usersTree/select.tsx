@@ -42,84 +42,85 @@ const UsersSelector = () => {
   };
 
   const getUsers = async (deptId: string) => {
-    // await axios.request({
-    //   url: `${baseApiOrg}/user/list`,
-    //   method: "post",
-    //   data: {
-    //     deptId
-    //   },
-    //   withCredentials: true,  
-    //   headers: {
-    //     'Content-Type': 'application/json', // 设置为 application/json
-    //     'ltpatoken': token
-    //   },
-    // }).then((res: any) => {
-    //   const data = res.data
+    await axios.request({
+      url: `${baseApiOrg}/user/list`,
+      method: "post",
+      data: {
+        deptId
+      },
+      withCredentials: true,  
+      headers: {
+        'Content-Type': 'application/json', // 设置为 application/json
+        'ltpatoken': token
+      },
+    }).then((res: any) => {
+      const data = res.data
+      if (data.code === 200) {
+        const { content } = data.data;
+        const users = content.map((contentItem: any, index: number) => {
+            return {
+              ...contentItem,
+              sort: index + 1
+            }
+        })
+        setState("update", { usersList: users });
+      }
+    }).catch((err: any) => {
+      console.log("add-module", err)
+    })
+
+      // 请替换为实际的接口调用
+    //   const res = await dispatchRedux(asyncThunk.getUsers({ deptId }) as any);
+    //   const data = res?.payload;
     //   if (data.code === 200) {
     //     const { content } = data.data;
     //     const users = content.map((contentItem: any, index: number) => {
-    //         return {
-    //           ...contentItem,
-    //           sort: index + 1
-    //         }
-    //     })
+    //       return {
+    //         ...contentItem,
+    //         sort: index + 1
+    //       }
+    //   })
+    //     console.log("usersList", users)
     //     setState("update", { usersList: users });
     //   }
-    // }).catch((err: any) => {
-    //   console.log("add-module", err)
-    // })
-  
-    const res = await dispatchRedux(asyncThunk.getUsers({ deptId }) as any);
-    const data = res?.payload;
-    if (data.code === 200) {
-      const { content } = data.data;
-      const users = content.map((contentItem: any, index: number) => {
-        return {
-          ...contentItem,
-          sort: index + 1
-        }
-      })
-      setState("update", { usersList: users });
-    }
-  }
+    // } catch (error) {
+    //   console.error("Error fetching user data:", error);
+    // }
+  };
 
   useEffect(() => {
     getDepts();
   }, []);
 
   const getDepts = async () => {
-    const params = {
-      page: 1,
-      pageSize: 20
-    }
-
     try {
-      // await axios.request({
-      //   url: `${baseApiOrg}/dept/list`,
-      //   method: "post",
-      //   data: {},
-      //   withCredentials: true,  
-      //   headers: {
-      //     'Content-Type': 'application/json', // 设置为 application/json
-      //     'ltpatoken': token
-      //   },
-      // }).then((res: any) => {
-      //   const data = res.data
-      //   if (data.code === 200) {
-      //     const { content } = data.data;
-      //     const treeData = buildTree(content);
-      //     setState("update", { deptsList: treeData });
-      //   }
-      // }).catch((err: any) => {
-      //   console.log("add-module", err)
-      // })
-      const res = await dispatchRedux(asyncThunk.getDepts(params) as any);
-      const data = res?.payload;
-      if (data.code === 200) {
-        const { content } = data.data;
-        const treeData = buildTree(content);
-        setState("update", { deptsList: treeData });
-      }
+      await axios.request({
+        url: `${baseApiOrg}/dept/list`,
+        method: "post",
+        data: {},
+        withCredentials: true,  
+        headers: {
+          'Content-Type': 'application/json', // 设置为 application/json
+          'ltpatoken': token
+        },
+      }).then((res: any) => {
+        const data = res.data
+        if (data.code === 200) {
+          const { content } = data.data;
+          const treeData = buildTree(content);
+          setState("update", { deptsList: treeData });
+        }
+      }).catch((err: any) => {
+        console.log("add-module", err)
+      })
+      // 请替换为实际的接口调用
+      // const res = await dispatchRedux(asyncThunk.getDepts() as any);
+      // const data = res?.payload;
+      // if (data.code === 200) {
+      //   const { content } = data.data;
+      //   const treeData = buildTree(content);
+      //   setState("update", { deptsList: treeData });
+      // }
     } catch (error) {
       console.error("Error fetching department data:", error);
     }
@@ -219,11 +220,6 @@ const UsersSelector = () => {
     });
   };
 
-  // const clearSelected = () => {
-  //   setSelectedRowKeys([]); // 清空已选中的行
-  //   dispatchRedux(setSelectUsers({ selectUsers: [] })); // 清空选择的用户
-  // };
-
   return (
     <div className={classNames("container")}>
       <div className={classNames("content")}>
@@ -232,13 +228,10 @@ const UsersSelector = () => {
         </section>
         <section className={classNames("content-list")}>
           <div className={classNames("content-list-title")}>
-            <div>
-              <span style={{ marginRight: "8px" }}>共{deptsList.length}项</span>
-              {/* <span>已选{selectedRowKeys.length}项</span> */}
-            </div>
-            {/* <span className={classNames("content-list-title-action")} onClick={clearSelected}>
+            <span>共{usersList.length}项</span>
+            <span className={classNames("content-list-title-action")}>
               清空所选
-            </span> */}
+            </span>
           </div>
           <div className={classNames("content-list-main")}>
             {/* 使用Table组件替代div列表 */}

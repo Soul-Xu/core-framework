@@ -23,7 +23,7 @@ const initialState: PermissionState = {
 }
 
 // Actual Slice
-export const permissionSlice = createSlice({
+export const permissionsSlice = createSlice({
   name: "permission",
   initialState,
   reducers: {
@@ -52,6 +52,6 @@ export const permissionSlice = createSlice({
   }
 })
 
-export const { setRolesList, setPermissionsList, setModulesList, setUsersList, setDeptsList, setSelectDepts, setSelectUsers } = permissionSlice.actions
+export const { setRolesList, setPermissionsList, setModulesList, setUsersList, setDeptsList, setSelectDepts, setSelectUsers } = permissionsSlice.actions
 
-export default permissionSlice.reducer
+export default permissionsSlice.reducer

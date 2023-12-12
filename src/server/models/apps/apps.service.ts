@@ -11,18 +11,25 @@ export class AppsService {
       method: "post",
       data: body,
       headers: {
-        withCredentials: true,
-        "ltpatoken": Global.token
+        'Content-Type': 'application/json', // 设置为 application/json
+        'ltpatoken': Global.token,
+         withCredentials: true,
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
+
+    try {
+      if (data.code === 200 && data.success) {
+        const res = {
+          code: 200,
+          data: data.data
+        }
+        return res
+      } else {
+        return data
       }
-    } else {
-      return data
+    } catch(err) {
+      console.log("getApps-1111111", err)
     }
   }
 
@@ -32,8 +39,9 @@ export class AppsService {
       method: "post",
       data: body,
       headers: {
-        withCredentials: true,
-        "ltpatoken": Global.token
+        'Content-Type': 'application/json', // 设置为 application/json
+        'ltpatoken': Global.token,
+         withCredentials: true,
       }
     })
     const data = res.data

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit"
 import { AppState } from "../store"
 
 export interface AppsState {
-  curApp: any,
+  selectApps: any,
   appsList: Array<any>,
   appsConfig: {
     showCurrent: boolean,
@@ -13,7 +13,7 @@ export interface AppsState {
 
 // Initial state
 const initialState: AppsState = {
-  curApp: {},
+  selectApps: {},
   appsList: [],
   appsConfig: {
     showCurrent: true,
@@ -34,12 +34,12 @@ export const appsSlice = createSlice({
     setAppsList(state, action) {
       state.appsList = action.payload.appsList
     },
-    setCurApp(state, action) {
-      state.curApp = action.payload.curApp
+    setSelectApps(state, action) {
+      state.selectApps = action.payload.selectApps
     },
   }
 })
 
-export const { setAppsConfig, setAppsList, setCurApp } = appsSlice.actions
+export const { setAppsConfig, setAppsList, setSelectApps } = appsSlice.actions
 
 export default appsSlice.reducer

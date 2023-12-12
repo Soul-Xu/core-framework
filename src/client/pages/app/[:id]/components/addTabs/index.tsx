@@ -100,7 +100,7 @@ const AddTabs = (props: Props) => {
     //   console.log("axios-app-err", err)
     // })
 
-    const res = await dispatchRedux(asyncThunk.createTab(params) as any);
+    const res = await dispatchRedux(asyncThunk.addTabs(params) as any);
     const data = res?.payload;
     if (data.code === 200) {
       onCancel()

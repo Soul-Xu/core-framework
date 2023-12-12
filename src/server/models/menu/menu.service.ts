@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { baseApi, Global } from 'src/server/config';
-import { CreateMenuDto } from './dto/create-menu.dto';
-import { UpdateMenuDto } from './dto/update-menu.dto';
+import {
+  AddTabsDto, UpdateTabsDto, DeleteTabsDto, GetTabsDto,
+  AddMenusDto, UpdateMenusDto, DeleteMenusDto, GetMenusDto,
+} from "./dto/menus.dto"
 
 @Injectable()
 export class MenuService {
-  async createTab(body: CreateMenuDto) {
+  async addTabs(body: AddTabsDto) {
     const res = await axios.request({
       url: `${baseApi}/component-permission/add-data`,
       method: "post",
@@ -23,18 +25,13 @@ export class MenuService {
         data: data.data
       }
     } else {
-      return {
-        code: data.code,
-        data: data.data,
-        message: data.message,
-        success: data.success
-      }
+      return data
     }
   }
 
-  async createMenu(body: CreateMenuDto) {
+  async updateTabs(body: UpdateTabsDto) {
     const res = await axios.request({
-      url: `${baseApi}/component-permission/add-data`,
+      url: `${baseApi}/component-permission/update-data`,
       method: "post",
       data: body,
       headers: {
@@ -49,16 +46,32 @@ export class MenuService {
         data: data.data
       }
     } else {
-      return {
-        code: data.code,
-        data: data.data,
-        message: data.message,
-        success: data.success
-      }
+      return data
     }
   }
 
-  async getTabs(body: any) {
+  async deleteTabs(body: DeleteTabsDto) {
+    const res = await axios.request({
+      url: `${baseApi}/component-permission/delete-data`,
+      method: "post",
+      data: body,
+      headers: {
+        withCredentials: true,
+        "ltpatoken": Global.token
+      }
+    })
+    const data = res.data
+    if (data.code === 200 && data.success) {
+      return {
+        code: 200,
+        data: data.data
+      }
+    } else {
+      return data
+    }
+  }
+
+  async getTabs(body: GetTabsDto) {
     const res = await axios.request({
       url: `${baseApi}/component-permission/top-menu`,
       method: "post",
@@ -75,18 +88,13 @@ export class MenuService {
         data: data.data
       }
     } else {
-      return {
-        code: data.code,
-        data: data.data,
-        message: data.message,
-        success: data.success
-      }
+      return data
     }
   }
 
-  async getMenus(body: any) {
+  async addMenus(body: AddMenusDto) {
     const res = await axios.request({
-      url: `${baseApi}/component-permission/child-menu`,
+      url: `${baseApi}/component-permission/add-data`,
       method: "post",
       data: body,
       headers: {
@@ -107,6 +115,80 @@ export class MenuService {
         message: data.message,
         success: data.success
       }
+    }
+  }
+
+  async updateMenus(body: UpdateMenusDto) {
+    const res = await axios.request({
+      url: `${baseApi}/component-permission/update-data`,
+      method: "post",
+      data: body,
+      headers: {
+        withCredentials: true,
+        "ltpatoken": Global.token
+      }
+    })
+    const data = res.data
+    if (data.code === 200 && data.success) {
+      return {
+        code: 200,
+        data: data.data
+      }
+    } else {
+      return {
+        code: data.code,
+        data: data.data,
+        message: data.message,
+        success: data.success
+      }
+    }
+  }
+
+  async deleteMenus(body: DeleteMenusDto) {
+    const res = await axios.request({
+      url: `${baseApi}/component-permission/delete-data`,
+      method: "post",
+      data: body,
+      headers: {
+        withCredentials: true,
+        "ltpatoken": Global.token
+      }
+    })
+    const data = res.data
+    if (data.code === 200 && data.success) {
+      return {
+        code: 200,
+        data: data.data
+      }
+    } else {
+      return {
+        code: data.code,
+        data: data.data,
+        message: data.message,
+        success: data.success
+      }
+    }
+  }
+
+
+  async getMenus(body: GetMenusDto) {
+    const res = await axios.request({
+      url: `${baseApi}/component-permission/child-menu`,
+      method: "post",
+      data: body,
+      headers: {
+        withCredentials: true,
+        "ltpatoken": Global.token
+      }
+    })
+    const data = res.data
+    if (data.code === 200 && data.success) {
+      return {
+        code: 200,
+        data: data.data
+      }
+    } else {
+      return data
     }
   }
 }

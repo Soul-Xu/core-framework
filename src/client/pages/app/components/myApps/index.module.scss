@@ -113,7 +113,8 @@
       }
 
       &-title {
-        display: box;
+        display: flex;
+        justify-content: center;
         overflow: hidden;
         font-size: 12px;
         line-height: 16px;
@@ -165,7 +166,8 @@
         }
 
         &-title {
-          display: box;
+          display: flex;
+          justify-content: center;
           overflow: hidden;
           font-size: 12px;
           line-height: 16px;

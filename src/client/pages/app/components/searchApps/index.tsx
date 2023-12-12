@@ -31,8 +31,7 @@ const initialState = {
   }
 }
 
-const SearchApps = (props: Props) => {
-  const { getAppList } = props
+const SearchApps = ({ onSearch }) => {
   const dispatchRedux = useDispatch();
   const appsConfig = useSelector((state: any) => state.apps.appsConfig)
   const [data, dispatch] = useImmerReducer(reducer, initialState);
@@ -53,7 +52,7 @@ const SearchApps = (props: Props) => {
    * @description: 搜索应用
    * @param: 
    */
-  const onSearch = (value: any) => {
+  const onHandleSearch = (value: any) => {
     setState("req", {
       fdAppName: value
     })
@@ -69,7 +68,7 @@ const SearchApps = (props: Props) => {
 
   useEffect(() => {
     // @ts-ignore
-    getAppList(req)
+    onSearch(req);
   }, [req])
 
   return (
@@ -78,7 +77,7 @@ const SearchApps = (props: Props) => {
         className={classNames("search-apps-input")}
         placeholder="请输入搜索应用名" 
         allowClear 
-        onSearch={(e: any) => onSearch(e)}
+        onSearch={(e: any) => onHandleSearch(e)}
         />
       <div 
         className={classNames("search-apps-setting")}

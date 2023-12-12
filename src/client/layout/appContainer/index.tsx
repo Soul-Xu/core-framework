@@ -48,7 +48,7 @@ const items: MenuItem[] = [
   getItem('集成中心', 'integration', <Image src={ImgIntegration} width={20} height={20} alt="ImgIntegration"/>),
   getItem('个人中心', 'personalCenter', <UserOutlined />),
   getItem('权限设置', 'permission', <ClusterOutlined />),
-  getItem('系统设置', 'systemSetting', <SettingOutlined />),
+  // getItem('系统设置', 'systemSetting', <SettingOutlined />),
   getItem('开发文档', 'openAPI', <ExpandOutlined />),
 ];
 
@@ -126,13 +126,8 @@ const AppContainer: NextPage<PageContainerProps> = ({ children }: any) => {
             // @ts-ignore
             collapsed={collapsed}
             onClick={onMenuClick}
-          >
-            {items.map((item: any) => (
-              <Menu.Item key={item.key} icon={item.icon}>
-                {collapsed ? null : item.label}
-              </Menu.Item>
-            ))}
-          </Menu>
+            items={items}
+          />
         </Sider>
         <Content
           style={{

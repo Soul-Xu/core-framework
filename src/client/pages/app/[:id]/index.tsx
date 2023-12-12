@@ -10,9 +10,11 @@ import ProjectContainer from '../../../layout/projectContainer';
 import TabsContent1 from './components/tab1';
 import TabsContent2 from './components/tab2';
 
+/** utils */
+import _ from "lodash"
+
 const AppById = () => {
-  const dispatchRedux = useDispatch();
-  const tab = useSelector((state: any) => state.menu.tab)
+  const selectTabs = useSelector((state: any) => state.menus.selectTabs)
 
   const renderTab = (tab: string) => {
     switch(tab) {
@@ -20,17 +22,21 @@ const AppById = () => {
         return <TabsContent1 />
       case "2":
         return <TabsContent2 />
-      // case "3":
-      //   return <TabsContent3 />
       default:
         return <TabsContent1 />
     }
   }
 
+  useEffect(() => {
+    if(!_.isEmpty(selectTabs)) {
+      renderTab(selectTabs?.fdComponentName)
+    }
+  }, [selectTabs])
+
   return (
     <>
       <ProjectContainer>
-        <div>{renderTab(tab)}</div>
+        <div>{renderTab(selectTabs?.fdComponentName)}</div>
       </ProjectContainer>
     </>
   )

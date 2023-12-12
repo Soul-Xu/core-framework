@@ -38,24 +38,44 @@ const apps: Record<string, AsyncThunkValue> = {
 // 应用详情
 const projects: Record<string, AsyncThunkValue> = {
   // 新建一级菜单
-  createTab: {
+  addTabs: {
     method: "post",
-    url: "/apis/apps/addApps"
+    url: "/apis/menus/addTabs"
+  },
+  // 编辑一级菜单
+  updateTabs: {
+    method: "post",
+    url: "/apis/menus/updateTabs"
+  },
+  // 删除一级菜单
+  deleteTabs: {
+    method: "post",
+    url: "/apis/menus/deleteTabs"
   },
   // 获取一级菜单列表
   getTabs: {
     method: "post",
-    url: "/apis/apps/addApps"
+    url: "/apis/menus/getTabs"
   },
   // 新建二级菜单
-  createMenu: {
+  addMenus: {
     method: "post",
-    url: "/apis/apps/updateApps/:id"
+    url: "/apis/menus/addMenus"
   },
-  // 获取一级菜单列表
+  // 编辑二级菜单
+  updateMenus: {
+    method: "post",
+    url: "/apis/menus/updateMenus"
+  },
+  // 编辑二级菜单
+  deleteMenus: {
+    method: "post",
+    url: "/apis/menus/deleteMenus"
+  },
+  // 获取二级菜单列表
   getMenus: {
     method: "post",
-    url: "/apis/apps/addApps"
+    url: "/apis/menus/getMenus"
   },
 };
 
@@ -205,8 +225,14 @@ export type AsyncThunkMap =
   | "addApps"
   | "updateApps"
   | "deleteApps"
-  | "createTab"
-  | "createMenu"
+  | "addTabs"
+  | "updateTabs"
+  | "deleteTabs"
+  | "getTabs"
+  | "addMenus"
+  | "updateMenus"
+  | "deleteMenus"
+  | "getMenus"
   | "addModules"
   | "updateModules"
   | "deleteModules"

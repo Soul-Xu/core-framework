@@ -9,7 +9,7 @@ import { useImmerReducer } from "use-immer";
 import { reducer } from "../../../../../../utils/reducer";
 import { Modal, Form, Input, message } from "antd"
 import asyncThunk from "../../../../../../store/asyncThunk";
-import { setDeptsList } from "../../../../../../store/modules/permissionSlice" 
+import { setDeptsList } from "../../../../../../store/modules/permissionsSlice" 
 const Textarea = Input
 
 /** css */

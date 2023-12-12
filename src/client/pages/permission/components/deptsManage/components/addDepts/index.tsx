@@ -128,7 +128,7 @@ const AddDepts = (props: Props) => {
   }
 
   useEffect(() => {
-    if (selectDepts) {
+    if (selectDepts.length > 0) {
       setState("update", {
         depts: selectDepts[0].fdName
       })

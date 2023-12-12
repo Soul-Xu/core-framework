@@ -47,7 +47,7 @@ const initialState = {
 const AddMenus = (props: Props) => {
   const { tabName, open, onCancel } = props
   const router = useRouter()
-  const selectTab = useSelector((state: any) => state.menu.tab)
+  const selectTabs = useSelector((state: any) => state.menus.selectTabs)
   const token = useSelector((state: any) => state.common.token)
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
@@ -85,7 +85,7 @@ const AddMenus = (props: Props) => {
       fdUrl: fdUrl,
       fdDisplayOrder:1,
       fdParentEntity:{
-        fdId:selectTab
+        fdId: selectTabs?.fdId
       }
     }
 
@@ -107,7 +107,7 @@ const AddMenus = (props: Props) => {
     //   console.log("axios-app-err", err)
     // })
 
-    const res = await dispatchRedux(asyncThunk.createMenu(params) as any);
+    const res = await dispatchRedux(asyncThunk.addMenus(params) as any);
     const data = res?.payload;
     if (data.code === 200) {
       onCancel()

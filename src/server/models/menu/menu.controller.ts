@@ -9,33 +9,56 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { MenuService } from './menu.service';
-import { CreateMenuDto } from './dto/create-menu.dto';
-import { UpdateMenuDto } from './dto/update-menu.dto';
+import {
+  AddTabsDto, UpdateTabsDto, DeleteTabsDto, GetTabsDto,
+  AddMenusDto, UpdateMenusDto, DeleteMenusDto, GetMenusDto,
+} from "./dto/menus.dto"
 import { Response } from 'express';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
-@Controller('/apis/menu')
+@Controller('/apis/menus')
 @ApiTags('Menu')
 export class MenuController {
   constructor(private readonly menuService: MenuService) {}
 
-  @Post("/createTab")
-  createTab(@Body() body: CreateMenuDto) {
-    return this.menuService.createTab(body);
+  @Post("/addTabs")
+  addTabs(@Body() body: AddTabsDto) {
+    return this.menuService.addTabs(body);
   }
 
-  @Post("/createMenu")
-  createMenu(@Body() body: CreateMenuDto) {
-    return this.menuService.createMenu(body);
+  @Post("/updateTabs")
+  updateTabs(@Body() body: UpdateTabsDto) {
+    return this.menuService.updateTabs(body);
+  }
+
+  @Post("/deleteTabs")
+  deleteTabs(@Body() body: DeleteTabsDto) {
+    return this.menuService.deleteTabs(body);
   }
 
   @Post("/getTabs")
-  getTabs(@Body() body: CreateMenuDto) {
+  getTabs(@Body() body: GetTabsDto) {
     return this.menuService.getTabs(body);
   }
 
+  @Post("/addMenus")
+  addMenus(@Body() body: AddMenusDto) {
+    return this.menuService.addMenus(body);
+  }
+
+  @Post("/updateMenus")
+  updateMenus(@Body() body: UpdateMenusDto) {
+    return this.menuService.updateMenus(body);
+  }
+
+  @Post("/deleteMenus")
+  deleteMenus(@Body() body: DeleteMenusDto) {
+    return this.menuService.deleteMenus(body);
+  }
+
   @Post("/getMenus")
-  getMenus(@Body() body: CreateMenuDto) {
+  getMenus(@Body() body: GetMenusDto) {
     return this.menuService.getMenus(body);
   }
+
 }

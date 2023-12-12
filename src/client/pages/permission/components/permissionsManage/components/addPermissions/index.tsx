@@ -9,7 +9,7 @@ import { reducer } from "../../../../../../utils/reducer";
 import { Modal, Form, Input, Checkbox, Select } from "antd"
 import { useRouter } from "next/router";
 import asyncThunk from "../../../../../../store/asyncThunk";
-import { setModulesList } from "../../../../../../store/modules/permissionSlice";
+import { setModulesList } from "../../../../../../store/modules/permissionsSlice";
 
 const TextArea = Input
 

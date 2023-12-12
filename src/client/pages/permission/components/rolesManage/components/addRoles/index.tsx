@@ -14,7 +14,7 @@ const Textarea = Input
 /** components */
 import UsersTree from "../usersTree";
 import asyncThunk from "../../../../../../store/asyncThunk";
-import { setPermissionsList } from "../../../../../../store/modules/permissionSlice";
+import { setPermissionsList } from "../../../../../../store/modules/permissionsSlice";
 
 /** http */
 import axios from 'axios';

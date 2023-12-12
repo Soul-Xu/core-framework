@@ -23,9 +23,10 @@ type MenuItem = Required<MenuProps>['items'][number];
 /** components */
 import AddMenus from '../addMenus';
 
-/** utils */
-// import { baseApi } from '../../../../../config';
+/** http */
 import axios from "axios";
+import { baseApi } from '../../../../../config';
+import asyncThunk from "../../../../../store/asyncThunk";
 
 function getItem(
   label: React.ReactNode,
@@ -58,11 +59,9 @@ const initialState = {
 }
 
 const TabsContent1 = () => {
+  const dispatchRedux = useDispatch();
   const router = useRouter()
-  const curAppId = router.query[":id"]
-  const curTabId = router.query["tabId"]
-  const selectTab = useSelector((state: any) => state.menu.tab)
-  const baseApi = useSelector((state: any) => state.common.baseApi)
+  const selectTabs = useSelector((state: any) => state.menus.selectTabs)
   const [collapsed, setCollapsed] = useState(false)
   const [selectKey, setSelectKey] = useState([''])
   const [showAddModal, setShowAddModal] = useState(false)
@@ -132,35 +131,50 @@ const TabsContent1 = () => {
    */
   const getMenus = async () => {
     const params = {
-      fdId: selectTab
+      fdId: selectTabs?.fdId
     }
 
-    const res = await axios.request({
-      url: `${baseApi}/component-permission/child-menu`,
-      method: "post",
-      data: params,
-      withCredentials: true,  
-      headers: {
-        'Content-Type': 'application/json' // 设置为 application/json
-      },
-    }).then((res: any) => {
-      const data = res.data
-      if (data.code === 200) {
-        const menus: any = onHandleMenus(data.data)
-        const renderMenus: any = [...menus, addMenu]
-        const fdTabName = data.data[0]?.fdParentEntity.fdName
-        setMenusList(renderMenus)
-        setTabName(fdTabName)
-      }
+    // const res = await axios.request({
+    //   url: `${baseApi}/component-permission/child-menu`,
+    //   method: "post",
+    //   data: params,
+    //   withCredentials: true,  
+    //   headers: {
+    //     'Content-Type': 'application/json' // 设置为 application/json
+    //   },
+    // }).then((res: any) => {
+    //   const data = res.data
+    // if (data.code === 200) {
+    //   const menus: any = onHandleMenus(data.data)
+    //   const renderMenus: any = [...menus, addMenu]
+    //   const fdTabName = data.data[0]?.fdParentEntity.fdName
+    //   setMenusList(renderMenus)
+    //   setTabName(fdTabName)
+    // }
       
-    }).catch((err: any) => {
-      console.log("err", err)
-    })
+    // }).catch((err: any) => {
+    //   console.log("err", err)
+    // })
+
+    const res = await dispatchRedux(asyncThunk.getMenus(params) as any)
+    const data = res?.payload
+    if (data.code === 200) {
+      const menus: any = onHandleMenus(data.data)
+      const renderMenus: any = [...menus, addMenu]
+      const fdTabName = data.data[0]?.fdParentEntity.fdName
+      setMenusList(renderMenus)
+      setTabName(fdTabName)
+    } else if (
+      data.code === 401 && 
+      data.success === false &&
+      data.message === "请先登录后再操作!") {
+    router.push("/login")
+    }
   }
 
   useEffect(() => {
     getMenus()
-  }, [curAppId])
+  }, [selectTabs?.fdId])
 
   useEffect(() => {
     const menus: any = [...menusList, addMenu]

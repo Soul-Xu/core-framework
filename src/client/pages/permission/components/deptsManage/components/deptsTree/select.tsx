@@ -10,7 +10,7 @@ import axios from 'axios';
 import { baseApi, baseApiOrg } from "../../../../../../config"
 import { reducer } from "../../../../../../utils/reducer";
 import asyncThunk from "../../../../../../store/asyncThunk";
-import { setSelectDepts } from "../../../../../../store/modules/permissionSlice";
+import { setSelectDepts } from "../../../../../../store/modules/permissionsSlice";
 
 const { TreeNode } = Tree;
 
@@ -48,24 +48,41 @@ const DeptsSelector = () => {
     }
 
     try {
-      await axios.request({
-        url: `${baseApiOrg}/dept/list`,
-        method: "post",
-        data: params,
-        withCredentials: true,  
-        headers: {
-          'Content-Type': 'application/json',
-          'ltpatoken': token
-        },
-      }).then((res: any) => {
-        const data = res.data
-        if (data.code === 200) {
-          const { content } = data.data;
-          setState("update", { deptsAllList: content });
-        }
-      }).catch((err: any) => {
-        console.log("add-module", err)
+      // await axios.request({
+      //   url: `${baseApiOrg}/dept/list`,
+      //   method: "post",
+      //   data: params,
+      //   withCredentials: true,  
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     'ltpatoken': token
+      //   },
+      // }).then((res: any) => {
+      //   const data = res.data
+      //   if (data.code === 200) {
+      //     const { content } = data.data;
+      //     setState("update", { deptsAllList: content });
+      //   }
+      // }).catch((err: any) => {
+      //   console.log("add-module", err)
+      // })
+      const res = await dispatchRedux(asyncThunk.getDepts(params) as any);
+      const data = res?.payload
+      if (data.code === 200) {
+        const { content } = data.data;
+        const depts = content.map((contentItem: any, index: number) => {
+          return {
+            ...contentItem,
+            sort: index + 1
+          }
       })
+        setState("update", {
+          deptsAllList: depts
+        })
+        // dispatchRedux(setDeptsList({
+        //   deptsList: Depts
+        // }))
+      }
     } catch (error) {
       console.error("Error fetching department data:", error);
     }
@@ -79,25 +96,44 @@ const DeptsSelector = () => {
     }
 
     try {
-      await axios.request({
-        url: `${baseApiOrg}/dept/list`,
-        method: "post",
-        data: params,
-        withCredentials: true,  
-        headers: {
-          'Content-Type': 'application/json',
-          'ltpatoken': token
-        },
-      }).then((res: any) => {
-        const data = res.data
-        if (data.code === 200) {
-          const { content } = data.data;
-          const treeData = buildTree(content);
-          setState("update", { deptsList: treeData });
-        }
-      }).catch((err: any) => {
-        console.log("add-module", err)
-      })
+      // await axios.request({
+      //   url: `${baseApiOrg}/dept/list`,
+      //   method: "post",
+      //   data: params,
+      //   withCredentials: true,  
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     'ltpatoken': token
+      //   },
+      // }).then((res: any) => {
+      //   const data = res.data
+      //   if (data.code === 200) {
+      //     const { content } = data.data;
+      //     const treeData = buildTree(content);
+      //     setState("update", { deptsList: treeData });
+      //   }
+      // }).catch((err: any) => {
+      //   console.log("add-module", err)
+      // })
+      const res = await dispatchRedux(asyncThunk.getDepts(params) as any);
+      const data = res?.payload
+      if (data.code === 200) {
+        const { content } = data.data;
+        const depts = content.map((contentItem: any, index: number) => {
+          return {
+            ...contentItem,
+            sort: index + 1
+          }
+        })
+        const treeData = buildTree(content);
+        setState("update", { deptsList: treeData });
+        setState("update", {
+          deptsAllList: depts
+        })
+        // dispatchRedux(setDeptsList({
+        //   deptsList: Depts
+        // }))
+      }
     } catch (error) {
       console.error("Error fetching department data:", error);
     }
@@ -125,11 +161,17 @@ const DeptsSelector = () => {
   };
 
   const renderTreeNodes = (data) => {
-    return data.map((item) => (
-      <TreeNode title={item.fdName} key={item.fdId}>
-        {item.children && renderTreeNodesRecursive(item)}
+    const rootNode = {
+      fdId: "root", // 为根节点设置一个唯一标识符，你可以根据实际情况修改
+      fdName: "云速易连", // 根节点的名称
+      children: data, // 将原来的虚拟部门作为根节点的子节点
+    };
+
+    return (
+      <TreeNode title={rootNode.fdName} key={rootNode.fdId}>
+        {renderTreeNodesRecursive(rootNode)}
       </TreeNode>
-    ));
+    );
   };
 
   const renderTreeNodesRecursive = (node) => {
@@ -236,11 +278,3 @@ const DeptsSelector = () => {
 };
 
 export default DeptsSelector;
-
-
-const data1 = ['1hgutrh4b1ed9m6c26plmen36vqs5e88v95p']
-const data2 = [
-  {
-
-  }
-]
