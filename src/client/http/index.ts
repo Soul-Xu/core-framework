@@ -100,37 +100,7 @@ axios.interceptors.request.use(
 
 const responseAction = (res: any) => {
   const { code, message } = res;
-  if (code !== 0) {
-    switch (res.message) {
-      case "ACCESS_TOKEN_EXPIRED":
-      case "INVALID_ACCESS_TOKEN": // token失效
-        goLogin("登录失效请重新登陆");
-        break;
-      case "MISSING_ARGUMENT":
-        return "无效的参数" // 无效的参数。
-      case "INVALID_BRAND": // 无效的游戏商代码
-        return "无效的游戏商代码"
-      case "INVALID_SESSION":
-        return "无效的工作阶段识别码" // 无效的工作阶段识别码
-      case "INVALID_ROUND_ID":
-        return "无效的回合单号" // 无效的回合单号
-      case "DUPLICATED_OPERATION":
-        return "重复操作" // 重复操作
-      case "INSUFFICIENT_BALANCE":
-        return "重复操作" // 余额不足
-      case "MISSING_ACCOUNT":
-        return "指定的帐户不存在" // 指定的帐户不存在。
-      case "MISSING_ROLE":
-        return "指定的角色不存在" // 指定的角色不存在。
-      case "PERMISSION_DENIED":
-        return "权限不足" // 权限不足。
-      case "NO_CONTENT":
-        toast.info("暂无数据");
-        break;
-      default:
-        toast.error(message);
-    }
-  }
+  console.log("responseAction", code, message)
 };
 
 // 响应拦截

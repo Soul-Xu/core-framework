@@ -16,19 +16,6 @@ export class LoginService {
     // 获取token的值
     const token = res.headers['ltpatoken']
     Global.token = token
-    const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: data.code,
-        data: data.data,
-        message: data.message
-      }
-    } else {
-      return {
-        code: data.code,
-        data: data.data,
-        message: data.message
-      }
-    }
+    return res.data
   }
 }

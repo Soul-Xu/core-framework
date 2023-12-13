@@ -65,7 +65,6 @@ const Login: React.FC = () => {
   const onLoginSuccess = (data: any) => {
     dispatchRedux(setAuthState({ authState: true }));
     dispatchRedux(setUserInfo({ userInfo: data.data }));
-    localStorage.setItem("token", data.token);
     message.success("登录成功");
     router.push("/app");
   }
@@ -121,7 +120,7 @@ const Login: React.FC = () => {
 
     // redux-toolkit方式
     const res = await dispatchRedux(asyncThunk.login(params) as any);
-    const data = res?.payload
+    const data = res?.payload;
 
     if (data?.code === 200) {
       onLoginSuccess(data)
