@@ -10,7 +10,7 @@ import {
   UserOutlined,
   ClusterOutlined,
   SettingOutlined,
-  ExpandOutlined
+  ProjectOutlined
  } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Layout, Menu } from 'antd';
@@ -49,7 +49,7 @@ const items: MenuItem[] = [
   getItem('个人中心', 'personalCenter', <UserOutlined />),
   getItem('权限设置', 'permission', <ClusterOutlined />),
   // getItem('系统设置', 'systemSetting', <SettingOutlined />),
-  getItem('开发文档', 'openAPI', <ExpandOutlined />),
+  getItem('开发文档', 'openAPI', <ProjectOutlined />),
 ];
 
 const itemsMap: any = {

@@ -100,7 +100,7 @@ axios.interceptors.request.use(
 
 const responseAction = (res: any) => {
   const { code, message } = res;
-  console.log("responseAction", code, message)
+  // console.log("responseAction", code, message)
 };
 
 // 响应拦截
