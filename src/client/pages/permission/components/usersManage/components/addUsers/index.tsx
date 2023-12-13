@@ -47,6 +47,7 @@ const initialState = {
 }
 
 const AddUsers = (props: Props) => {
+  const [form] = Form.useForm();
   const router = useRouter()
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
@@ -136,6 +137,14 @@ const AddUsers = (props: Props) => {
     onCancel()
   }
 
+  /**
+   * @description 关闭弹窗
+   */
+  const onClose = () => {
+    form.resetFields();
+    onCancel()
+  }
+
   const getDepts = async () => {
     const params = {
       page: 1,
@@ -218,10 +227,10 @@ const AddUsers = (props: Props) => {
       style={{ textAlign: "center" }}
       open={open}
       onOk={onOk}
-      onCancel={onCancel}
+      onCancel={onClose}
       okText="提交"
     >
-      <Form name="AddUsers" style={{ marginTop: "30px" }}>
+      <Form form={form} name="AddUsers" style={{ marginTop: "30px" }}>
         <Form.Item 
           name="fdNickName"
           label={(
@@ -285,7 +294,6 @@ const AddUsers = (props: Props) => {
           )} 
         >
           <Select options={depts} onChange={(e: any) => onHandleChange("fdId", e)} />
-          {/* < placeholder="请选择关联部门" onChange={(e: any) => onHandleChange("fdId", e)} /> */}
         </Form.Item>
         <Form.Item 
           name="fdRemark"

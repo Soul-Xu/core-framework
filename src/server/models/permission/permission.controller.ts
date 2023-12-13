@@ -64,10 +64,22 @@ export class PermissionController {
     return this.permissionService.getFuncs(body);
   }
 
-  // 权限管理--获取权限列表
+  // 权限管理--新增权限
   @Post("/addPermissions")
   addPermissions(@Body() body: AddPermissionsDto) {
     return this.permissionService.addPermissions(body);
+  }
+
+  // 权限管理--编辑权限
+  @Post("/updatePermissions")
+  updatePermissions(@Body() body: UpdatePermissionsDto) {
+    return this.permissionService.updatePermissions(body);
+  }
+
+  // 权限管理--删除权限
+  @Post("/deletePermissions")
+  deletePermissions(@Body() body: UpdatePermissionsDto) {
+    return this.permissionService.deletePermissions(body);
   }
 
   // 权限管理--获取权限列表

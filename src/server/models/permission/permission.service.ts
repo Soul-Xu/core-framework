@@ -21,14 +21,7 @@ export class PermissionService {
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
-    }
+    return data
   }
 
   async updateModules(body: UpdateModulesDto) {
@@ -42,14 +35,7 @@ export class PermissionService {
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
-    }
+    return data
   }
 
   async deleteModules(body: DeleteModulesDto) {
@@ -63,14 +49,7 @@ export class PermissionService {
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
-    }
+    return data
   }
 
   async uniqueModules(body: UniqueModulesDto) {
@@ -84,14 +63,7 @@ export class PermissionService {
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
-    }
+    return data
   }
 
   async getModules(body: GetModulesDto) {
@@ -105,14 +77,7 @@ export class PermissionService {
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
-    }
+    return data
   }
 
   async addFuncs(body: AddFuncsDto) {
@@ -126,14 +91,7 @@ export class PermissionService {
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
-    }
+    return data
   }
 
   async getFuncs(body: GetFuncsDto) {
@@ -147,14 +105,7 @@ export class PermissionService {
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
-    }
+    return data
   }
 
   async uniquePermissions(body: UniquePermissionsDto) {
@@ -168,14 +119,7 @@ export class PermissionService {
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
-    }
+    return data
   }
 
   async addPermissions(body: AddPermissionsDto) {
@@ -189,14 +133,8 @@ export class PermissionService {
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
-    }
+    console.log("sssss", data)
+    return data
   }
 
   async updatePermissions(body: UpdatePermissionsDto) {
@@ -210,14 +148,7 @@ export class PermissionService {
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
-    }
+    return data
   }
 
   async deletePermissions(body: DeletePermissionsDto) {
@@ -231,14 +162,7 @@ export class PermissionService {
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
-    }
+    return data
   }
 
   async getPermissions(body: GetPermissionsDto) {
@@ -252,14 +176,7 @@ export class PermissionService {
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
-    }
+    return data
   }
 
   async addRoles(body: AddRolesDto) {
@@ -273,14 +190,7 @@ export class PermissionService {
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
-    }
+    return data
   }
 
   async updateRoles(body: UpdateRolesDto) {
@@ -294,14 +204,7 @@ export class PermissionService {
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
-    }
+    return data
   }
 
   async deleteRoles(body: DeleteRolesDto) {
@@ -315,14 +218,7 @@ export class PermissionService {
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
-    }
+    return data
   }
 
   async getRoles(body: GetRolesDto) {
@@ -336,14 +232,7 @@ export class PermissionService {
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
-    }
+    return data
   }
 
   async getRolesInfo(body: GetRolesInfoDto) {
@@ -357,14 +246,7 @@ export class PermissionService {
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
-    }
+    return data
   }
 
   async getRolesOption(body: GetRolesInfoDto) {
@@ -378,14 +260,7 @@ export class PermissionService {
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
-    }
+    return data
   }
 
   async addUsers(body: AddUsersDto) {
@@ -399,14 +274,7 @@ export class PermissionService {
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
-    }
+    return data
   }
 
   async updateUsers(body: UpdateUsersDto) {
@@ -420,14 +288,7 @@ export class PermissionService {
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
-    }
+    return data
   }
 
   async deleteUsers(body: DeleteUsersDto) {
@@ -441,14 +302,7 @@ export class PermissionService {
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
-    }
+    return data
   }
 
   async getUsers(body: GetUsersDto) {
@@ -462,14 +316,7 @@ export class PermissionService {
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
-    }
+    return data
   }
 
   async addDepts(body: AddDeptsDto) {
@@ -483,14 +330,7 @@ export class PermissionService {
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
-    }
+    return data
   }
 
   async updateDepts(body: UpdateDeptsDto) {
@@ -504,14 +344,7 @@ export class PermissionService {
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
-    }
+    return data
   }
 
   async deleteDepts(body: DeleteDeptsDto) {
@@ -525,14 +358,7 @@ export class PermissionService {
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
-    }
+    return data
   }
 
   async getDepts(body: GetDeptsDto) {
@@ -546,14 +372,7 @@ export class PermissionService {
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
-    }
+    return data
   }
 
   async getAddress(body: AddPermissionsDto) {
@@ -567,13 +386,6 @@ export class PermissionService {
       }
     })
     const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
-    }
+    return data
   }
 }

@@ -47,6 +47,7 @@ const initialState = {
 }
 
 const AddUsers = (props: Props) => {
+  const [form] = Form.useForm();
   const router = useRouter()
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
@@ -104,6 +105,14 @@ const AddUsers = (props: Props) => {
       router.push("/login")
     }
     message.error("编辑用户失败")
+    onCancel()
+  }
+
+  /**
+   * @description 关闭弹窗
+   */
+  const onClose = () => {
+    form.resetFields();
     onCancel()
   }
 
@@ -171,7 +180,17 @@ const AddUsers = (props: Props) => {
   useEffect(() => {
     if (detail) {
       // 将 detail 中的值赋给表单的初始值
-      dispatch({ type: "update", payload: detail });
+      form.setFieldsValue({
+        fdNickName: detail.fdNickName,
+        fdUserName: detail.fdUserName,
+        fdPassword: detail.fdPassword, 
+        fdEmail: detail.fdEmail,
+        fdCellphone: detail.fdCellphone,
+        fdEducation: detail.fdEducation,
+        fdCity: detail.fdCity,
+        fdRemark: detail.fdRemark,
+        fdId: detail.fdId,
+      });
     }
 
     // 清空 data 的状态为初始值
@@ -196,10 +215,10 @@ const AddUsers = (props: Props) => {
       style={{ textAlign: "center" }}
       open={open}
       onOk={onOk}
-      onCancel={onCancel}
+      onCancel={onClose}
       okText="提交"
     >
-      <Form name="AddUsers" style={{ marginTop: "30px" }} initialValues={detail}>
+      <Form form={form} name="AddUsers" style={{ marginTop: "30px" }} initialValues={detail}>
         <Form.Item 
           name="fdNickName"
           label={(

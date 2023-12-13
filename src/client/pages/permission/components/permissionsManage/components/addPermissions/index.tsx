@@ -36,15 +36,17 @@ const initialState = {
     fdPermission: "",		//关联的模块标识
     fdRemark: ""
   },
-  modules: []
+  modules: [],
+  modulesList: []
 }
 
 const AddPermissions = (props: Props) => {
+  const [form] = Form.useForm();
   const { open, onCancel } = props
   const router = useRouter()
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
-  const { req, modules } = data
+  const { req, modules, modulesList } = data
   const { fdApiName, fdModuleId, fdPermission, fdRemark } = req
   const token = useSelector((state: any) => state.common.token)
 
@@ -55,6 +57,10 @@ const AddPermissions = (props: Props) => {
    */
     const setState = useCallback((type: string, val: Record<string, any>) => {
       dispatch({ type, payload: val });
+      // 在这里更新表单字段的值
+      if (type === "req" && val.fdPermission !== undefined) {
+        form.setFieldsValue({ fdPermission: val.fdPermission });
+      }
     }, [dispatch]);
 
   /**
@@ -62,8 +68,10 @@ const AddPermissions = (props: Props) => {
    */
   const onHandleChange = (type: string, e: any) => {
     if (type === "fdModuleId") {
+      const fdModuleKey = getFdModuleKeyById(modulesList, e)
       setState("req", {
-        [type]: e
+        fdModuleId: e,
+        fdPermission: fdModuleKey
       })
     } else {
       setState("req", {
@@ -83,6 +91,8 @@ const AddPermissions = (props: Props) => {
       fdPermission: fdPermission,		//关联的模块标识
       fdRemark: fdRemark,
     }
+
+    console.log("sssss", params)
 
     // await axios.request({
     //   url: `${baseApi}/api-permission/add`,
@@ -104,7 +114,9 @@ const AddPermissions = (props: Props) => {
 
     const res = await dispatchRedux(asyncThunk.addPermissions(params) as any);
     const data = res?.payload
+    console.log("add", res)
     if (data.code === 200) {
+      form.resetFields();
       onCancel()
     } else if (
         data.code === 401 && 
@@ -112,7 +124,14 @@ const AddPermissions = (props: Props) => {
         data.message === "请先登录后再操作!") {
       router.push("/login")
     }
+    onCancel()
+  }
 
+  /**
+   * @description 关闭弹窗
+   */
+  const onClose = () => {
+    form.resetFields();
     onCancel()
   }
 
@@ -171,7 +190,8 @@ const AddPermissions = (props: Props) => {
         const { content } = data.data
         const options: any = onHandleModules(content)
         setState("update", {
-          modules: options
+          modules: options,
+          modulesList: content
         })
       } else if (
           data.code === 401 && 
@@ -179,6 +199,15 @@ const AddPermissions = (props: Props) => {
           data.message === "请先登录后再操作!") {
         router.push("/login")
       }
+      onCancel()
+  }
+
+  /**
+   * @description 获取模块标识
+   */
+  const getFdModuleKeyById = (content, id) => {
+    const item = content.find((item) => item.fdId === id);
+    return item ? item.fdModuleKey : null;
   }
 
   useEffect(() => {
@@ -191,10 +220,10 @@ const AddPermissions = (props: Props) => {
       style={{ textAlign: "center" }}
       open={open}
       onOk={onOk}
-      onCancel={onCancel}
+      onCancel={onClose}
       okText="提交"
     >
-      <Form name="AddPermission" style={{ marginTop: "30px" }}>
+      <Form form={form} name="AddPermission" style={{ marginTop: "30px" }}>
         <Form.Item label="所属模块" name="fdModuleId">
           <Select 
             style={{ textAlign: "left" }} 

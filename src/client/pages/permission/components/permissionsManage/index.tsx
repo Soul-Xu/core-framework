@@ -67,6 +67,7 @@ const PermissionManage: NextPage = () => {
   }
 
   const onHideAddModal = () => {
+    getPermissions()
     setShowAddModal(false)
   }
 
@@ -97,7 +98,7 @@ const PermissionManage: NextPage = () => {
         </div>
       ),
       onOk() {
-        deleteModules(record?.fdId)
+        deletePermissions(record?.fdId)
       },
       onCancel() {
         // 用户取消删除操作
@@ -109,7 +110,7 @@ const PermissionManage: NextPage = () => {
   /**
    * @description 模块管理 - 删除模块
    */
-   const deleteModules = async (fdId: string) => {
+   const deletePermissions = async (fdId: string) => {
     const params = {
       fdId: fdId
     }
@@ -132,7 +133,7 @@ const PermissionManage: NextPage = () => {
     // }).catch((err: any) => {
     //   console.log("axios-app-err", err)
     // })
-    const res = await dispatchRedux(asyncThunk.deleteModules(params) as any);
+    const res = await dispatchRedux(asyncThunk.deletePermissions(params) as any);
     const data = res?.payload
     if (data.code === 200) {
       getPermissions()

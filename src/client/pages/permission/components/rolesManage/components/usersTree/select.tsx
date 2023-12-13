@@ -80,7 +80,12 @@ const UsersSelector = () => {
         }
       })
       setState("update", { usersList: users });
-    }
+    }  else if (
+      data.code === 401 && 
+      data.success === false &&
+      data.message === "请先登录后再操作!") {
+    router.push("/login")
+  }
   }
 
   useEffect(() => {
@@ -119,7 +124,12 @@ const UsersSelector = () => {
         const { content } = data.data;
         const treeData = buildTree(content);
         setState("update", { deptsList: treeData });
-      }
+      }  else if (
+        data.code === 401 && 
+        data.success === false &&
+        data.message === "请先登录后再操作!") {
+      router.push("/login")
+    }
     } catch (error) {
       console.error("Error fetching department data:", error);
     }

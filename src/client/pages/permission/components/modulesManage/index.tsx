@@ -33,6 +33,7 @@ const initialState = {
 }
 
 const ModulesManage: NextPage = () => {
+  const router = useRouter()
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
   const token = useSelector((state: any) => state.common.token)
@@ -66,6 +67,7 @@ const ModulesManage: NextPage = () => {
   }
 
   const onHideAddModal = () => {
+    getModules()
     setShowAddModal(false)
   }
 
@@ -136,7 +138,12 @@ const ModulesManage: NextPage = () => {
     if (data.code === 200) {
       getModules()
       message.success("删除成功")
-    }
+    }  else if (
+      data.code === 401 && 
+      data.success === false &&
+      data.message === "请先登录后再操作!") {
+    router.push("/login")
+  }
   }
 
   /**
@@ -197,7 +204,12 @@ const ModulesManage: NextPage = () => {
       dispatchRedux(setModulesList({
         modulesList: modules
       }))
-    }
+    }  else if (
+      data.code === 401 && 
+      data.success === false &&
+      data.message === "请先登录后再操作!") {
+    router.push("/login")
+  }
   }
 
   const formObj = {
@@ -230,13 +242,14 @@ const ModulesManage: NextPage = () => {
     columns: [
       { title: "序号", dataIndex: "sort", key: "sort" },
       { title: "模块名称", dataIndex: "fdName", key: "fdName" },
+      { title: "模块标识", dataIndex: "fdModuleKey", key: "fdModuleKey" },
       { 
         title: "描述", 
         dataIndex: "fdRemark", 
         key: "fdRemark",
         render: (_: any, record: any) => {
           return (
-            <div style={{ width: "650px" }}>{record?.fdRemark}</div>
+            <div style={{ width: "350px" }}>{record?.fdRemark}</div>
           ) 
         }
       },

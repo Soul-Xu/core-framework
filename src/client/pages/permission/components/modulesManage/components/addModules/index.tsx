@@ -39,6 +39,7 @@ const AddModules = (props: Props) => {
   const { fdName, fdModuleKey, fdRemark } = data
   const token = useSelector((state: any) => state.common.token)
   const { open, onCancel } = props
+  const [form] = Form.useForm();  // 使用 Form.useForm() 创建 form 对象
 
   /**
    * @description 数据处理函数
@@ -132,6 +133,7 @@ const AddModules = (props: Props) => {
     const res = await dispatchRedux(asyncThunk.addModules(params) as any);
     const data = res?.payload
     if (data.code === 200) {
+      form.resetFields();  // 清空表单数据
       onCancel()
     } else if (
         data.code === 401 && 
@@ -142,16 +144,24 @@ const AddModules = (props: Props) => {
     onCancel()
   }
 
+  /**
+   * @description 关闭弹窗
+   */
+  const onClose = () => {
+    form.resetFields();
+    onCancel()
+  }
+
   return (
     <Modal 
       title="添加模块"
       style={{ textAlign: "center" }}
       open={open}
       onOk={onOk}
-      onCancel={onCancel}
+      onCancel={onClose}
       okText="提交"
     >
-      <Form name="AddModules" style={{ marginTop: "30px" }}>
+      <Form form={form} name="AddModules" style={{ marginTop: "30px" }}>
         <Form.Item label="模块名称" name="fdName">
           <Input placeholder="请选择模块名称" onChange={(e: any) => onHandleChange("fdName", e)} />
         </Form.Item>

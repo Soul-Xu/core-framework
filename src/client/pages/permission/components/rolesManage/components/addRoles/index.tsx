@@ -47,6 +47,7 @@ const initialState = {
 }
 
 const AddRoles = (props: Props) => {
+  const [form] = Form.useForm();
   const { open, onCancel } = props
   const router = useRouter()
   const dispatchRedux = useDispatch();
@@ -139,6 +140,14 @@ const AddRoles = (props: Props) => {
   }
 
   /**
+   * @description 关闭弹窗
+   */
+  const onClose = () => {
+    form.resetFields();
+    onCancel()
+  }
+
+  /**
    * @description 获取权限列表
    */
   const getPermissions = async () => {
@@ -226,10 +235,10 @@ const AddRoles = (props: Props) => {
         style={{ textAlign: "center" }}
         open={open}
         onOk={onOk}
-        onCancel={onCancel}
+        onCancel={onClose}
         okText="提交"
       >
-        <Form name="AddRoles" style={{ marginTop: "30px" }}>
+        <Form form={form} name="AddRoles" style={{ marginTop: "30px" }}>
           <Form.Item label="角色组名称" name="fdRoleName">
             <Input placeholder="请输入角色组名称" onChange={(e: any) => onHandleChange("fdRoleName", e)} />
           </Form.Item>

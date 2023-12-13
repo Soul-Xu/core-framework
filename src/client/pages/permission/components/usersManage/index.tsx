@@ -72,6 +72,7 @@ const UsersManage: NextPage = () => {
   }
 
   const onHideAddModal = () => {
+    getUsers()
     setShowAddModal(false)
   }
 

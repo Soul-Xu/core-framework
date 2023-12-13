@@ -48,6 +48,7 @@ const initialState = {
 }
 
 const AddDepts = (props: Props) => {
+  const [form] = Form.useForm(); 
   const router = useRouter()
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
@@ -127,6 +128,14 @@ const AddDepts = (props: Props) => {
     onCancel()
   }
 
+  /**
+   * @description 关闭弹窗
+   */
+  const onClose = () => {
+    form.resetFields();
+    onCancel()
+  }
+
   useEffect(() => {
     if (selectDepts.length > 0) {
       setState("update", {
@@ -141,10 +150,10 @@ const AddDepts = (props: Props) => {
       style={{ textAlign: "center" }}
       open={open}
       onOk={onOk}
-      onCancel={onCancel}
+      onCancel={onClose}
       okText="提交"
     >
-      <Form name="AddDepts" style={{ marginTop: "30px" }}>
+      <Form form={form} name="AddDepts" style={{ marginTop: "30px" }}>
         <Form.Item 
           name="fdName"
           label={(

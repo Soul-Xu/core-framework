@@ -37,15 +37,17 @@ const initialState = {
     fdPermission: "",		//关联的模块标识
     fdRemark: ""
   },
-  modules: []
+  modules: [],
+  modulesList: []
 }
 
 const UpdatePermissions = (props: Props) => {
+  const [form] = Form.useForm();
   const { detail, open, onCancel } = props
   const router = useRouter()
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
-  const { req, modules } = data
+  const { req, modules, modulesList } = data
   const { fdApiName, fdModuleId, fdPermission, fdRemark } = req
   const token = useSelector((state: any) => state.common.token)
 
@@ -56,6 +58,9 @@ const UpdatePermissions = (props: Props) => {
    */
     const setState = useCallback((type: string, val: Record<string, any>) => {
       dispatch({ type, payload: val });
+      if (type === "req" && val.fdPermission !== undefined) {
+        form.setFieldsValue({ fdPermission: val.fdPermission });
+      }
     }, [dispatch]);
 
   /**
@@ -63,8 +68,10 @@ const UpdatePermissions = (props: Props) => {
    */
   const onHandleChange = (type: string, e: any) => {
     if (type === "fdModuleId") {
+      const fdModuleKey = getFdModuleKeyById(modulesList, e)
       setState("req", {
-        [type]: e
+        fdModuleId: e,
+        fdPermission: fdModuleKey
       })
     } else {
       setState("req", {
@@ -79,10 +86,11 @@ const UpdatePermissions = (props: Props) => {
    */
   const onOk = async () => {
     const params = {
-      fdApiName: fdApiName,
-      fdModuleId: fdModuleId, //关联模块的Id
-      fdPermission: fdPermission,		//关联的模块标识
-      fdRemark: fdRemark,
+      fdId: detail.fdId,
+      fdApiName: fdApiName || detail.fdApiName,
+      fdModuleId: fdModuleId|| detail.fdModuleId, //关联模块的Id
+      fdPermission: fdPermission|| detail.fdPermission,		//关联的模块标识
+      fdRemark: fdRemark|| detail.fdRemark,
     }
 
     // await axios.request({
@@ -114,6 +122,14 @@ const UpdatePermissions = (props: Props) => {
       router.push("/login")
     }
 
+    onCancel()
+  }
+
+  /**
+   * @description 关闭弹窗
+   */
+  const onClose = () => {
+    form.resetFields();
     onCancel()
   }
 
@@ -173,7 +189,8 @@ const UpdatePermissions = (props: Props) => {
         const { content } = data.data
         const options: any = onHandleModules(content)
         setState("update", {
-          modules: options
+          modules: options,
+          modulesList: content
         })
       } else if (
           data.code === 401 && 
@@ -183,14 +200,27 @@ const UpdatePermissions = (props: Props) => {
       }
   }
 
+  /**
+   * @description 获取模块标识
+   */
+  const getFdModuleKeyById = (content, id) => {
+    const item = content.find((item) => item.fdId === id);
+    return item ? item.fdModuleKey : null;
+  }
+
   useEffect(() => {
     getModules()
   }, [])
 
   useEffect(() => {
     if (detail) {
-      // 将 detail 中的值赋给表单的初始值
-      dispatch({ type: "update", payload: detail });
+      // // 将 detail 中的值赋给表单的初始值
+      form.setFieldsValue({
+        fdModuleId: detail.fdModuleId,
+        fdApiName: detail.fdApiName,
+        fdPermission: detail.fdPermission,
+        fdRemark: detail.fdRemark,
+      });
     }
 
     // 清空 data 的状态为初始值
@@ -210,10 +240,10 @@ const UpdatePermissions = (props: Props) => {
       style={{ textAlign: "center" }}
       open={open}
       onOk={onOk}
-      onCancel={onCancel}
+      onCancel={onClose}
       okText="提交"
     >
-      <Form name="UpdatePermission" style={{ marginTop: "30px" }} initialValues={detail}>
+      <Form form={form} name="UpdatePermission" style={{ marginTop: "30px" }} initialValues={detail}>
         <Form.Item label="所属模块" name="fdModuleId">
           <Select 
             style={{ textAlign: "left" }} 
@@ -225,7 +255,7 @@ const UpdatePermissions = (props: Props) => {
         <Form.Item label="权限名称" name="fdApiName">
           <Input placeholder="请选择权限名称" onChange={(e: any) => onHandleChange("fdApiName", e)} />
         </Form.Item>
-        <Form.Item label="权限标识" name="fdPermission">
+        <Form.Item label="模块标识" name="fdPermission">
           <Input placeholder="请输入权限标识" onChange={(e: any) => onHandleChange("fdPermission", e)} />
         </Form.Item>
         <Form.Item label="权限描述" name="fdRemark">

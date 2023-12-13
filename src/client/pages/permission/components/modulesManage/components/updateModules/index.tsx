@@ -34,6 +34,7 @@ const initialState = {
 }
 
 const UpdateModules = (props: Props) => {
+  const [form] = Form.useForm();
   const router = useRouter()
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
@@ -65,6 +66,7 @@ const UpdateModules = (props: Props) => {
    */
   const onUnique = async (fdName: string) => {
     const params = {
+      fdId: detail?.fdId,
       fdName: fdName
     }
 
@@ -108,9 +110,10 @@ const UpdateModules = (props: Props) => {
     onUnique(fdName)
 
     const params = {
-      fdName: fdName,
-      fdModuleKey: fdModuleKey,
-      fdRemark: fdRemark
+      fdId: detail?.fdId,
+      fdName: fdName || detail.fdName,
+      fdModuleKey: fdModuleKey || detail.fdModuleKey,
+      fdRemark: fdRemark || detail.fdRemark
     }
 
     // await axios.request({
@@ -144,10 +147,22 @@ const UpdateModules = (props: Props) => {
     onCancel()
   }
 
+  /**
+   * @description 关闭弹窗
+   */
+  const onClose = () => {
+    form.resetFields();
+    onCancel()
+  }
+
   useEffect(() => {
     if (detail) {
       // 将 detail 中的值赋给表单的初始值
-      dispatch({ type: "update", payload: detail });
+      form.setFieldsValue({
+        fdName: detail.fdName,
+        fdModuleKey: detail.fdModuleKey,
+        fdRemark: detail.fdRemark,
+      });
     }
 
     // 清空 data 的状态为初始值
@@ -166,10 +181,10 @@ const UpdateModules = (props: Props) => {
       style={{ textAlign: "center" }}
       open={open}
       onOk={onOk}
-      onCancel={onCancel}
+      onCancel={onClose}
       okText="提交"
     >
-      <Form name="UpdateModules" style={{ marginTop: "30px" }} initialValues={detail}>
+      <Form form={form} name="UpdateModules" style={{ marginTop: "30px" }} initialValues={detail}>
         <Form.Item label="模块名称" name="fdName">
           <Input placeholder="请选择模块名称" onChange={(e: any) => onHandleChange("fdName", e)} />
         </Form.Item>

@@ -150,6 +150,11 @@ const DeptsManage: NextPage = () => {
     if (data.code === 200) {
       getDepts()
       message.success("删除成功")
+    }  else if (
+      data.code === 401 && 
+      data.success === false &&
+      data.message === "请先登录后再操作!") {
+    router.push("/login")
     }
   }
 
@@ -210,7 +215,12 @@ const DeptsManage: NextPage = () => {
       dispatchRedux(setDeptsList({
         DeptsList: Depts
       }))
-    }
+    }  else if (
+      data.code === 401 && 
+      data.success === false &&
+      data.message === "请先登录后再操作!") {
+    router.push("/login")
+  }
   }
 
   const formObj = {
@@ -278,7 +288,7 @@ const DeptsManage: NextPage = () => {
         key: "fdParent",
         render: (_: any, record: any) => {
           return (
-            <div>{record?.fdParent ? record?.fdParent?.fdId : "无"}</div>
+            <div>{record?.fdParent ? record?.fdParent?.fdName : "无"}</div>
           ) 
         }
       },

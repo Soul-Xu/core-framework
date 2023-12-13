@@ -82,7 +82,12 @@ const DeptsSelector = () => {
         // dispatchRedux(setDeptsList({
         //   deptsList: Depts
         // }))
-      }
+      }  else if (
+        data.code === 401 && 
+        data.success === false &&
+        data.message === "请先登录后再操作!") {
+      router.push("/login")
+    }
     } catch (error) {
       console.error("Error fetching department data:", error);
     }
@@ -133,7 +138,12 @@ const DeptsSelector = () => {
         // dispatchRedux(setDeptsList({
         //   deptsList: Depts
         // }))
-      }
+      }  else if (
+        data.code === 401 && 
+        data.success === false &&
+        data.message === "请先登录后再操作!") {
+      router.push("/login")
+    }
     } catch (error) {
       console.error("Error fetching department data:", error);
     }
