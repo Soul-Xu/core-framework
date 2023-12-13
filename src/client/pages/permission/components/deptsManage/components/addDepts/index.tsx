@@ -192,11 +192,11 @@ const AddDepts = (props: Props) => {
             <div className={classNames("form-item-label")}>上级部门</div>
           )}
         >
-            <div style={{ display: "flex" }}>
-              <Input style={{ marginRight: "10px" }} value={depts} disabled  placeholder="请选择上级部门" />
-              <DeptsTree />
-            </div>
-          </Form.Item>
+          <div style={{ display: "flex" }}>
+            <Input style={{ marginRight: "10px" }} value={depts} disabled  placeholder="请选择上级部门" />
+            <DeptsTree />
+          </div>
+        </Form.Item>
         <Form.Item 
           name="fdRemark"
           label={(
