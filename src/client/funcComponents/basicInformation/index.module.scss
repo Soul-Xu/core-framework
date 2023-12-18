@@ -1,0 +1,20 @@
+.form-item-label {
+  display: inline-block;
+  width: 128px !important;
+}
+
+.form-item-label-option {
+  display: inline-block;
+  width: 138px !important;
+}
+
+.form-item-require {
+  display: inline-block;
+  margin-right: 12px;
+  margin-inline-end: 4px;
+  color: #ff4d4f;
+  font-size: 14px;
+  font-family: SimSun,sans-serif;
+  line-height: 1;
+  content: "*";
+}

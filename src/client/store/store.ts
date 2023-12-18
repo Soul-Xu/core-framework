@@ -7,6 +7,12 @@ import { appsSlice } from "./modules/appsSlice"
 import { commonSlice } from "./modules/commonSlice"
 import { permissionsSlice } from "./modules/permissionsSlice"
 import { settingSlice } from "./modules/settingSlice"
+// eventManage
+import { basicInfoSlice } from "./modules/basicInfoSlice"
+import { handleInfoSlice } from "./modules/handleInfoSlice"
+import { reasonSlice } from "./modules/reasonSlice"
+import { recoverySlice } from "./modules/recoverySlice"
+import { effectSlice } from "./modules/effectSlice"
 import { templateSlice } from "./modules/templateSlice"
 
 const makeStore = () =>
@@ -19,6 +25,12 @@ const makeStore = () =>
       permission: permissionsSlice.reducer,
       menus: menusSlice.reducer,
       apps: appsSlice.reducer,
+      basic: basicInfoSlice.reducer,
+      handle: handleInfoSlice.reducer,
+      recovery: recoverySlice.reducer,
+      effect: effectSlice.reducer,
+      reason: reasonSlice.reducer,
+
       setting: settingSlice.reducer
     },
     devTools: true

@@ -22,6 +22,7 @@ type MenuItem = Required<MenuProps>['items'][number];
 
 /** components */
 import AddMenus from '../addMenus';
+import EventManage from "../eventManage";
 
 /** http */
 import axios from "axios";
@@ -210,8 +211,8 @@ const TabsContent1 = () => {
           background: "#fff",
         }}
       >
-        <FormDemo />
-        <div className={classNames("demo")}>
+        {/* <FormDemo /> */}
+        {/* <div className={classNames("demo")}>
           <div className={classNames("demo-title")}>代码示例</div>
           <Row>
             <Col span="12">
@@ -229,7 +230,8 @@ const TabsContent1 = () => {
               <div className={classNames("demo-demo4")}></div>
             </Col>
           </Row>
-        </div>
+        </div> */}
+        <EventManage />
       </Content>
       <AddMenus tabName={tabName} open={showAddModal} onCancel={() => onHideAddModal()} />
     </>

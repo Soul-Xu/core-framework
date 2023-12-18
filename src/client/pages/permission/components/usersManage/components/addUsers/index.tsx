@@ -126,7 +126,7 @@ const AddUsers = (props: Props) => {
     const data = res?.payload
     if (data.code === 200) {
       message.success("添加用户成功")
-      onCancel()
+      onClose()
     } else if (
         data.code === 401 && 
         data.success === false &&
@@ -134,7 +134,7 @@ const AddUsers = (props: Props) => {
       router.push("/login")
     }
     message.error("添加用户失败")
-    onCancel()
+    onClose()
   }
 
   /**
@@ -237,7 +237,7 @@ const AddUsers = (props: Props) => {
             <div className={classNames("form-item-label")}>用户昵称</div>
           )}
         >
-          <Input placeholder="请选择用户昵称" onChange={(e: any) => onHandleChange("fdNickName", e)} />
+          <Input placeholder="请输入用户昵称" onChange={(e: any) => onHandleChange("fdNickName", e)} />
         </Form.Item>
         <Form.Item 
           name="fdUserName"
@@ -261,7 +261,7 @@ const AddUsers = (props: Props) => {
             <div className={classNames("form-item-label")}>邮箱</div>
           )} 
         >
-          <Input placeholder="请选择邮箱" onChange={(e: any) => onHandleChange("fdEmail", e)} />
+          <Input placeholder="请输入邮箱" onChange={(e: any) => onHandleChange("fdEmail", e)} />
         </Form.Item>
         <Form.Item 
           name="fdCellphone"
@@ -277,7 +277,7 @@ const AddUsers = (props: Props) => {
             <div className={classNames("form-item-label")}>教育背景</div>
           )} 
         >
-          <Input placeholder="请选择教育背景" onChange={(e: any) => onHandleChange("fdEducation", e)} />
+          <Input placeholder="请输入教育背景" onChange={(e: any) => onHandleChange("fdEducation", e)} />
         </Form.Item>
         <Form.Item 
           name="fdCity"
@@ -285,7 +285,7 @@ const AddUsers = (props: Props) => {
             <div className={classNames("form-item-label")}>城市</div>
           )} 
         >
-          <Input placeholder="请选择城市" onChange={(e: any) => onHandleChange("fdCity", e)} />
+          <Input placeholder="请输入城市" onChange={(e: any) => onHandleChange("fdCity", e)} />
         </Form.Item>
         <Form.Item 
           name="fdId"
