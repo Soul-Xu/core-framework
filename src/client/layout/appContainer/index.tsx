@@ -39,6 +39,7 @@ const classNames = classnames.bind(styles);
 /** images */
 import ImgTodo from "public/images/common/todo_icon.png"
 import ImgIntegration from "public/images/common/integration_icon.png"
+import { useSelector } from "react-redux";
 
 const items: MenuItem[] = [
   getItem('应用', 'app', <AppstoreFilled />),
@@ -48,6 +49,18 @@ const items: MenuItem[] = [
   getItem('集成中心', 'integration', <Image src={ImgIntegration} width={20} height={20} alt="ImgIntegration"/>),
   getItem('个人中心', 'personalCenter', <UserOutlined />),
   getItem('权限设置', 'permission', <ClusterOutlined />),
+  // getItem('系统设置', 'systemSetting', <SettingOutlined />),
+  getItem('开发文档', 'openAPI', <ProjectOutlined />),
+];
+
+const commonItems: MenuItem[] = [
+  getItem('应用', 'app', <AppstoreFilled />),
+  // getItem('我的待办', 'todo', <CheckCircleOutlined />),
+  getItem('我的待办', 'todo', <Image src={ImgTodo} width={20} height={20} alt="ImgTodo"/>),
+  // getItem('集成中心', 'integration', <GoldFilled />),
+  // getItem('集成中心', 'integration', <Image src={ImgIntegration} width={20} height={20} alt="ImgIntegration"/>),
+  getItem('个人中心', 'personalCenter', <UserOutlined />),
+  // getItem('权限设置', 'permission', <ClusterOutlined />),
   // getItem('系统设置', 'systemSetting', <SettingOutlined />),
   getItem('开发文档', 'openAPI', <ProjectOutlined />),
 ];
@@ -78,6 +91,8 @@ const AppContainer: NextPage<PageContainerProps> = ({ children }: any) => {
   const router: any = useRouter();
   const [collapsed, setCollapsed] = useState("");
   const [selectKey, setSelectKey] = useState(['']);
+  const [renderMenus, setRenderMenus] = useState<any>([])
+  const userInfo = useSelector((state: any) => state.login.userInfo)
 
   const onMenuClick = (menu: any) => {
     if (menu.key !== "openAPI") {
@@ -95,6 +110,11 @@ const AppContainer: NextPage<PageContainerProps> = ({ children }: any) => {
     const currentPath = router.pathname.split("/")[1];
     setSelectKey([`${currentPath}`]);
   }, [router.pathname]);
+
+  useEffect(() => {
+    const isAdmin = userInfo?.fdUserName?.includes("admin")
+    isAdmin ? setRenderMenus(items) : setRenderMenus(commonItems)
+  }, [])
 
   return (
     <Layout>
@@ -126,7 +146,7 @@ const AppContainer: NextPage<PageContainerProps> = ({ children }: any) => {
             // @ts-ignore
             collapsed={collapsed}
             onClick={onMenuClick}
-            items={items}
+            items={renderMenus}
           />
         </Sider>
         <Content

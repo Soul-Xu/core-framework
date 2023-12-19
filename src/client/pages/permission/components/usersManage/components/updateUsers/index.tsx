@@ -80,16 +80,16 @@ const AddUsers = (props: Props) => {
   const onOk = async () => {
     const params = {
       fdId: detail?.fdId,
-      fdNickName: fdNickName,
-      fdUserName: fdUserName,
-      fdPassword: fdPassword, 
-      fdEmail: fdEmail,
-      fdCellphone: fdCellphone,
-      fdEducation: fdEducation,
-      fdCity: fdCity,
-      fdRemark: fdRemark,
+      fdNickName: fdNickName || detail.fdNickName,
+      fdUserName: fdUserName || detail.fdNickName,
+      fdPassword: fdPassword || detail.fdNickName, 
+      fdEmail: fdEmail || detail.fdEmail,
+      fdCellphone: fdCellphone || detail.fdCellphone,
+      fdEducation: fdEducation || detail.fdEducation,
+      fdCity: fdCity || detail.fdCity,
+      fdRemark: fdRemark || detail.fdRemark,
       fdParent: {
-        fdId: fdId
+        fdId: detail.fdParent.fdId
       }
     }
 

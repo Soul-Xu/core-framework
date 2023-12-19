@@ -114,7 +114,6 @@ const AttachmentUpload = () => {
     <>
       {/* <CustomLayout title="附件上传" /> */}
       <div style={{ display: "flex" }}>
-        {/* @ts-ignore */}
         <FormLayout formObj={formObj} />
       </div>
     </>

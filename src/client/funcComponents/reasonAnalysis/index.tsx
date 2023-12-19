@@ -114,7 +114,6 @@ const ReasonAnalysis = () => {
     <>
       {/* <CustomLayout title="原因分析" /> */}
       <div>
-        {/* @ts-ignore */}
         <FormLayout formObj={formObj} />
       </div>
     </>

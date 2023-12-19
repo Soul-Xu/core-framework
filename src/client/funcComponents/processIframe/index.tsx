@@ -1,7 +1,4 @@
 import React from 'react'
-import styles from "./index.module.scss"
-import classnames from "classnames/bind";
-const classNames = classnames.bind(styles);
 
 const frontendURL = "https://yunsucoding.landray.com.cn/web"
 const iframePre = `${frontendURL}/sys-lbpm/desktop/#/lbpmIntegrate/integrate`

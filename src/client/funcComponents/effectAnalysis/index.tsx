@@ -114,7 +114,6 @@ const EffectAnalysis = () => {
     <>
       {/* <CustomLayout title="影响分析" /> */}
       <div>
-        {/* @ts-ignore */}
         <FormLayout formObj={formObj} />
       </div>
     </>

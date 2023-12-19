@@ -211,26 +211,6 @@ const TabsContent1 = () => {
           background: "#fff",
         }}
       >
-        {/* <FormDemo /> */}
-        {/* <div className={classNames("demo")}>
-          <div className={classNames("demo-title")}>代码示例</div>
-          <Row>
-            <Col span="12">
-              <div className={classNames("demo-demo1")}></div>
-            </Col>
-            <Col span="12">
-              <div className={classNames("demo-demo3")}></div>
-            </Col>
-          </Row>
-          <Row>
-            <Col span="12">
-              <div className={classNames("demo-demo2")}></div>
-            </Col>
-            <Col span="12">
-              <div className={classNames("demo-demo4")}></div>
-            </Col>
-          </Row>
-        </div> */}
         <EventManage />
       </Content>
       <AddMenus tabName={tabName} open={showAddModal} onCancel={() => onHideAddModal()} />

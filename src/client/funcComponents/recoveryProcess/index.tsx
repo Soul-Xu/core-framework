@@ -264,15 +264,10 @@ const RecoveryProcess = (props) => {
     <>
       {/* <CustomLayout title="恢复过程" /> */}
       <div>
-        {/* @ts-ignore */}
         <FormLayout formObj={formObj1} />
-        {/* @ts-ignore */}
         <FormLayout formObj={formObj2} />
-        {/* @ts-ignore */}
         <FormLayout formObj={formObj3} />
-        {/* @ts-ignore */}
         <FormLayout formObj={formRender4} />
-        {/* @ts-ignore */}
         { formRender5 && <FormLayout formObj={formObj5} /> }
       </div>
     </>

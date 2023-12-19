@@ -1,8 +1,5 @@
 import React, { useEffect } from 'react'
 import { Tabs } from 'antd'
-import styles from "./index.module.scss"
-import classnames from "classnames/bind";
-const classNames = classnames.bind(styles);
 
 /** components */
 import ProcessIfame from '../processIframe'
@@ -15,7 +12,6 @@ const ProcessLayout= (processId: string) => {
 
   return (
     <div>
-      {/* @ts-ignore */}
       <Tabs defaultActiveKey="auditForm" onChange={onChange}>
         <TabPane tab="流程操作" key="auditForm">
           {<ProcessIfame type="submit" processId={processId} />}

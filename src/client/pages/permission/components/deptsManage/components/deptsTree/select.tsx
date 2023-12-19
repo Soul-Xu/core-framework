@@ -234,7 +234,6 @@ const DeptsSelector = () => {
   };
 
   const rowSelection = {
-    // @ts-ignore
     type: "radio", // 设置为单选
     selectedRowKeys,
     onChange: onSelectChange,

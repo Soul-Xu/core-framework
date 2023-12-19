@@ -274,10 +274,8 @@ const HandleInformation = (props) => {
 
   return (
     <>
-      {/* @ts-ignore */}
       <CustomLayout title="处理信息" />
       <div>
-        {/* @ts-ignore */}
         <FormLayout formObj={handleRender} />
       </div>
     </>

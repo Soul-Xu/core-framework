@@ -134,21 +134,9 @@ const MyApps = (props: Props) => {
   }
 
   const getDropdownMenu = (app, index) => (
-    // <Menu>
-    //   <Menu.Item key="edit" onClick={() => onUpdateAppModal(app)}>
-    //     <span style={{ marginRight: "4px" }}><EditOutlined /></span>
-    //     <span>编辑</span>
-    //   </Menu.Item>
-    //   {index !== 0 && (
-    //     <Menu.Item key="delete" onClick={() => onDeleteAppModal(app)}>
-    //       <span style={{ marginRight: "4px" }}><DeleteOutlined /></span>
-    //       <span>删除</span>
-    //     </Menu.Item>
-    //   )}
-    // </Menu>
     // @ts-ignore
     <Menu items={contextMenuItems(app, index)} />
-  );
+  )
 
   return (
     <div className={classNames("my-apps")}>
@@ -175,7 +163,6 @@ const MyApps = (props: Props) => {
                 <Image src={ImgCollect} width={16} height={16} alt={"ImgCollect"} />
               </div>
               <div>
-                {/* @ts-ignore */}
                 <Dropdown overlay={getDropdownMenu(app, index)} trigger={['click']} placement="bottomRight">
                   <span>
                     <Image src={ImgActions} width={16} height={16} alt={"ImgActions"} />
@@ -183,7 +170,6 @@ const MyApps = (props: Props) => {
                 </Dropdown>
               </div>
             </section>
-            {/* @ts-ignore */}
             <Link href={`/app/${app.fdId}`} key={app.fdId}>
               <div className={classNames("my-apps-list-item-icon")} 
                 style={{ backgroundColor: app.navColor || getRandomColor(), color: app.iconColor || "#000"}}> 

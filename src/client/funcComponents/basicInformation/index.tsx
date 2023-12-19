@@ -190,12 +190,9 @@ const BasicInformation = (props: any) => {
 
   return (
     <>
-      {/* @ts-ignore */}
       <CustomLayout title="基本信息" />
       <div>
-        {/* @ts-ignore */}
         <FormLayout formObj={formRenderMain} />
-        {/* @ts-ignore */}
         <FormLayout formObj={formRenderDetail} />
       </div>
     </>
