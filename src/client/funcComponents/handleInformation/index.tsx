@@ -66,7 +66,7 @@ const HandleInformation = (props) => {
         type: "text",
         key: 'fdStatus',
         value: fdStatus,
-        defaultValue: "未处理",
+        // defaultValue: "未处理",
         label: (
           <span className={classNames("form-item-label-option")}>状态</span>
         ),
@@ -80,7 +80,7 @@ const HandleInformation = (props) => {
         kind: 'select',
         key: 'fdEffectSystem',
         value: fdEffectSystem,
-        defaultValue: "融资融劵系统",
+        // defaultValue: "融资融劵系统",
         label: (
           <span className={classNames("form-item-label-option")}>影响系统</span>
         ),
@@ -93,7 +93,7 @@ const HandleInformation = (props) => {
         kind: 'datepicker',
         key: 'fdFindTime',
         value: fdFindTime,
-        defaultValue: "2023-09-28 10:13",
+        // defaultValue: "2023-09-28 10:13",
         label: (
           // <span className={classNames("form-item-label")}>发现时间</span>
           <span className={classNames("form-item-label-option")}>
@@ -111,7 +111,7 @@ const HandleInformation = (props) => {
         kind: 'select',
         key: 'fdProcessDept',
         value: fdProcessDept,
-        defaultValue: "运维三室",
+        // defaultValue: "运维三室",
         label: (
           // <span className={classNames("form-item-label")}>处理组</span>
           <span className={classNames("form-item-label-option")}>
@@ -129,7 +129,7 @@ const HandleInformation = (props) => {
         kind: 'select',
         key: 'fdSubCate',
         value: fdSubCate,
-        defaultValue: "--",
+        // defaultValue: "--",
         label: (
           <span className={classNames("form-item-label-option")}>子类</span>
         ),
@@ -154,7 +154,7 @@ const HandleInformation = (props) => {
         kind: 'select',
         key: 'fdProcessUser',
         value: fdProcessUser,
-        defaultValue: "徐工",
+        // defaultValue: "徐工",
         label: (
           // <span className={classNames("form-item-label")}>处理人</span>
           <span className={classNames("form-item-label-option")}>
@@ -172,7 +172,7 @@ const HandleInformation = (props) => {
         kind: 'select',
         key: 'fdArea',
         value: fdArea,
-        defaultValue: "华南地区",
+        // defaultValue: "华南地区",
         label: (
           <span className={classNames("form-item-label-option")}>区域</span>
         ),
@@ -197,7 +197,7 @@ const HandleInformation = (props) => {
         kind: 'select',
         key: 'fdEffect',
         value: fdEffect,
-        defaultValue: "华南地区证劵交易市场",
+        // defaultValue: "华南地区证劵交易市场",
         label: (
           <span className={classNames("form-item-label-option")}>影响</span>
         ),
@@ -236,7 +236,7 @@ const HandleInformation = (props) => {
         kind: 'select',
         key: 'fdUrgency',
         value: fdUrgency,
-        defaultValue: "紧急",
+        // defaultValue: "紧急",
         label: (
           <span className={classNames("form-item-label-option")}>紧急程度</span>
         ),

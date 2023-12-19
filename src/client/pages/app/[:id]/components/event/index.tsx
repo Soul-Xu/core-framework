@@ -157,14 +157,14 @@ const EventManageForm: NextPage = () => {
           />
         </section>
       </div>
-      <div className={classNames("action")}>
+      {/* <div className={classNames("action")}>
         <Button 
           type="primary" 
           className={classNames("action-submit")}
           onClick={onSubmit}
         >提交</Button>
         <Button className={classNames("action-btn")}>取消</Button>
-      </div>
+      </div> */}
     </div>
   )
 }
