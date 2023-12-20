@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { useImmerReducer } from "use-immer";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal, Form, Input, InputNumber, Select } from "antd"
+import _ from "lodash"
 const { TextArea } = Input
 
 /** utils */
@@ -24,7 +25,6 @@ import { baseApi } from "../../../../../config"
  */
 interface Props {
   title?: string,
-  tabName: string,
   open: boolean,
   onOk?: () => void,
   onCancel: () => void
@@ -41,17 +41,17 @@ const initialState = {
   fdComponentName: "",
   fdUrl: "",
   fdRemark: "",
-  fdDisplayOrder: 1
+  fdDisplayOrder: 1,
+  fdTabName: "",
 }
 
 const AddMenus = (props: Props) => {
-  const { tabName, open, onCancel } = props
+  const { open, onCancel } = props
   const router = useRouter()
   const selectTabs = useSelector((state: any) => state.menus.selectTabs)
-  const token = useSelector((state: any) => state.common.token)
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
-  const { fdComponentName, fdUrl, fdRemark, fdDisplayOrder } = data
+  const { fdComponentName, fdUrl, fdRemark, fdDisplayOrder, fdTabName } = data
 
   /**
    * @description 数据处理函数
@@ -83,29 +83,11 @@ const AddMenus = (props: Props) => {
       fdComponentName: fdComponentName,
       fdRemark: fdRemark,
       fdUrl: fdUrl,
-      fdDisplayOrder:1,
+      fdDisplayOrder: fdDisplayOrder,
       fdParentEntity:{
         fdId: selectTabs?.fdId
       }
     }
-
-    // await axios.request({
-    //   url: `${baseApi}/component-permission/add-data`,
-    //   method: "post",
-    //   data: params,
-    //   withCredentials: true,  
-    //   headers: {
-    //     'Content-Type': 'application/json', // 设置为 application/json
-    //     'ltpatoken': token
-    //   },
-    // }).then((res: any) => {
-    //   const data = res.data
-    //   if (data.code === 200) {
-    //     onCancel()
-    //   }
-    // }).catch((err: any) => {
-    //   console.log("axios-app-err", err)
-    // })
 
     const res = await dispatchRedux(asyncThunk.addMenus(params) as any);
     const data = res?.payload;
@@ -120,6 +102,15 @@ const AddMenus = (props: Props) => {
     onCancel()
   }
 
+  useEffect(() => {
+    console.log("setTabName", selectTabs)
+    if(!_.isEmpty(selectTabs) && selectTabs?.fdComponentName) {
+      setState("update", {
+        fdTabName: selectTabs?.fdComponentName
+      })
+    }
+  }, [selectTabs])
+
   return (
     <Modal 
       title="新建二级菜单"
@@ -131,7 +122,7 @@ const AddMenus = (props: Props) => {
     >
       <Form name="AddMenus" style={{ marginTop: "30px" }}>
         <Form.Item label="一级菜单" name="fdTabName">
-          <div style={{ textAlign: "left" }}>{tabName}</div>
+          <div style={{ textAlign: "left" }}>{fdTabName}</div>
         </Form.Item>
         <Form.Item label="菜单名称" name="fdComponentName">
           <Input placeholder="请输入菜单名称" onChange={(e: any) => onHandleChange("fdComponentName", e)} />
@@ -147,9 +138,9 @@ const AddMenus = (props: Props) => {
             <InputNumber style={{ width: "100%" }} placeholder="请输入应用排序" min={1} max={99} onChange={(e: any) => onHandleChange("fdDisplayOrder", e)} />
           </div>
         </Form.Item>
-        <Form.Item label="绑定权限" name="fdPermission">
+        {/* <Form.Item label="绑定权限" name="fdPermission">
           <Select style={{ textAlign: "left" }} placeholder="请选择是否绑定权限" options={permissonOption} onChange={(e: any) => onHandleChange("fdPermission", e)} />
-        </Form.Item>
+        </Form.Item> */}
       </Form>
     </Modal>
   )

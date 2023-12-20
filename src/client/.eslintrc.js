@@ -42,7 +42,8 @@ module.exports = {
     "react/no-unescaped-entities": "off",
     indent: 0,
     "linebreak-style": 0,
-    "react-hooks/exhaustive-deps": 0
+    "react-hooks/exhaustive-deps": 0,
+    "@typescript-eslint/ban-ts-comment": 0
   },
   settings: {
     react: {

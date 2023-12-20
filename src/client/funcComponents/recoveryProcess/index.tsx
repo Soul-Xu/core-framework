@@ -32,7 +32,12 @@ const initialState = {
   fdEffectDesc: "" // 业务影响概述
 }
 
-const RecoveryProcess = (props) => {
+interface Props {
+  form4?: any,
+  showForm5?: boolean
+}
+
+const RecoveryProcess = (props: Props) => {
   const { form4, showForm5 } = props
   const dispatchRedux = useDispatch();
   const recovery = useSelector((state: any) => state.recovery.recovery)

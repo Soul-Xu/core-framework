@@ -10,7 +10,7 @@ import {
 export class MenuService {
   async addTabs(body: AddTabsDto) {
     const res = await axios.request({
-      url: `${baseApi}/component-permission/add-data`,
+      url: `${baseApi}/component-permission/add`,
       method: "post",
       data: body,
       headers: {
@@ -31,7 +31,7 @@ export class MenuService {
 
   async updateTabs(body: UpdateTabsDto) {
     const res = await axios.request({
-      url: `${baseApi}/component-permission/update-data`,
+      url: `${baseApi}/component-permission/update`,
       method: "post",
       data: body,
       headers: {
@@ -52,7 +52,7 @@ export class MenuService {
 
   async deleteTabs(body: DeleteTabsDto) {
     const res = await axios.request({
-      url: `${baseApi}/component-permission/delete-data`,
+      url: `${baseApi}/component-permission/delete`,
       method: "post",
       data: body,
       headers: {

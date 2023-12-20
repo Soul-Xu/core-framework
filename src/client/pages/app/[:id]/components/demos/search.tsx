@@ -150,6 +150,7 @@ const SearchDemo: NextPage = () => {
         render: (_: any, record: any) => {
           return (
             <>
+              <Button className={classNames("btn-action")} onClick={() => handleDelete(record)}>编辑</Button>
               <Button className={classNames("btn-action")} onClick={() => handleDelete(record)}>删除</Button>
             </>
           )
@@ -163,6 +164,14 @@ const SearchDemo: NextPage = () => {
       page: state.page,
       pageSize: state.pageSize,
       total: data.length
+    },
+    customElements: () => {
+      return (
+        <>
+          <Button className={classNames("btn-action")}>批量上传</Button>
+          <Button className={classNames("btn-action")}>下载</Button>
+        </>
+      )
     },
     onChangePage: (page: number, pageSize: number) => onChangePagination(page, pageSize)
   }

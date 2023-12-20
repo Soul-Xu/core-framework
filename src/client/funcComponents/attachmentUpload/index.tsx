@@ -1,6 +1,5 @@
 import React from 'react'
 import FormLayout from '../../components/formLayout';
-import CustomLayout from '../customLayout/index';
 import styles from "./index.module.scss"
 import classnames from "classnames/bind";
 const classNames = classnames.bind(styles);
@@ -112,7 +111,6 @@ const AttachmentUpload = () => {
 
   return (
     <>
-      {/* <CustomLayout title="附件上传" /> */}
       <div style={{ display: "flex" }}>
         <FormLayout formObj={formObj} />
       </div>

@@ -30,7 +30,11 @@ const initialState = {
   fdsolveTime: "" // 问题解决时间
 }
 
-const HandleInformation = (props) => {
+interface Props {
+  handleForm?: any
+}
+
+const HandleInformation = (props: Props) => {
   const { handleForm } = props
   const dispatchRedux = useDispatch();
   const handleInfo = useSelector((state: any) => state.handle.handleInfo)

@@ -80,13 +80,6 @@ const AddUsers = (props: Props) => {
   }
 
   /**
-   * 重置数据
-   */
-  const resetForm = () => {
-    // dispatch({ type: "reset" });
-  };
-
-  /**
    * @description 添加用户确认逻辑
    * @param
    */
@@ -105,23 +98,6 @@ const AddUsers = (props: Props) => {
       }
     }
 
-    // await axios.request({
-    //   url: `${baseApiOrg}/user/add`,
-    //   method: "post",
-    //   data: params,
-    //   withCredentials: true,  
-    //   headers: {
-    //     'Content-Type': 'application/json', // 设置为 application/json
-    //     'ltpatoken': token
-    //   },
-    // }).then((res: any) => {
-    //   const data = res.data
-    //   if (data.code === 200) {
-    //     onCancel()
-    //   }
-    // }).catch((err: any) => {
-    //   console.log("add-permission", err)
-    // })
     const res = await dispatchRedux(asyncThunk.addUsers(params) as any);
     const data = res?.payload
     if (data.code === 200) {
@@ -150,37 +126,6 @@ const AddUsers = (props: Props) => {
       page: 1,
       pageSize: 20
     }
-
-    // await axios.request({
-    //   url: `${baseApiOrg}/dept/list`,
-    //   method: "post",
-    //   data: params,
-    //   withCredentials: true,  
-    //   headers: {
-    //     'Content-Type': 'application/json', // 设置为 application/json
-    //     'ltpatoken': token
-    //   },
-    // }).then((res: any) => {
-    //   const data = res.data
-    //   if (data.code === 200) {
-    //     const { content } = data.data;
-    //     const depts = content.map((contentItem: any, index: number) => {
-    //       return {
-    //         ...contentItem,
-    //         sort: index + 1
-    //       }
-    //     })
-    //     const selectDepts = onHandleData(content)
-    //     setState("update", {
-    //       depts: selectDepts
-    //     })
-    //     dispatchRedux(setDeptsList({
-    //       deptsList: depts
-    //     }))
-    //   }
-    // }).catch((err: any) => {
-    //   console.log("add-permission", err)
-    // })
 
     const res = await dispatchRedux(asyncThunk.getDepts(params) as any);
     const data = res?.payload

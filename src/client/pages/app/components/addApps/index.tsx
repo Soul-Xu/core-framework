@@ -147,9 +147,9 @@ const AddApps = (props: Props) => {
             <InputNumber style={{ width: "100%" }} placeholder="请输入应用排序" min={1} max={99} onChange={(e: any) => onHandleChange("fdDisplayOrder", e)} />
           </div>
         </Form.Item>
-        <Form.Item label="绑定权限" name="fdPermission">
+        {/* <Form.Item label="绑定权限" name="fdPermission">
           <Select style={{ textAlign: "left" }} placeholder="请选择是否绑定权限" options={permissonOption} onChange={(e: any) => onHandleChange("fdPermission", e)} />
-        </Form.Item>
+        </Form.Item> */}
       </Form>
     </Modal>
   )

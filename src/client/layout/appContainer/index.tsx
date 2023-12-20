@@ -5,11 +5,8 @@ import { useRouter } from 'next/router';
 import { NextPage } from 'next';
 import { 
   AppstoreFilled,
-  CheckCircleOutlined,
-  GoldFilled,
   UserOutlined,
   ClusterOutlined,
-  SettingOutlined,
   ProjectOutlined
  } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
@@ -43,9 +40,7 @@ import { useSelector } from "react-redux";
 
 const items: MenuItem[] = [
   getItem('应用', 'app', <AppstoreFilled />),
-  // getItem('我的待办', 'todo', <CheckCircleOutlined />),
   getItem('我的待办', 'todo', <Image src={ImgTodo} width={20} height={20} alt="ImgTodo"/>),
-  // getItem('集成中心', 'integration', <GoldFilled />),
   getItem('集成中心', 'integration', <Image src={ImgIntegration} width={20} height={20} alt="ImgIntegration"/>),
   getItem('个人中心', 'personalCenter', <UserOutlined />),
   getItem('权限设置', 'permission', <ClusterOutlined />),
@@ -55,13 +50,8 @@ const items: MenuItem[] = [
 
 const commonItems: MenuItem[] = [
   getItem('应用', 'app', <AppstoreFilled />),
-  // getItem('我的待办', 'todo', <CheckCircleOutlined />),
   getItem('我的待办', 'todo', <Image src={ImgTodo} width={20} height={20} alt="ImgTodo"/>),
-  // getItem('集成中心', 'integration', <GoldFilled />),
-  // getItem('集成中心', 'integration', <Image src={ImgIntegration} width={20} height={20} alt="ImgIntegration"/>),
   getItem('个人中心', 'personalCenter', <UserOutlined />),
-  // getItem('权限设置', 'permission', <ClusterOutlined />),
-  // getItem('系统设置', 'systemSetting', <SettingOutlined />),
   getItem('开发文档', 'openAPI', <ProjectOutlined />),
 ];
 
@@ -99,11 +89,8 @@ const AppContainer: NextPage<PageContainerProps> = ({ children }: any) => {
       setSelectKey([`${menu.key}`]);
       router.push(`/${menu.key}`);
     } else {
-      console.log("openAPI");
       window.open("http://localhost:3030/", "_blank");
     }
-    // setSelectKey([`${menu.key}`]);
-    // router.push(`/${menu.key}`);
   };
 
   useEffect(() => {

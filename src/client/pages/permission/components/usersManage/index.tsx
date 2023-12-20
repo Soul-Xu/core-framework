@@ -119,25 +119,6 @@ const UsersManage: NextPage = () => {
       const params = {
         fdId: fdId
       }
-
-      // await axios.request({
-      //   url: `${baseApiOrg}/user/delete`,
-      //   method: "post",
-      //   data: params,
-      //   withCredentials: true,  
-      //   headers: {
-      //     'Content-Type': 'application/json', // 设置为 application/json
-      //     'ltpatoken': token
-      //   },
-      // }).then((res: any) => {
-      //   const data = res.data
-      //   if (data.code === 200) {
-      //     getUsers()
-      //     message.success("删除成功")
-      //   }
-      // }).catch((err: any) => {
-      //   console.log("add-module", err)
-      // })
   
       const res = await dispatchRedux(asyncThunk.deleteUsers(params) as any);
       const data = res?.payload
@@ -163,36 +144,6 @@ const UsersManage: NextPage = () => {
         ...req
       }
     }
-
-    // await axios.request({
-    //   url: `${baseApiOrg}/user/list`,
-    //   method: "post",
-    //   data: params,
-    //   withCredentials: true,  
-    //   headers: {
-    //     'Content-Type': 'application/json', // 设置为 application/json
-    //     'ltpatoken': token
-    //   },
-    // }).then((res: any) => {
-    //   const data = res.data
-    //   if (data.code === 200) {
-    //     const { content } = data.data;
-    //     const users = content.map((contentItem: any, index: number) => {
-    //       return {
-    //         ...contentItem,
-    //         sort: index + 1
-    //       }
-    //     })
-    //     setState("update", {
-    //       dataList: users
-    //     })
-    //     dispatchRedux(setUsersList({
-    //       usersList: users
-    //     }))
-    //   }
-    // }).catch((err: any) => {
-    //   console.log("add-permission", err)
-    // })
 
     const res = await dispatchRedux(asyncThunk.getUsers(params) as any);
     const data = res?.payload
@@ -314,11 +265,18 @@ const UsersManage: NextPage = () => {
       { title: "序号", dataIndex: "sort", key: "sort" },
       { title: "用户名称", dataIndex: "fdUserName", key: "fdUserName" },
       { title: "昵称", dataIndex: "fdNickName", key: "fdNickName" },
-      { title: "密码", dataIndex: "fdPassword", key: "fdPassword" },
       { title: "邮箱", dataIndex: "fdEmail", key: "fdEmail" },
       { title: "电话号码", dataIndex: "fdCellphone", key: "fdCellphone" },
-      { title: "城市", dataIndex: "fdCity", key: "fdCity" },
-      { title: "教育背景", dataIndex: "fdEducation", key: "fdEducation" },
+      { 
+        title: "所属部门", 
+        dataIndex: "fdParent", 
+        key: "fdParent",
+        render: (_: any, record: any) => {
+          return (
+            <div>{record?.fdParent?.fdName}</div>
+          ) 
+        }
+      },
       { 
         title: "描述", 
         dataIndex: "fdRemark", 

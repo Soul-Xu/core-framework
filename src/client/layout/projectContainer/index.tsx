@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from "react-redux";
 import { NextPage } from 'next';
 import { setTabsList, setSelectTabs } from '../../store/modules/menusSlice'
-// import { setSelectApps } from '../../store/modules/appsSlice';
 import type { TabsProps } from 'antd';
 import { Layout, Tabs, Dropdown } from 'antd';
 import { PlusOutlined, LeftCircleOutlined } from '@ant-design/icons';
@@ -32,10 +31,16 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
   const curAppId = router.query[":id"]
   const dispatchRedux = useDispatch();
   const appsList = useSelector((state: any) => state.apps.appsList)
+  const userInfo = useSelector((state: any) => state.login.userInfo)
   const [AppName, setAppName] = useState("")
   const [selectTab, setSelectTab] = useState("1")
   const [showAddModal, setShowAddModal] = useState(false)
   const [tabs, setTabs] = useState([])
+
+  // 判断当前用户是否为管理员admin
+  const isAdmin = () => {
+    return userInfo?.fdUserName?.includes("admin")
+  }
 
   // 默认tab添加项
   const tabAdd = {
@@ -61,37 +66,12 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
       fdId: curAppId
     }
 
-    // await axios.request({
-    //   url: `${baseApi}/component-permission/top-menu`,
-    //   method: "post",
-    //   data: params,
-    //   withCredentials: true,  
-    //   headers: {
-    //     'Content-Type': 'application/json' // 设置为 application/json
-    //   },
-    // }).then((res: any) => {
-    //   const data = res.data
-    //   if (data.code === 200) {
-    //     const tabs: any = onHandleTabs(data.data)
-    //     const renderTabs: any = [...tabs].concat(tabAdd)
-    //     setSelectTab(renderTabs[0].key)
-    //     setTabsList(renderTabs)
-    //     dispatchRedux(setTab({
-    //       tab: renderTabs[0].key
-    //     }))
-    //     dispatchRedux(setCurTab({
-    //       curTab: renderTabs[0]
-    //     }))
-    //   }
-    // }).catch((err: any) => {
-    //   console.log("err", err)
-    // })
-
     const res = await dispatchRedux(asyncThunk.getTabs(params) as any)
     const data = res?.payload;
     if (data.code === 200) {
       const content: any = data.data
       const tabs: any = onHandleTabs(content)
+      isAdmin()
       const renderTabs: any = [...tabs].concat(tabAdd)
       setSelectTab(renderTabs[0].key)
       setTabs(renderTabs)
@@ -115,12 +95,12 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
 
   const onTabsChange = (item: any) => {
     setSelectTab(item.key)
-    // dispatchRedux(setTab({
-    //   tab: item.key
-    // }))
-    // dispatchRedux(setCurTab({
-    //   curTab: item
-    // }))
+    dispatchRedux(setTabsList({
+      tabsList: item.key
+    }))
+    dispatchRedux(setSelectTabs({
+      selectTabs: item
+    }))
     router.push(`${router.asPath}`)
   }
 
@@ -145,9 +125,6 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
   const getAppConfig = () => {
     const curConfig = appsList.find((app: any) => app.fdId === curAppId)
     setAppName(curConfig?.fdAppName)
-    // dispatchRedux(setCurApp({
-    //   curApp: curConfig
-    // }))
   }
 
   useEffect(() => {

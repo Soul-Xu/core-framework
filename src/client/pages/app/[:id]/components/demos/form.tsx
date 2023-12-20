@@ -2,7 +2,8 @@
  * form表单
  */
 /** external library */
-import React from "react"
+import React, { useState } from "react"
+import { Button } from 'antd'
 /** components */
 import FormLayout from "../../../../../components/formLayout"
 /** css */
@@ -10,7 +11,17 @@ import classnames from "classnames/bind";
 import styles from "./index.module.scss";
 const classNames = classnames.bind(styles);
 
+const initialState = {
+  username: "", // 用户名
+  group: "", // 组织
+  page: 1,
+  pageSize: 10,
+  total: 0
+}
+
 const FormDemo = () => {
+  const [state, setState] = useState<any>(initialState)
+
   const formObj1 = {
     name: 'basic-form1',
     layout: "horizontal",
@@ -141,10 +152,46 @@ const FormDemo = () => {
     ],
   }
 
+  const formObj = {
+    name: 'demos-form',
+    layout: 'inline',
+    items: [
+      {
+        kind: 'input',
+        key: 'username',
+        value: state.username,
+        label: '用户名',
+        name: 'username',
+        placeholder: '请输入用户名',
+        callback: (e: any) => {
+          setState({ ...state, username: e.target.value })
+        }
+      },
+      {
+        kind: 'input',
+        key: 'group',
+        value: state.group,
+        label: '组织名称',
+        name: 'group',
+        placeholder: '请输入组织名称',
+        callback: (e: any) => {
+          setState({ ...state, group: e.target.value })
+        }
+      }
+    ],
+    customElements: () => (
+      <section>
+        <Button className={classNames("btn-action")} onClick={() => console.log("search")} type='primary'>查询</Button>
+        <Button className={classNames("btn-action")} onClick={() => console.log("add")}>添加</Button>
+      </section>
+    )
+  }
+
   return (
     <>
-      <FormLayout formObj={formObj1} />
-      <FormLayout formObj={formObj2} />
+      <FormLayout formObj={formObj} />
+      {/* <FormLayout formObj={formObj1} /> */}
+      {/* <FormLayout formObj={formObj2} /> */}
     </>
   )
 }

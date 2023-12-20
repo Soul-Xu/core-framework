@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useImmerReducer } from "use-immer";
 import { reducer } from "../../../../../../utils/reducer";
-import { Modal, Form, Input, message } from "antd"
+import { Modal, Form, Input, message, Select } from "antd"
 import asyncThunk from "../../../../../../store/asyncThunk";
 import { setDeptsList } from "../../../../../../store/modules/permissionsSlice" 
 const Textarea = Input
@@ -44,6 +44,7 @@ const initialState = {
   fdCity: "",
   fdRemark: "",
   fdId: "",
+  depts: []
 }
 
 const AddUsers = (props: Props) => {
@@ -51,7 +52,7 @@ const AddUsers = (props: Props) => {
   const router = useRouter()
   const dispatchRedux = useDispatch();
   const [data, dispatch] = useImmerReducer(reducer, initialState);
-  const { fdNickName, fdUserName, fdPassword, fdEmail, fdCellphone, fdEducation, fdCity, fdRemark, fdId } = data
+  const { fdNickName, fdUserName, fdPassword, fdEmail, fdCellphone, fdEducation, fdCity, fdRemark, fdId, depts } = data
   const token = useSelector((state: any) => state.common.token)
   const { detail, open, onCancel } = props
 
@@ -64,13 +65,19 @@ const AddUsers = (props: Props) => {
       dispatch({ type, payload: val });
     }, [dispatch]);
 
-  /**
+   /**
    * @description 处理变量值变化函数
    */
-  const onHandleChange = (type: string, e: any) => {
-    setState("update", {
-      [type]: e.target.value
-    })
+   const onHandleChange = (type: string, e: any) => {
+    if (type === "fdId") {
+      setState("update", {
+        [type]: e
+      })
+    } else {
+      setState("update", {
+        [type]: e.target.value
+      })
+    }
   }
 
   /**
@@ -103,8 +110,9 @@ const AddUsers = (props: Props) => {
         data.success === false &&
         data.message === "请先登录后再操作!") {
       router.push("/login")
+    } else {
+      message.error("编辑用户失败")
     }
-    message.error("编辑用户失败")
     onCancel()
   }
 
@@ -122,45 +130,19 @@ const AddUsers = (props: Props) => {
       pageSize: 20
     }
 
-    // await axios.request({
-    //   url: `${baseApiOrg}/dept/list`,
-    //   method: "post",
-    //   data: params,
-    //   withCredentials: true,  
-    //   headers: {
-    //     'Content-Type': 'application/json', // 设置为 application/json
-    //     'ltpatoken': token
-    //   },
-    // }).then((res: any) => {
-    //   const data = res.data
-    //   if (data.code === 200) {
-    //     const { content } = data.data;
-    //     const Depts = content.map((contentItem: any, index: number) => {
-    //       return {
-    //         ...contentItem,
-    //         sort: index + 1
-    //       }
-    //    })
-    //     setState("update", {
-    //       dataList: Depts
-    //     })
-    //     dispatchRedux(setDeptsList({
-    //       DeptsList: Depts
-    //     }))
-    //   }
-    // }).catch((err: any) => {
-    //   console.log("add-permission", err)
-    // })
-
     const res = await dispatchRedux(asyncThunk.getDepts(params) as any);
     const data = res?.payload
     if (data.code === 200) {
       const { content } = data.data;
+      const options: any = []
       const depts = content.map((contentItem: any, index: number) => {
-          return {
-            ...contentItem,
-            sort: index + 1
-          }
+        options.push({
+          value: contentItem?.fdId,
+          label: contentItem?.fdName
+        })
+      })
+      setState("update", {
+        depts: options
       })
       dispatchRedux(setDeptsList({
         deptsList: depts
@@ -174,10 +156,6 @@ const AddUsers = (props: Props) => {
   }
 
   useEffect(() => {
-    getDepts()
-  }, [])
-
-  useEffect(() => {
     if (detail) {
       // 将 detail 中的值赋给表单的初始值
       form.setFieldsValue({
@@ -189,7 +167,7 @@ const AddUsers = (props: Props) => {
         fdEducation: detail.fdEducation,
         fdCity: detail.fdCity,
         fdRemark: detail.fdRemark,
-        fdId: detail.fdId,
+        fdId: detail?.fdParent?.fdName,
       });
     }
 
@@ -208,6 +186,10 @@ const AddUsers = (props: Props) => {
       })
     };
   }, [detail, dispatch]);
+
+  useEffect(() => {
+    getDepts()
+  }, [])
 
   return (
     <Modal 
@@ -233,7 +215,7 @@ const AddUsers = (props: Props) => {
             <div className={classNames("form-item-label")}>用户名称</div>
           )} 
         >
-          <Input placeholder="请输入用户名称" onChange={(e: any) => onHandleChange("fdUserName", e)} />
+          <Input placeholder="请输入用户名称" disabled onChange={(e: any) => onHandleChange("fdUserName", e)} />
         </Form.Item>
         <Form.Item 
           name="fdPassword"
@@ -278,10 +260,10 @@ const AddUsers = (props: Props) => {
         <Form.Item 
           name="fdId"
           label={(
-            <div className={classNames("form-item-label")}>城市</div>
+            <div className={classNames("form-item-label")}>关联部门</div>
           )} 
         >
-          <Input placeholder="请输入城市" onChange={(e: any) => onHandleChange("fdId", e)} />
+          <Select options={depts} onChange={(e: any) => onHandleChange("fdId", e)} />
         </Form.Item>
         <Form.Item 
           name="fdRemark"

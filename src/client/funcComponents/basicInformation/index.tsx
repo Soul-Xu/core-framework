@@ -64,7 +64,6 @@ const BasicInformation = (props: any) => {
         type: "text",
         key: 'fdSubject',
         value: fdSubject,
-        // defaultValue: "0928001",
         label: (
           // <span className={classNames("form-item-label")}>标题</span>
           <span className={classNames("form-item-label-option")}>
@@ -73,7 +72,6 @@ const BasicInformation = (props: any) => {
           </span>
         ),
         name: 'fdSubject',
-        // require: 1,
         onChange: (e: any) => {
           onHandleChange('fdSubject', e.target.value.trim())
         }
@@ -83,7 +81,6 @@ const BasicInformation = (props: any) => {
         type: "area",
         key: 'fdDesc',
         value: fdDesc,
-        // defaultValue: "0928001",
         label: (
           <span className={classNames("form-item-label-option")}>
             <span className={classNames("form-item-require")}>*</span>
@@ -91,8 +88,6 @@ const BasicInformation = (props: any) => {
           </span>
         ),
         name: 'fdDesc',
-        // require: 1,
-        // placeholder: '请输入描述',
         onChange: (e: any) => {
           onHandleChange('fdDesc', e.target.value.trim())
         }
@@ -111,13 +106,11 @@ const BasicInformation = (props: any) => {
         type: "text",
         key: 'fdNo',
         value: fdNo,
-        // defaultValue: "SJ-2023092800001",
         label: (
           <span className={classNames("form-item-label-option")}>事件编号</span>
         ),
         name: 'fdNo',
         disabled: true,
-        // placeholder: '自动获取',
         onChange: (e: any) => {
           onHandleChange('fdNo', e.target.value.trim())
         }
@@ -127,7 +120,6 @@ const BasicInformation = (props: any) => {
         type: "text",
         key: 'fdAuthor',
         value: fdAuthor,
-        // defaultValue: "廖",
         label: (
           <span className={classNames("form-item-label-option")}>登记人</span>
         ),
@@ -155,17 +147,13 @@ const BasicInformation = (props: any) => {
         kind: 'select',
         key: 'fdFindWay',
         value: fdFindWay,
-        // defaultValue: "监控工具",
         label: (
-          // <span className={classNames("form-item-label")}>发现渠道</span>
           <span className={classNames("form-item-label-option")}>
             <span className={classNames("form-item-require")}>*</span>
             发现渠道
           </span>
         ),
         name: 'fdFindWay',
-        // require: 1,
-        // placeholder: '请输入发现渠道',
         onChange: (value: any) => {
           onHandleChange('fdFindWay', value)
         }
