@@ -6,94 +6,73 @@ import { AddAppsDto, UpdateAppsDto, DeleteAppsDto, GetAppsDto } from './dto/apps
 @Injectable()
 export class AppsService {
   async getApps(body: GetAppsDto) {
-    const res = await axios.request({
-      url: `${baseApi}/app-permission/list`,
-      method: "post",
-      data: body,
-      headers: {
-        'Content-Type': 'application/json', // 设置为 application/json
-        'ltpatoken': Global.token,
-         withCredentials: true,
-      }
-    })
-    const data = res.data
-
     try {
-      if (data.code === 200 && data.success) {
-        const res = {
-          code: 200,
-          data: data.data
+      const res = await axios.request({
+        url: `${baseApi}/app-permission/list`,
+        method: "post",
+        data: body,
+        headers: {
+          'Content-Type': 'application/json', // 设置为 application/json
+          'ltpatoken': Global.token,
+           withCredentials: true,
         }
-        return res
-      } else {
-        return data
-      }
-    } catch(err) {
-      console.log("getApps-1111111", err)
+      })
+      return res.data
+    } catch (err) {
+      console.log("err-get-apps", err)
+      return err
     }
   }
 
   async addApps(body: AddAppsDto) {
-    const res = await axios.request({
-      url: `${baseApi}/app-permission/add`,
-      method: "post",
-      data: body,
-      headers: {
-        'Content-Type': 'application/json', // 设置为 application/json
-        'ltpatoken': Global.token,
-         withCredentials: true,
-      }
-    })
-    const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
+    try {
+      const res = await axios.request({
+        url: `${baseApi}/app-permission/add`,
+        method: "post",
+        data: body,
+        headers: {
+          'Content-Type': 'application/json', // 设置为 application/json
+          'ltpatoken': Global.token,
+           withCredentials: true,
+        }
+      })
+      return res.data
+    } catch(err) {
+      console.log("err-add-apps", err)
     }
   }
 
   async updateApps(body: UpdateAppsDto) {
-    const res = await axios.request({
-      url: `${baseApi}/app-permission/update`,
-      method: "post",
-      data: body,
-      headers: {
-        withCredentials: true,
-        "ltpatoken": Global.token
-      }
-    })
-    const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
+    try {
+      const res = await axios.request({
+        url: `${baseApi}/app-permission/update`,
+        method: "post",
+        data: body,
+        headers: {
+          withCredentials: true,
+          "ltpatoken": Global.token
+        }
+      })
+      return res.data
+    } catch(err) {
+      console.log("err-update-apps", err)
     }
   }
 
   async deleteApps(body: DeleteAppsDto) {
-    const res = await axios.request({
-      url: `${baseApi}/app-permission/delete`,
-      method: "post",
-      data: body,
-      headers: {
-        withCredentials: true,
-        "ltpatoken": Global.token
-      }
-    })
-    const data = res.data
-    if (data.code === 200 && data.success) {
-      return {
-        code: 200,
-        data: data.data
-      }
-    } else {
-      return data
+    try {
+      const res = await axios.request({
+        url: `${baseApi}/app-permission/delete`,
+        method: "post",
+        data: body,
+        headers: {
+          withCredentials: true,
+          "ltpatoken": Global.token
+        }
+      })
+      return res.data
+    } catch(err) {
+      console.log("err-delete-apps", err)
     }
   }
 }

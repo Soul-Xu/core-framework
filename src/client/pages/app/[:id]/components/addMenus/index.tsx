@@ -103,7 +103,6 @@ const AddMenus = (props: Props) => {
   }
 
   useEffect(() => {
-    console.log("setTabName", selectTabs)
     if(!_.isEmpty(selectTabs) && selectTabs?.fdComponentName) {
       setState("update", {
         fdTabName: selectTabs?.fdComponentName

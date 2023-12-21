@@ -37,6 +37,13 @@ export class ViewController {
     await this.viewService.handler(req, res);
   }
 
+  @Get('integration')
+  @ApiTags('Integration')
+  @ApiResponse({ status: 200, description: '集成中心' })
+  public async showIntegration(@Req() req: Request, @Res() res: Response) {
+    await this.viewService.handler(req, res);
+  }
+
   @Get('personalCenter')
   @ApiTags('PersonalCenter')
   @ApiResponse({ status: 200, description: '个人中心' })

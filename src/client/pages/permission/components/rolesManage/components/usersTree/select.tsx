@@ -1,17 +1,20 @@
+/**
+ * 用户选择器
+ */
+/** external library */
 import React, { useCallback, useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useImmerReducer } from "use-immer";
 import { Tree, Table, Radio } from "antd";
+/** css */
 import classnames from "classnames/bind";
 import style from "./index.module.scss";
 const classNames = classnames.bind(style);
-import { useRouter } from "next/router";
-// 请替换为实际的路径和模块
+/** utlis */
 import { reducer } from "../../../../../../utils/reducer";
-// 请替换为实际的路径和模块
 import asyncThunk from "../../../../../../store/asyncThunk";
 import { setSelectUsers } from "../../../../../../store/modules/permissionsSlice";
-
 const { TreeNode } = Tree;
 
 /** http */
@@ -137,7 +140,7 @@ const UsersSelector = () => {
 
   const buildTree = (flatList) => {
     const map = new Map();
-    const tree = [];
+    const tree: any = [];
 
     flatList.forEach((item) => {
       map.set(item.fdId, { ...item, children: [] });

@@ -64,6 +64,7 @@ const TabsContent1 = () => {
   const dispatchRedux = useDispatch();
   const router = useRouter()
   const selectTabs = useSelector((state: any) => state.menus.selectTabs)
+  const userInfo = useSelector((state: any) => state.login.userInfo)
   const [collapsed, setCollapsed] = useState(false)
   const [selectKey, setSelectKey] = useState([''])
   const [showAddModal, setShowAddModal] = useState(false)
@@ -126,6 +127,11 @@ const TabsContent1 = () => {
     });
   }
 
+  // 判断当前用户是否为管理员admin
+  const isAdmin = () => {
+    return userInfo?.fdUserName?.includes("admin")
+  }
+
   /**
    * @description 获取左侧菜单列表
    * @param
@@ -141,9 +147,9 @@ const TabsContent1 = () => {
     const data = res?.payload
     if (data.code === 200) {
       const menus: any = onHandleMenus(data.data)
-      const renderMenus: any = [...menus, addMenu]
+      const hasAdmin = isAdmin()
+      const renderMenus: any = hasAdmin ? [...menus, addMenu] : [...menus]
       const fdTabName = data.data[0]?.fdParentEntity.fdName
-      console.log("fdTabName", fdTabName)
       setMenusList(renderMenus)
     } else if (
       data.code === 401 && 

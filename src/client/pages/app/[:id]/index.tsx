@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 /** component */
 import ProjectContainer from '../../../layout/projectContainer';
 import TabsContent1 from './components/tab1';
-import TabsContent2 from './components/tab2';
 
 /** utils */
 import _ from "lodash"
@@ -20,8 +19,6 @@ const AppById = () => {
     switch(tab) {
       case "1":
         return <TabsContent1 />
-      case "2":
-        return <TabsContent2 />
       default:
         return <TabsContent1 />
     }

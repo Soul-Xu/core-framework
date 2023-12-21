@@ -1,7 +1,7 @@
 /**
  * 主页
  */
-/** 第三方库 */
+/** external library */
 import { NextPage } from 'next';
 import React, { useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router';
@@ -42,7 +42,6 @@ const App: NextPage = () => {
   const { showCurrent, showMyFavor, showMine } = appsConfig
   const token = useSelector((state: any) => state.common.token)
   const { req, appsList } = data
-  const { fdAppName } = req
 
   /**
    * @description 数据处理函数
@@ -111,7 +110,7 @@ const App: NextPage = () => {
         router.push("/login")
       }
     } catch(err) {
-      // console.log("app-err", err)
+      console.log("app-err", err)
     }
   }
 

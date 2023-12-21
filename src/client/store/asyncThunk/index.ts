@@ -12,7 +12,6 @@ const autoAsyncThunk = (name: string, method: Method, url: string) => {
   return createAsyncThunk(name, async (data?: any) => {
     try {
       const response = await settingServe({ data, method, url });
-      // console.log("asyncThunk-response", response)
       return response;  // 只返回成功时的数据部分
     } catch (error) {
       console.log("asyncThunk", error)

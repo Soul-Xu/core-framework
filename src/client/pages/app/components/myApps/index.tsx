@@ -4,6 +4,7 @@
 /** external library */
 import Image from "next/image";
 import Link from "next/link"
+import { useSelector } from "react-redux";
 import React, { useState, useEffect } from "react";
 import { Modal, message, Dropdown, Menu } from "antd"
 const confirm = Modal
@@ -62,6 +63,12 @@ const MyApps = (props: Props) => {
   const [showDeleteModal, setShowDelelteModal] = useState(false)
   const [selectId, setSelectId] = useState("")
   const [selectDetail, setSelectDetail] = useState(null)
+  const userInfo = useSelector((state: any) => state.login.userInfo)
+
+  // 判断当前用户是否为管理员admin
+   const isAdmin = () => {
+    return userInfo?.fdUserName?.includes("admin")
+  }
 
   /**
    * @description 控制新建应用弹窗
@@ -125,7 +132,7 @@ const MyApps = (props: Props) => {
         icon: <EditOutlined />,
         onClick: () => onUpdateAppModal(app),
       },
-      index !== 0 && {
+      index !== 0 && isAdmin() && {
         label: '删除',
         icon: <DeleteOutlined />,
         onClick: () => onDeleteAppModal(app),
@@ -179,10 +186,12 @@ const MyApps = (props: Props) => {
             </Link>
           </div>
         )) }
-        <div className={classNames("my-apps-list-add")} onClick={() => onShowAddModal("show")}>
-          <div className={classNames("my-apps-list-add-icon")}></div>
-          <div className={classNames("my-apps-list-add-title")}>新建应用</div>
-        </div>
+        { isAdmin() &&  (
+          <div className={classNames("my-apps-list-add")} onClick={() => onShowAddModal("show")}>
+            <div className={classNames("my-apps-list-add-icon")}></div>
+            <div className={classNames("my-apps-list-add-title")}>新建应用</div>
+          </div>
+        )}
       </div>
     )}
     <AddApps open={showAddModal} onCancel={() => onHideAddModal()} />

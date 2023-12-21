@@ -1,17 +1,22 @@
+/**
+ * 部门选择器
+ */
+/** external library */
 import React, { useCallback, useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { useImmerReducer } from "use-immer";
 import { Tree, Table, Radio } from "antd";
+/** css */
 import classnames from "classnames/bind";
 import style from "./index.module.scss";
 const classNames = classnames.bind(style);
-import { useRouter } from "next/router";
+/** utlis */
 import axios from 'axios';
 import { baseApi, baseApiOrg } from "../../../../../../config"
 import { reducer } from "../../../../../../utils/reducer";
 import asyncThunk from "../../../../../../store/asyncThunk";
 import { setSelectDepts } from "../../../../../../store/modules/permissionsSlice";
-
 const { TreeNode } = Tree;
 
 const initialState = {
@@ -151,7 +156,7 @@ const DeptsSelector = () => {
 
   const buildTree = (flatList) => {
     const map = new Map();
-    const tree = [];
+    const tree: any = [];
 
     flatList.forEach((item) => {
       map.set(item.fdId, { ...item, children: [] });

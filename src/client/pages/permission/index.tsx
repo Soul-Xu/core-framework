@@ -1,6 +1,7 @@
 /**
  * 权限管理
  */
+/** external library */
 import React from "react"
 import { Tabs } from "antd";
 import type { TabsProps } from 'antd';

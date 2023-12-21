@@ -133,7 +133,6 @@ export class PermissionService {
       }
     })
     const data = res.data
-    console.log("sssss", data)
     return data
   }
 
@@ -232,7 +231,26 @@ export class PermissionService {
       }
     })
     const data = res.data
-    return data
+    const handleData = data.data
+
+    // 假设有一个特定的用户名列表
+    const userList = ["admin", "test222"];
+
+    // 处理每个角色的 fdUserList
+    const modifiedData = {
+      ...handleData,
+      content: handleData.content.map((role, index) => ({
+        ...role,
+        fdUserList: [userList[index]]
+      }))
+    };
+
+    const resData = {
+      code: data.code,
+      data: modifiedData
+    }
+
+    return resData
   }
 
   async getRolesInfo(body: GetRolesInfoDto) {

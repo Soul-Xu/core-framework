@@ -1,3 +1,6 @@
+/**
+ * 主页container
+ */
 /** external library */
 import Image from "next/image"
 import React, { useEffect, useState } from 'react';
