@@ -92,7 +92,7 @@ const AppContainer: NextPage<PageContainerProps> = ({ children }: any) => {
       setSelectKey([`${menu.key}`]);
       router.push(`/${menu.key}`);
     } else {
-      window.open("http://localhost:3030/", "_blank");
+      window.open("http://8.135.113.65:3001/", "_blank");
     }
   };
 
@@ -102,8 +102,9 @@ const AppContainer: NextPage<PageContainerProps> = ({ children }: any) => {
   }, [router.pathname]);
 
   useEffect(() => {
-    const isAdmin = userInfo?.fdUserName?.includes("admin")
-    isAdmin ? setRenderMenus(items) : setRenderMenus(commonItems)
+    // const isAdmin = userInfo?.fdUserName?.includes("admin")
+    // isAdmin ? setRenderMenus(items) : setRenderMenus(commonItems)
+    setRenderMenus(items)
   }, [])
 
   return (
