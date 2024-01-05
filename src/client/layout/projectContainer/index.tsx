@@ -30,81 +30,15 @@ interface PageContainerProps {
   id?: string; // 添加 id 属性
 }
 
-const initTabs = [
-  {
-    "fdId": "vue3",
-    "fdComponentName": "Vue3",
-    "fdIcon": null,
-    "fdUrl": "http://www.baidu.com",
-    "fdDisplayOrder": 1,
-    "fdPermission": null,
-    "fdCreateTime": null,
-    "fdUpdateTime": null,
-    "fdVisiable": 1,
-    "fdRemark": "说明",
-    "fdParentEntity": null,
-    "fdAppEntity": {
-        "fdName": null,
-        "fdId": "1hfm9uujr1vlgf5r2tmab3tprgr6kuqql1t2"
-    },
-    "children": [],
-    "fdRoleEntities": null
-  },
-  {
-    "fdId": "vue2",
-    "fdComponentName": "Vue2",
-    "fdIcon": null,
-    "fdUrl": "http://www.baidu.com",
-    "fdDisplayOrder": 1,
-    "fdPermission": null,
-    "fdCreateTime": null,
-    "fdUpdateTime": null,
-    "fdVisiable": 1,
-    "fdRemark": "说明",
-    "fdParentEntity": null,
-    "fdAppEntity": {
-        "fdName": null,
-        "fdId": "1hfm9uujr1vlgf5r2tmab3tprgr6kuqql1t2"
-    },
-    "children": [],
-    "fdRoleEntities": null
-  },
-  {
-    "fdId": "react",
-    "fdComponentName": "React",
-    "fdIcon": null,
-    "fdUrl": "http://www.baidu.com",
-    "fdDisplayOrder": 1,
-    "fdPermission": null,
-    "fdCreateTime": null,
-    "fdUpdateTime": null,
-    "fdVisiable": 1,
-    "fdRemark": "说明",
-    "fdParentEntity": null,
-    "fdAppEntity": {
-        "fdName": null,
-        "fdId": "1hfm9uujr1vlgf5r2tmab3tprgr6kuqql1t2"
-    },
-    "children": [],
-    "fdRoleEntities": null
-  },
-] 
-
 const ProjectContainer: NextPage<PageContainerProps> = ({ children, id }: PageContainerProps) => {
   const router = useRouter()
   const curAppId = router.query[":id"]
   const dispatchRedux = useDispatch();
   const appsList = useSelector((state: any) => state.apps.appsList)
-  const userInfo = useSelector((state: any) => state.login.userInfo)
   const [AppName, setAppName] = useState("")
   const [selectTab, setSelectTab] = useState("")
-  const [showAddModal, setShowAddModal] = useState(false)
   const [tabs, setTabs] = useState([])
-
-  // 判断当前用户是否为管理员admin
-  const isAdmin = () => {
-    return userInfo?.fdUserName?.includes("admin")
-  }
+  const [showAddModal, setShowAddModal] = useState(false)
 
   // 默认tab添加项
   const tabAdd = {
@@ -140,11 +74,14 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children, id }: PageCo
       setSelectTab(renderTabs[0].key.toLowerCase())
       setTabs(renderTabs)
       dispatchRedux(setTabsList({
-        tabsList: content
+        tabsList: tabs
       }))
       dispatchRedux(setSelectTabs({
-        selectTabs: content[0]
+        selectTabs: tabs[0]
       }))
+      const currentPath = router.asPath;
+      const initPath = `${currentPath}?tab=${tabs[0].key.toLowerCase()}`
+      router.push(initPath);
     } else if (
       data.code === 401 && 
       data.success === false &&
@@ -162,16 +99,16 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children, id }: PageCo
     const lowercaseTabKey = tabKey.toLowerCase();
 
     // 判断是否是 "add"，或者是否已经包含 tabKey
-    if (tabKey === "add" || currentPath.includes(`/${lowercaseTabKey}`)) {
+    if (tabKey === "add" || currentPath.includes(`?tab=${lowercaseTabKey}`)) {
       return currentPath;
     }
 
     // 如果当前路径是 "app/:appId/tabKey" 的形式，则替换掉 tabKey
     if (currentPath.match(/\/app\/[^/]+\/[^/]+$/)) {
-      return currentPath.replace(/\/[^/]+$/, `/${lowercaseTabKey}`);
+      return currentPath.replace(/\/[^/]+$/, `?tab=${lowercaseTabKey}`);
     } else {
     // 否则直接拼接路径
-    return `${currentPath}/${lowercaseTabKey}`;
+    return `${currentPath}?tab=${lowercaseTabKey}`;
     }
   };
 
@@ -180,11 +117,20 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children, id }: PageCo
     (item: any) => {
       const tabKey = item.key.toLowerCase();
       const currentPath = router.asPath;
-      const newTabPath = generateNewTabPath(currentPath, tabKey);
-
-      if (router.pathname !== newTabPath) {
-        router.push(newTabPath);
+  
+      let newTabPath;
+  
+      if (currentPath.includes('?tab=')) {
+        newTabPath = currentPath.replace(/(\?tab=)[^&]+/, `$1${tabKey}`);
+      } else {
+        newTabPath = `${currentPath}${currentPath.includes('?') ? '&' : '?'}tab=${tabKey}`;
       }
+  
+      if (router.pathname !== newTabPath) {
+        window.history.replaceState({}, '', newTabPath);
+        router.replace(newTabPath, undefined, { shallow: true });
+      }
+  
       setSelectTab(tabKey);
       dispatchRedux(setSelectTabs({
         selectTabs: item
@@ -192,6 +138,7 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children, id }: PageCo
     },
     [router, dispatchRedux]
   );
+  
 
   /**
    * @description 控制新建tab弹窗

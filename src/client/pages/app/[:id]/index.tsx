@@ -2,31 +2,32 @@
 import { NextPage } from 'next';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
+import microApp from '@micro-zoe/micro-app'
 
 /** component */
 import ProjectContainer from '../../../layout/projectContainer';
-import TabsContent1 from './components/tab1';
+import EventManage from './components/eventManage';
 
 const AppById: NextPage = () => {
   const selectTabs = useSelector((state: any) => state.menus.selectTabs);
 
-  const renderTab = (tab: string) => {
-    switch(tab) {
-      case "vue2":
-        return <div data-single-spa-root id="vue2-app" />;
-      case "vue3":
-        return <div data-single-spa-root id="vue3-app" />;
-      case "react":
-        return <div data-single-spa-root id="react-app" />;
+  const renderTab = () => {
+    switch(selectTabs?.key) {
+      case "Vue2":
+        return <micro-app name='vue2-app' url='http://localhost:8080/'></micro-app>;
+      case "Vue3":
+        return <micro-app name='vue3-app' url='http://localhost:8081/'></micro-app>;
+      case "React":
+        return <micro-app name='react-app' url='http://localhost:3001/'></micro-app>;
       default:
-        return <TabsContent1 />;
+        return <EventManage />;
     }
   };
 
   return (
     <>
       <ProjectContainer>
-        <div>{renderTab(selectTabs?.fdComponentName)}</div>
+        <div>{renderTab()}</div>
       </ProjectContainer>
     </>
   );

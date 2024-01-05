@@ -30,27 +30,6 @@ export class ViewController {
     await this.viewService.handler(req, res);
   }
 
-  @Get('app/:id/vue3')
-  @ApiTags('App/:id')
-  @ApiResponse({ status: 200, description: 'vue3子应用' })
-  public async showAppIdVue3(@Req() req: Request, @Res() res: Response) {
-    await this.viewService.handler(req, res);
-  }
-
-  @Get('app/:id/vue2')
-  @ApiTags('App/:id')
-  @ApiResponse({ status: 200, description: 'vue2子应用' })
-  public async showAppIdVue2(@Req() req: Request, @Res() res: Response) {
-    await this.viewService.handler(req, res);
-  }
-
-  @Get('app/:id/react')
-  @ApiTags('App/:id')
-  @ApiResponse({ status: 200, description: 'react子应用' })
-  public async showAppIdReact(@Req() req: Request, @Res() res: Response) {
-    await this.viewService.handler(req, res);
-  }
-
   @Get('appConfig')
   @ApiTags('AppConfig')
   @ApiResponse({ status: 200, description: '应用配置' })
