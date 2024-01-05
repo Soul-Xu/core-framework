@@ -92,8 +92,6 @@ const AddPermissions = (props: Props) => {
       fdRemark: fdRemark,
     }
 
-    console.log("sssss", params)
-
     // await axios.request({
     //   url: `${baseApi}/api-permission/add`,
     //   method: "post",

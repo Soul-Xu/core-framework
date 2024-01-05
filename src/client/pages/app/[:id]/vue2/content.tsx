@@ -16,16 +16,13 @@ const { Header, Content, Sider } = Layout;
 type MenuItem = Required<MenuProps>['items'][number];
 
 /** components */
-import AddMenus from '../addMenus';
-import FormDemo from "../demos/form";
-import SearchDemo from "../demos/search";
-import EventManage from "../eventManage";
+import AddMenus from '../components/addMenus';
 // import AppDetails from "../../../details";
 
 /** http */
 import axios from "axios";
-import { baseApi } from '../../../../../config';
-import asyncThunk from "../../../../../store/asyncThunk";
+import { baseApi } from '../../../../config';
+import asyncThunk from "../../../../store/asyncThunk";
 
 function getItem(
   label: React.ReactNode,
@@ -57,7 +54,7 @@ const initialState = {
   fdReportor: "" // 报告人
 }
 
-const TabsContent1 = () => {
+const MainContent = () => {
   const dispatchRedux = useDispatch();
   const router = useRouter()
   const selectTabs = useSelector((state: any) => state.menus.selectTabs)
@@ -196,11 +193,11 @@ const TabsContent1 = () => {
       >
         {/* <EventManage /> */}
         {/* <AppDetails /> */}
-        nextjs
+        vue2
       </Content>
       <AddMenus open={showAddModal} onCancel={() => onHideAddModal()} />
     </>
   )
 }
 
-export default TabsContent1
+export default MainContent

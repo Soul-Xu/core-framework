@@ -10,7 +10,8 @@ import {
   AppstoreFilled,
   UserOutlined,
   ClusterOutlined,
-  ProjectOutlined
+  ProjectOutlined,
+  OrderedListOutlined
  } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Layout, Menu } from 'antd';
@@ -46,6 +47,7 @@ const items: MenuItem[] = [
   getItem('我的待办', 'todo', <Image src={ImgTodo} width={20} height={20} alt="ImgTodo"/>),
   getItem('集成中心', 'integration', <Image src={ImgIntegration} width={20} height={20} alt="ImgIntegration"/>),
   getItem('个人中心', 'personalCenter', <UserOutlined />),
+  getItem('应用配置', 'appConfig', <OrderedListOutlined />),
   getItem('权限设置', 'permission', <ClusterOutlined />),
   // getItem('系统设置', 'systemSetting', <SettingOutlined />),
   getItem('开发文档', 'openAPI', <ProjectOutlined />),
@@ -94,6 +96,8 @@ const AppContainer: NextPage<PageContainerProps> = ({ children }: any) => {
     } else {
       window.open("http://8.135.113.65:3001/", "_blank");
     }
+    // setSelectKey([`${menu.key}`]);
+    // router.push(`/${menu.key}`);
   };
 
   useEffect(() => {

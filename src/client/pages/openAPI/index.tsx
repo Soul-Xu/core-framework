@@ -2,27 +2,30 @@
  * 开发文档
  */
 /** external library */
-import React from "react"
+import React, { useState, useEffect } from "react"
 /** css */
 import classnames from "classnames/bind";
 import styles from "./index.module.scss";
 const classNames = classnames.bind(styles);
+/** microApp */
+import microApp from '@micro-zoe/micro-app'
+/** components */
+import AppContainer from "../../layout/appContainer";
 
 const OpenAPI = () => {
+  const [show, changeShow] = useState(false)
+
+  useEffect(() => {
+    changeShow(true)
+  }, [])
+
   return (
-    <>
-      <div className={classNames("container")}>
-        <div className={classNames("header")}>
-          <div className={classNames("header-logo")}>logo</div>
-          <div className={classNames("header-avatar")}>avatar</div>
-        </div>
-        <div className={classNames("body")}>
-          <div className={classNames("body-timeline")}>timeline</div>
-          <div className={classNames("body-upload")}>
-          </div>
-        </div>
-      </div>
-    </>
+    <AppContainer>
+      {
+        // name：应用名称, url：应用地址
+        show && (<micro-app name='core-framework-docs' url='http://8.135.113.65:3001/'></micro-app>)
+      }
+    </AppContainer>
   )
 }
 

@@ -30,10 +30,11 @@ interface Props {
 }
 
 const initialState = {
+  fdAppName: "",
   fdComponentName: "",
   fdUrl: "",
   fdRemark: "",
-  fdDisplayOrder: 1
+  fdDisplayOrder: 1,
 }
 
 const AddTabs = (props: Props) => {
@@ -41,10 +42,10 @@ const AddTabs = (props: Props) => {
   const router = useRouter()
   const curAppId = router.query[":id"]
   const dispatchRedux = useDispatch();
-  const curApp = useSelector((state: any) => state.apps.curApp)
+  const appsList = useSelector((state: any) => state.apps.appsList)
   const token = useSelector((state: any) => state.common.token)
   const [data, dispatch] = useImmerReducer(reducer, initialState);
-  const { fdComponentName, fdUrl, fdRemark, fdDisplayOrder } = data
+  const { fdAppName, fdComponentName, fdUrl, fdRemark, fdDisplayOrder } = data
 
   /**
    * @description 数据处理函数
@@ -95,6 +96,19 @@ const AddTabs = (props: Props) => {
     onCancel()
   }
 
+  // 获取当前的appName
+  const getCurFdAppName = (curAppId, appsList) => {
+    const curApp = appsList.find(app => app.fdId === curAppId);
+    return curApp ? curApp.fdAppName : null;
+  };
+
+  useEffect(() => {
+    const curFdAppName = getCurFdAppName(curAppId, appsList);
+    setState("update", {
+      fdAppName: curFdAppName
+    })
+  }, [curAppId, appsList])
+
   return (
     <Modal 
       title="新建一级菜单"
@@ -106,7 +120,7 @@ const AddTabs = (props: Props) => {
     >
       <Form name="AddTabs" style={{ marginTop: "30px" }}>
         <Form.Item label="所属应用" name="fdAppName">
-          <div style={{ textAlign: "left" }}>{curApp?.fdAppName}</div>
+          <div style={{ textAlign: "left" }}>{fdAppName}</div>
         </Form.Item>
         <Form.Item label="菜单名称" name="fdComponentName">
           <Input placeholder="请输入菜单名称" onChange={(e: any) => onHandleChange("fdComponentName", e)} />

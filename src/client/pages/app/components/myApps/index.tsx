@@ -186,7 +186,7 @@ const MyApps = (props: Props) => {
             </Link>
           </div>
         )) }
-        { isAdmin() &&  (
+        {(
           <div className={classNames("my-apps-list-add")} onClick={() => onShowAddModal("show")}>
             <div className={classNames("my-apps-list-add-icon")}></div>
             <div className={classNames("my-apps-list-add-title")}>新建应用</div>

@@ -2,7 +2,7 @@
  * 应用container
  */
 /** external library */
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from "react-redux";
 import { NextPage } from 'next';
@@ -26,17 +26,78 @@ const classNames = classnames.bind(styles);
 import asyncThunk from '../../store/asyncThunk';
 
 interface PageContainerProps {
-  children?: React.ReactNode
+  children?: React.ReactNode;
+  id?: string; // 添加 id 属性
 }
 
-const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
+const initTabs = [
+  {
+    "fdId": "vue3",
+    "fdComponentName": "Vue3",
+    "fdIcon": null,
+    "fdUrl": "http://www.baidu.com",
+    "fdDisplayOrder": 1,
+    "fdPermission": null,
+    "fdCreateTime": null,
+    "fdUpdateTime": null,
+    "fdVisiable": 1,
+    "fdRemark": "说明",
+    "fdParentEntity": null,
+    "fdAppEntity": {
+        "fdName": null,
+        "fdId": "1hfm9uujr1vlgf5r2tmab3tprgr6kuqql1t2"
+    },
+    "children": [],
+    "fdRoleEntities": null
+  },
+  {
+    "fdId": "vue2",
+    "fdComponentName": "Vue2",
+    "fdIcon": null,
+    "fdUrl": "http://www.baidu.com",
+    "fdDisplayOrder": 1,
+    "fdPermission": null,
+    "fdCreateTime": null,
+    "fdUpdateTime": null,
+    "fdVisiable": 1,
+    "fdRemark": "说明",
+    "fdParentEntity": null,
+    "fdAppEntity": {
+        "fdName": null,
+        "fdId": "1hfm9uujr1vlgf5r2tmab3tprgr6kuqql1t2"
+    },
+    "children": [],
+    "fdRoleEntities": null
+  },
+  {
+    "fdId": "react",
+    "fdComponentName": "React",
+    "fdIcon": null,
+    "fdUrl": "http://www.baidu.com",
+    "fdDisplayOrder": 1,
+    "fdPermission": null,
+    "fdCreateTime": null,
+    "fdUpdateTime": null,
+    "fdVisiable": 1,
+    "fdRemark": "说明",
+    "fdParentEntity": null,
+    "fdAppEntity": {
+        "fdName": null,
+        "fdId": "1hfm9uujr1vlgf5r2tmab3tprgr6kuqql1t2"
+    },
+    "children": [],
+    "fdRoleEntities": null
+  },
+] 
+
+const ProjectContainer: NextPage<PageContainerProps> = ({ children, id }: PageContainerProps) => {
   const router = useRouter()
   const curAppId = router.query[":id"]
   const dispatchRedux = useDispatch();
   const appsList = useSelector((state: any) => state.apps.appsList)
   const userInfo = useSelector((state: any) => state.login.userInfo)
   const [AppName, setAppName] = useState("")
-  const [selectTab, setSelectTab] = useState("1")
+  const [selectTab, setSelectTab] = useState("")
   const [showAddModal, setShowAddModal] = useState(false)
   const [tabs, setTabs] = useState([])
 
@@ -58,7 +119,7 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
   // 实用函数，将 tabItem 转换为 TabsProps['items']
   const onHandleTabs = (tabItem) => {
     const res = tabItem.map(item => ({
-      key: item.fdId,
+      key: item.fdComponentName,
       label: item.fdComponentName
     }))
     return res
@@ -74,9 +135,9 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
     if (data.code === 200) {
       const content: any = data.data
       const tabs: any = onHandleTabs(content)
-      isAdmin()
+      // isAdmin()
       const renderTabs: any = [...tabs].concat(tabAdd)
-      setSelectTab(renderTabs[0].key)
+      setSelectTab(renderTabs[0].key.toLowerCase())
       setTabs(renderTabs)
       dispatchRedux(setTabsList({
         tabsList: content
@@ -96,16 +157,41 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
     router.push("/app")
   }
 
-  const onTabsChange = (item: any) => {
-    setSelectTab(item.key)
-    dispatchRedux(setTabsList({
-      tabsList: item.key
-    }))
-    dispatchRedux(setSelectTabs({
-      selectTabs: item
-    }))
-    router.push(`${router.asPath}`)
-  }
+  // 生成新的路径
+  const generateNewTabPath = (currentPath, tabKey) => {
+    const lowercaseTabKey = tabKey.toLowerCase();
+
+    // 判断是否是 "add"，或者是否已经包含 tabKey
+    if (tabKey === "add" || currentPath.includes(`/${lowercaseTabKey}`)) {
+      return currentPath;
+    }
+
+    // 如果当前路径是 "app/:appId/tabKey" 的形式，则替换掉 tabKey
+    if (currentPath.match(/\/app\/[^/]+\/[^/]+$/)) {
+      return currentPath.replace(/\/[^/]+$/, `/${lowercaseTabKey}`);
+    } else {
+    // 否则直接拼接路径
+    return `${currentPath}/${lowercaseTabKey}`;
+    }
+  };
+
+  // 缓存回调函数以避免重新生成
+  const onTabsChange = useCallback(
+    (item: any) => {
+      const tabKey = item.key.toLowerCase();
+      const currentPath = router.asPath;
+      const newTabPath = generateNewTabPath(currentPath, tabKey);
+
+      if (router.pathname !== newTabPath) {
+        router.push(newTabPath);
+      }
+      setSelectTab(tabKey);
+      dispatchRedux(setSelectTabs({
+        selectTabs: item
+      }));
+    },
+    [router, dispatchRedux]
+  );
 
   /**
    * @description 控制新建tab弹窗
@@ -131,9 +217,9 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
   }
 
   useEffect(() => {
-    getTabs()
-    getAppConfig()
-  }, [])
+    getTabs();
+    getAppConfig();
+  }, []);
 
   return (
     <Layout>
@@ -154,13 +240,13 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
                   (<div
                     key={item?.key}
                     className={classNames(
-                      item.key === selectTab && item.key !== "add" 
+                      item.key.toLowerCase() === selectTab && item.key !== "add" 
                       ? "tabs-container-select" 
                       : "tabs-container")
                     } 
                     onClick={() => onTabsChange(item)}>
                     <div className={classNames(
-                      item.key === selectTab && item.key !== "add" 
+                      item.key.toLowerCase() === selectTab && item.key !== "add" 
                       ? "tabs-container-select-label" : "tabs-container-label")
                       }>
                         {item.label}
@@ -177,7 +263,7 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children }: any) => {
           </div>
         </div>
       </Header>
-      <Layout className={classNames("container-wrapper")}>
+      <Layout className={classNames("container-wrapper")} id={id}>
         { children }
       </Layout>
       <AddTabs open={showAddModal} onCancel={() => onHideAddModal()} />

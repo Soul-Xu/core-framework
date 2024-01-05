@@ -10,7 +10,7 @@ import {
 export class MenuService {
   async addTabs(body: AddTabsDto) {
     const res = await axios.request({
-      url: `${baseApi}/component-permission/add`,
+      url: `${baseApi}/component-permission/add-data`,
       method: "post",
       data: body,
       headers: {
