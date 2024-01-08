@@ -9,11 +9,7 @@ import { Modal, Form, Input, message } from "antd"
 import { WarningOutlined } from "@ant-design/icons";
 
 /** utils */
-import asyncThunk from "../../../../store/asyncThunk"
-
-/** http */
-import axios from 'axios';
-import { baseApi } from "../../../../config"
+import asyncThunk from "../../../../../store/asyncThunk"
 
 /**
  * interface
@@ -22,18 +18,18 @@ import { baseApi } from "../../../../config"
  */
 interface Props {
   title?: string,
-  appId: string,
+  tabId: string,
   open: boolean,
   onOk?: () => void,
   onCancel: () => void
 }
 
 
-const DeleteApps = (props: Props) => {
+const DeleteTabs = (props: Props) => {
   const router = useRouter()
   const dispatchRedux = useDispatch();
   const token = useSelector((state: any) => state.common.token)
-  const { open, appId, onCancel } = props
+  const { open, tabId, onCancel } = props
   
   /**
    * @description 删除应用确认逻辑
@@ -41,28 +37,10 @@ const DeleteApps = (props: Props) => {
    */
   const onOk = async () => {
     const params = {
-      fdId: appId,
+      fdId: tabId,
     }
 
-    // await axios.request({
-    //   url: `${baseApi}/app-permission/delete`,
-    //   method: "post",
-    //   data: params,
-    //   withCredentials: true,  
-    //   headers: {
-    //     'Content-Type': 'application/json', // 设置为 application/json
-    //     'ltpatoken': token
-    //   },
-    // }).then((res: any) => {
-    //   const data = res.data
-    //   if (data.code === 200) {
-    //     onCancel()
-    //   }
-    // }).catch((err: any) => {
-    //   console.log("axios-app-err", err)
-    // })
-
-    const res = await dispatchRedux(asyncThunk.deleteApps(params) as any);
+    const res = await dispatchRedux(asyncThunk.deleteTabs(params) as any);
     const data = res?.payload;
     if (data.code === 200) {
       message.success("删除成功")
@@ -78,16 +56,16 @@ const DeleteApps = (props: Props) => {
 
   return (
     <Modal 
-      title="删除应用"
+      title="删除菜单"
       style={{ textAlign: "center" }}
       open={open}
       onOk={onOk}
       onCancel={onCancel}
     >
       <WarningOutlined style={{ color: "red", marginRight: "10px" }}/>
-      确定要删除该应用吗?
+      确定要删除该菜单吗?
     </Modal>
   )
 }
 
-export default DeleteApps
+export default DeleteTabs

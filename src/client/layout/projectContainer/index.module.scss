@@ -54,6 +54,14 @@
         &-line {
           display: none;
         }
+
+        &-dropdown {
+          position: relative;
+          bottom: 70px;
+          left: 40px;
+          color: #fff;
+          display: none;
+        }
       }
 
       .tabs-container-select {
@@ -79,6 +87,13 @@
           color: #fff;
           text-align: center;
           background: #fff;
+        }
+
+        &-dropdown {
+          position: relative;
+          bottom: 70px;
+          left: 40px;
+          color: #fff;
         }
       }
     }

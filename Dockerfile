@@ -15,7 +15,7 @@ COPY ./package.json ./package-lock.json ./
 WORKDIR /nest-next-ui
 
 # Install the dependencies and make the folder
-RUN npm install --force
+RUN yarn
 
 # Copy node all file to builder
 COPY ./ .

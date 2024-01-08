@@ -8,11 +8,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { NextPage } from 'next';
 import { setTabsList, setSelectTabs } from '../../store/modules/menusSlice'
 import type { TabsProps } from 'antd';
-import { Layout, Tabs, Dropdown } from 'antd';
+import { Layout, Tabs, Dropdown, Menu } from 'antd';
 import { PlusOutlined, LeftCircleOutlined } from '@ant-design/icons';
 const { Header } = Layout;
 /** components */
 import AddTabs from "../../pages/app/[:id]/components/addTabs"
+import UpdateTabs from '../../pages/app/[:id]/components/updataTabs';
+import DeleteTabs from "../../pages/app/[:id]/components/deleteTabs"
 
 /** http */
 import axios from "axios"
@@ -35,10 +37,14 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children, id }: PageCo
   const curAppId = router.query[":id"]
   const dispatchRedux = useDispatch();
   const appsList = useSelector((state: any) => state.apps.appsList)
+  const tabsList = useSelector((state: any) => state.menus.tabsList)
+  const selectTabs = useSelector((state: any) => state.menus.selectTabs)
   const [AppName, setAppName] = useState("")
   const [selectTab, setSelectTab] = useState("")
   const [tabs, setTabs] = useState([])
   const [showAddModal, setShowAddModal] = useState(false)
+  const [showUpdateModal, setShowUpdateModal] = useState(false)
+  const [showDeleteModal, setShowDelelteModal] = useState(false)
 
   // 默认tab添加项
   const tabAdd = {
@@ -68,17 +74,17 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children, id }: PageCo
     const data = res?.payload;
     if (data.code === 200) {
       const content: any = data.data
+      dispatchRedux(setTabsList({
+        tabsList: content
+      }))
+      dispatchRedux(setSelectTabs({
+        selectTabs: content[0]
+      }))
       const tabs: any = onHandleTabs(content)
       // isAdmin()
       const renderTabs: any = [...tabs].concat(tabAdd)
       setSelectTab(renderTabs[0].key.toLowerCase())
       setTabs(renderTabs)
-      dispatchRedux(setTabsList({
-        tabsList: tabs
-      }))
-      dispatchRedux(setSelectTabs({
-        selectTabs: tabs[0]
-      }))
       const currentPath = router.asPath;
       const initPath = `${currentPath}?tab=${tabs[0].key.toLowerCase()}`
       router.push(initPath);
@@ -93,24 +99,6 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children, id }: PageCo
   const onGoBack = () => {
     router.push("/app")
   }
-
-  // 生成新的路径
-  const generateNewTabPath = (currentPath, tabKey) => {
-    const lowercaseTabKey = tabKey.toLowerCase();
-
-    // 判断是否是 "add"，或者是否已经包含 tabKey
-    if (tabKey === "add" || currentPath.includes(`?tab=${lowercaseTabKey}`)) {
-      return currentPath;
-    }
-
-    // 如果当前路径是 "app/:appId/tabKey" 的形式，则替换掉 tabKey
-    if (currentPath.match(/\/app\/[^/]+\/[^/]+$/)) {
-      return currentPath.replace(/\/[^/]+$/, `?tab=${lowercaseTabKey}`);
-    } else {
-    // 否则直接拼接路径
-    return `${currentPath}?tab=${lowercaseTabKey}`;
-    }
-  };
 
   // 缓存回调函数以避免重新生成
   const onTabsChange = useCallback(
@@ -131,14 +119,27 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children, id }: PageCo
         router.replace(newTabPath, undefined, { shallow: true });
       }
   
+      // 查找匹配 key 的项
+      const selectTabs = tabsList.find(tab => tab.fdComponentName === item.key);
       setSelectTab(tabKey);
       dispatchRedux(setSelectTabs({
-        selectTabs: item
+        selectTabs: selectTabs
       }));
     },
     [router, dispatchRedux]
   );
   
+  // 下拉菜单项的点击事件
+  const handleMenuClick = (key, item) => {
+    if (key === 'edit') {
+      // 处理编辑操作
+      setShowUpdateModal(true)
+    } else if (key === 'delete') {
+      // 处理删除操作
+      setShowDelelteModal(true)
+    }
+  };
+
 
   /**
    * @description 控制新建tab弹窗
@@ -149,14 +150,32 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children, id }: PageCo
     type === "hide" && setShowAddModal(false)
   }
 
-    /**
+  /**
    * @description 隐藏新建tab弹窗
    * @param
    */
-    const onHideAddModal = () => {
-      getTabs()
-      setShowAddModal(false)
-    }
+  const onHideAddModal = () => {
+    getTabs()
+    setShowAddModal(false)
+  }
+
+  /**
+   * @description 隐藏编辑tab弹窗
+   * @param
+   */
+  const onHideUpdateModal = () => {
+    getTabs()
+    setShowUpdateModal(false)
+  }
+
+  /**
+   * @description 控制删除应用弹窗
+   * @param
+   */
+  const onHideDeleteModal = () => {
+    getTabs()
+    setShowDelelteModal(false)
+  }
 
   const getAppConfig = () => {
     const curConfig = appsList.find((app: any) => app.fdId === curAppId)
@@ -198,6 +217,25 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children, id }: PageCo
                       }>
                         {item.label}
                       </div>
+                      {item.key !== 'add' && ( // 仅在不是 "add" tab 时显示下拉按钮
+                      <div className={classNames(
+                        item.key.toLowerCase() === selectTab && item.key !== "add" 
+                        ? "tabs-container-select-dropdown" : "tabs-container-dropdown")
+                      }>
+                        <Dropdown
+                          placement='bottomLeft'
+                          overlay={
+                            <Menu onClick={({ key }) => handleMenuClick(key, item)}>
+                              <Menu.Item key="edit">编辑</Menu.Item>
+                              <Menu.Item key="delete">删除</Menu.Item>
+                            </Menu>
+                          }
+                          trigger={['click']}
+                        >
+                          <div className={classNames("dropdown-button")}>...</div>
+                        </Dropdown>
+                      </div>
+                    )}
                     <div className={classNames(
                       item.key === selectTab && item.key !== "add" 
                       ? "tabs-container-select-line"
@@ -214,6 +252,8 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children, id }: PageCo
         { children }
       </Layout>
       <AddTabs open={showAddModal} onCancel={() => onHideAddModal()} />
+      <UpdateTabs detail={selectTabs} open={showUpdateModal}  onCancel={() => onHideUpdateModal()} />
+      <DeleteTabs tabId={selectTabs.fdId} open={showDeleteModal} onCancel={() => onHideDeleteModal()} />
     </Layout>
   );
 };
