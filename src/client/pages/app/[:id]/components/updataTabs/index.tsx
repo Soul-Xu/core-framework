@@ -114,11 +114,10 @@ const UpdateTabs = (props: Props) => {
   }, [curAppId, appsList])
 
   useEffect(() => {
-    console.log("update-tabs", detail)
     if (detail) {
       // 将 detail 中的值赋给表单的初始值
       form.setFieldsValue({
-        fdAppName: detail.fdAppEntity.fdName,
+        fdAppName: detail?.fdAppEntity?.fdName,
         fdComponentName: detail.fdComponentName,
         fdUrl: detail.fdUrl,
         fdRemark: detail.fdRemark,
