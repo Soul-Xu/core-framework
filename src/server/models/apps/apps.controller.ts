@@ -25,6 +25,7 @@ export class AppsController {
 
   @Post("/getApps")
   getApps(@Body() body: GetAppsDto) {
+    console.log("getApps")
     return this.appsService.getApps(body);
   }
 }

@@ -78,7 +78,7 @@ const AppConfig = () => {
       //   withCredentials: true,  
       //   headers: {
       //     'Content-Type': 'application/json', // 设置为 application/json
-      //     'ltpatoken': token
+      //     'X-AUTH-TOKEN': token
       //   },
       // }).then((res: any) => {
       //   const data = res.data

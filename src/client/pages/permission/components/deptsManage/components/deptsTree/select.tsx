@@ -60,7 +60,7 @@ const DeptsSelector = () => {
       //   withCredentials: true,  
       //   headers: {
       //     'Content-Type': 'application/json',
-      //     'ltpatoken': token
+      //     'X-AUTH-TOKEN': token
       //   },
       // }).then((res: any) => {
       //   const data = res.data
@@ -113,7 +113,7 @@ const DeptsSelector = () => {
       //   withCredentials: true,  
       //   headers: {
       //     'Content-Type': 'application/json',
-      //     'ltpatoken': token
+      //     'X-AUTH-TOKEN': token
       //   },
       // }).then((res: any) => {
       //   const data = res.data

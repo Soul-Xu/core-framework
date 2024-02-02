@@ -15,7 +15,7 @@ export class MenuService {
       data: body,
       headers: {
         withCredentials: true,
-        "ltpatoken": Global.token
+        "X-AUTH-TOKEN": Global.token
       }
     })
     const data = res.data
@@ -36,7 +36,7 @@ export class MenuService {
       data: body,
       headers: {
         withCredentials: true,
-        "ltpatoken": Global.token
+        "X-AUTH-TOKEN": Global.token
       }
     })
     const data = res.data
@@ -57,7 +57,7 @@ export class MenuService {
       data: body,
       headers: {
         withCredentials: true,
-        "ltpatoken": Global.token
+        "X-AUTH-TOKEN": Global.token
       }
     })
     const data = res.data
@@ -78,7 +78,7 @@ export class MenuService {
       data: body,
       headers: {
         withCredentials: true,
-        "ltpatoken": Global.token
+        "X-AUTH-TOKEN": Global.token
       }
     })
     const data = res.data
@@ -99,7 +99,7 @@ export class MenuService {
       data: body,
       headers: {
         withCredentials: true,
-        "ltpatoken": Global.token
+        "X-AUTH-TOKEN": Global.token
       }
     })
     const data = res.data
@@ -125,7 +125,7 @@ export class MenuService {
       data: body,
       headers: {
         withCredentials: true,
-        "ltpatoken": Global.token
+        "X-AUTH-TOKEN": Global.token
       }
     })
     const data = res.data
@@ -151,7 +151,7 @@ export class MenuService {
       data: body,
       headers: {
         withCredentials: true,
-        "ltpatoken": Global.token
+        "X-AUTH-TOKEN": Global.token
       }
     })
     const data = res.data
@@ -178,7 +178,7 @@ export class MenuService {
       data: body,
       headers: {
         withCredentials: true,
-        "ltpatoken": Global.token
+        "X-AUTH-TOKEN": Global.token
       }
     })
     const data = res.data

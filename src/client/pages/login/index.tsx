@@ -95,7 +95,7 @@ const Login: React.FC = () => {
     //   },
     // }).then((res) => {
     //   const data = res?.data
-    //   const ltpatoken = res.headers["ltpatoken"]
+    //   const X-AUTH-TOKEN = res.headers["X-AUTH-TOKEN"]
 
     //   if (data?.code === 200) {
     //     dispatchRedux(setAuthState({
@@ -105,7 +105,7 @@ const Login: React.FC = () => {
     //       userInfo: data.data
     //     }))
     //     dispatchRedux(setToken({
-    //       token: ltpatoken
+    //       token: X-AUTH-TOKEN
     //     }))
 
     //     message.success("登录成功")

@@ -86,7 +86,7 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children, id }: PageCo
       setSelectTab(renderTabs[0].key.toLowerCase())
       setTabs(renderTabs)
       const currentPath = router.asPath;
-      const initPath = `${currentPath}?tab=${tabs[0].key.toLowerCase()}`
+      const initPath = `${currentPath}?tab=${tabs[0]?.key.toLowerCase()}`
       router.push(initPath);
     } else if (
       data.code === 401 && 
@@ -183,6 +183,7 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children, id }: PageCo
   }
 
   useEffect(() => {
+    console.log("selectTabs")
     getTabs();
     getAppConfig();
   }, []);
@@ -253,7 +254,7 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children, id }: PageCo
       </Layout>
       <AddTabs open={showAddModal} onCancel={() => onHideAddModal()} />
       <UpdateTabs detail={selectTabs} open={showUpdateModal}  onCancel={() => onHideUpdateModal()} />
-      <DeleteTabs tabId={selectTabs.fdId} open={showDeleteModal} onCancel={() => onHideDeleteModal()} />
+      <DeleteTabs tabId={selectTabs?.fdId} open={showDeleteModal} onCancel={() => onHideDeleteModal()} />
     </Layout>
   );
 };

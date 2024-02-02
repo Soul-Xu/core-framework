@@ -14,7 +14,9 @@ export class LoginService {
     const res = await axios.post(`${baseApi}/login`, params)
 
     // 获取token的值
-    const token = res.headers['ltpatoken']
+    console.log("res.headers", res.headers)
+    const token = res.headers['x-auth-token']
+    console.log("token", token)
     Global.token = token
     return res.data
   }
