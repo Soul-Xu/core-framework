@@ -77,16 +77,16 @@
         }
 
         &-line {
-          position: relative;
-          bottom: 10px;
-          display: block;
-          width: 60px;
-          height: 2px;
-          margin: 0 auto;
-          font-size: 16px;
-          color: #fff;
-          text-align: center;
-          background: #fff;
+          // position: relative;
+          // bottom: 10px;
+          // display: block;
+          // width: 60px;
+          // height: 2px;
+          // margin: 0 auto;
+          // font-size: 16px;
+          // color: #fff;
+          // text-align: center;
+          // background: #fff;
         }
 
         &-dropdown {
@@ -130,6 +130,28 @@
         font-size: 24px;
       }
     }
+  }
+}
+
+.header-container-user {
+  position: absolute;
+  right: 20px;
+  display: flex;
+  color: #fff;
+
+  .user-icon {
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .user-name {
+
   }
 }
 

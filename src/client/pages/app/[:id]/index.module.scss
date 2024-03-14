@@ -1,0 +1,10 @@
+.content-container {
+  margin-top: 60px;
+  display: flex;
+
+  .content-sider {
+    :global(.ant-layout-sider-children) {
+      position: fixed;
+    }
+  }
+}

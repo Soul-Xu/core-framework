@@ -6,22 +6,22 @@ import { AddAppsDto, UpdateAppsDto, DeleteAppsDto, GetAppsDto } from './dto/apps
 @Injectable()
 export class AppsService {
   async getApps(body: GetAppsDto) {
-    console.log("AppsService", Global)
     try {
-      const res = await axios.request({
-        url: `${baseApi}/app-permission/list`,
+      const params = {
+        url: `${baseApi}/app-permission/list-view`,
         method: "post",
         data: body,
         headers: {
           'Content-Type': 'application/json', // 设置为 application/json
-          'X-AUTH-TOKEN': Global.token,
+          'Cookie': `X-AUTH-TOKEN=${Global.token}`,
            withCredentials: true,
         }
-      })
+      }
+      const res = await axios.request(params)
       return res.data
     } catch (err) {
-      console.log("err-get-apps", err)
-      return err
+      console.log("err-get-apps-11111111111111", err)
+      throw new Error(err)
     }
   }
 
@@ -51,7 +51,7 @@ export class AppsService {
         data: body,
         headers: {
           withCredentials: true,
-          "X-AUTH-TOKEN": Global.token
+          'Cookie': `X-AUTH-TOKEN=${Global.token}`,
         }
       })
       return res.data
@@ -68,7 +68,7 @@ export class AppsService {
         data: body,
         headers: {
           withCredentials: true,
-          "X-AUTH-TOKEN": Global.token
+          'Cookie': `X-AUTH-TOKEN=${Global.token}`,
         }
       })
       return res.data

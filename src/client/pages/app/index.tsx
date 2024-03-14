@@ -19,6 +19,7 @@ const classNames = classnames.bind(styles);
 /** http */
 import axios from 'axios';
 import { baseApi } from "../../config"
+import { adminAppList, commonAppList } from './constants'
 
 /** components */
 import AppContainer from '../../layout/appContainer';
@@ -26,6 +27,7 @@ import SearchApps from './components/searchApps';
 import RecentApps from './components/recentApps';
 import MyFavorApps from './components/myFavor';
 import MyApps from './components/myApps';
+import { message } from 'antd';
 
 const initialState = {
   req: {
@@ -38,6 +40,7 @@ const App: NextPage = () => {
   const router = useRouter()
   const dispatchRedux = useDispatch();
   const appsConfig = useSelector((state: any) => state.apps.appsConfig)
+  const userInfo = useSelector((state: any) => state.login.userInfo)
   const [data, dispatch] = useImmerReducer(reducer, initialState);
   const { showCurrent, showMyFavor, showMine } = appsConfig
   const token = useSelector((state: any) => state.common.token)
@@ -68,49 +71,34 @@ const App: NextPage = () => {
       }
     }
 
-    // await axios.request({
-    //   url: `${baseApi}/app-permission/list-view`,
-    //   method: "post",
-    //   data: params,
-    //   withCredentials: true,  
-    //   headers: {
-    //     'Content-Type': 'application/json', // 设置为 application/json
-    //     'X-AUTH-TOKEN': token
-    //   },
-    // }).then((res: any) => {
-    //   const data = res.data
-    //   if (data.code === 200) {
-    //     const list = data.data
-    //     setState("update", {
-    //       appsList: list
-    //     }) 
-    //     dispatchRedux(setAppsList({
-    //       appsList: list
-    //     }))
-    //   }
-    // }).catch((err: any) => {
-    //   console.log("axios-app-err", err)
-    // })
-
     try {
       const res = await dispatchRedux(asyncThunk.getApps(params) as any);
       const data = res?.payload
       if (data.code === 200) {
         const { content } = data.data
         setState("update", {
-          appsList: content
+          appsList: data.data
         }) 
         dispatchRedux(setAppsList({
-          appsList: content
+          appsList: data.data
         }))
       } else if (
           data.code === 401 && 
           data.success === false &&
           data.message === "请先登录后再操作!") {
         router.push("/login")
+      } else if (
+        data.code === 403
+      ) {
+        message.warning("您没有权限访问该应用，请联系管理员！")
       }
     } catch(err) {
       console.log("app-err", err)
+      // const username = window.localStorage.getItem("username")
+      // const dataList = username === 'admin' ? adminAppList : commonAppList
+      // setState("update", {
+      //   appsList: dataList.data
+      // }) 
     }
   }
 

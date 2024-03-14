@@ -3,18 +3,23 @@
  */
 /** external library */
 import React, { useCallback, useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from "react-redux";
 import { NextPage } from 'next';
 import { setTabsList, setSelectTabs } from '../../store/modules/menusSlice'
 import type { TabsProps } from 'antd';
 import { Layout, Tabs, Dropdown, Menu } from 'antd';
-import { PlusOutlined, LeftCircleOutlined } from '@ant-design/icons';
+import { PlusOutlined, LeftCircleOutlined, UserOutlined } from '@ant-design/icons';
 const { Header } = Layout;
+import { adminTopMenu, commonTopMenu } from '../../pages/app/constants';
+import microApp from '@micro-zoe/micro-app'
 /** components */
 import AddTabs from "../../pages/app/[:id]/components/addTabs"
 import UpdateTabs from '../../pages/app/[:id]/components/updataTabs';
 import DeleteTabs from "../../pages/app/[:id]/components/deleteTabs"
+
+import ImgAvatar from '../../public/images/common/avatar.png'
 
 /** http */
 import axios from "axios"
@@ -39,6 +44,7 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children, id }: PageCo
   const appsList = useSelector((state: any) => state.apps.appsList)
   const tabsList = useSelector((state: any) => state.menus.tabsList)
   const selectTabs = useSelector((state: any) => state.menus.selectTabs)
+  const userInfo = useSelector((state: any) => state.login.userInfo)
   const [AppName, setAppName] = useState("")
   const [selectTab, setSelectTab] = useState("")
   const [tabs, setTabs] = useState([])
@@ -65,11 +71,19 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children, id }: PageCo
     return res
   };
 
+  // 发送数据给 react-app
+  const sendReactAppData = () => {
+    console.log('发送数据给 react-app', microApp)
+    const username = window.localStorage.getItem('username')
+    microApp.setData('emergency', {
+      name: `当前用户为 ${username} - ${Math.random()}`
+    })
+  }
+
   const getTabs = async () => {
     const params = {
       fdId: curAppId
     }
-
     const res = await dispatchRedux(asyncThunk.getTabs(params) as any)
     const data = res?.payload;
     if (data.code === 200) {
@@ -81,7 +95,6 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children, id }: PageCo
         selectTabs: content[0]
       }))
       const tabs: any = onHandleTabs(content)
-      // isAdmin()
       const renderTabs: any = [...tabs].concat(tabAdd)
       setSelectTab(renderTabs[0].key.toLowerCase())
       setTabs(renderTabs)
@@ -140,7 +153,6 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children, id }: PageCo
     }
   };
 
-
   /**
    * @description 控制新建tab弹窗
    * @param
@@ -183,10 +195,11 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children, id }: PageCo
   }
 
   useEffect(() => {
-    console.log("selectTabs")
     getTabs();
     getAppConfig();
   }, []);
+
+  // const username = window.localStorage.getItem("username")
 
   return (
     <Layout>
@@ -198,7 +211,7 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children, id }: PageCo
             >
               <LeftCircleOutlined />
             </div>
-            <span>{AppName}</span>
+            <span>{AppName || '应急预案'}</span>
           </div>
           <div className={classNames("header-container-tabs")}>
             {
@@ -207,7 +220,7 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children, id }: PageCo
                   (<div
                     key={item?.key}
                     className={classNames(
-                      item.key.toLowerCase() === selectTab && item.key !== "add" 
+                      item.key?.toLowerCase() === selectTab && item.key !== "add" 
                       ? "tabs-container-select" 
                       : "tabs-container")
                     } 
@@ -246,6 +259,16 @@ const ProjectContainer: NextPage<PageContainerProps> = ({ children, id }: PageCo
                 )
               })
             }
+          </div>
+          <div className={classNames("header-container-user")}>
+            <div className={classNames("user-icon")}>
+              {/* @ts-ignore */}
+              <Image src={ImgAvatar} />
+            </div>
+            <div className={classNames("user-name")} onClick={sendReactAppData}>
+              {/* { userInfo.fdNickName || username} */}
+              { userInfo.fdNickName }
+            </div>
           </div>
         </div>
       </Header>

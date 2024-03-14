@@ -27,6 +27,8 @@ export const settingServe = async (args: SettingServe) => {
       headers: Object.assign({}, args.headers),
     }) as SettingServeResponse;
 
+    console.log("response", response);
+
     if (response.code === 200) {
       return response;  // 成功时返回整个响应对象
     } else {
@@ -35,6 +37,6 @@ export const settingServe = async (args: SettingServe) => {
     }
   } catch (error) {
     // 处理请求失败的情况
-    // throw new Error('Internal Server Error');
+    throw new Error('Internal Server Error');
   }
 };

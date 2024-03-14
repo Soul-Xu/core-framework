@@ -37,5 +37,18 @@ export const subApps = [
       fdAppTabName: "Vue3"
     },
     fdRemark: "vue3-app子应用"
+  },
+  {
+    sort: 4,
+    fdAppId: "emergency-plan",
+    fdAppName: "emergency-plan", // 对应子应用中package.json中的name
+    fdAppUrl: "http://localhost:3031/emergency-plan", // 应用部署地址
+    fdParent: {
+      fdAppId: "1hi31081q1f9i0f12vfkpas3vsdq513ju7qt",
+      fdAppName: "应急预案",
+      fdAppTabId: "1hj73tgj61mf717d1k0i90k21tuin41e4c0j",
+      fdAppTabName: "应急预案"
+    },
+    fdRemark: "安信应急预案应用"
   }
 ]

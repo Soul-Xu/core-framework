@@ -15,7 +15,8 @@ export class MenuService {
       data: body,
       headers: {
         withCredentials: true,
-        "X-AUTH-TOKEN": Global.token
+        // 'Cookie': `X-AUTH-TOKEN=${Global.token}`,
+        'Cookie': `X-AUTH-TOKEN=${Global.token}`,
       }
     })
     const data = res.data
@@ -36,7 +37,7 @@ export class MenuService {
       data: body,
       headers: {
         withCredentials: true,
-        "X-AUTH-TOKEN": Global.token
+        'Cookie': `X-AUTH-TOKEN=${Global.token}`,
       }
     })
     const data = res.data
@@ -57,7 +58,7 @@ export class MenuService {
       data: body,
       headers: {
         withCredentials: true,
-        "X-AUTH-TOKEN": Global.token
+        'Cookie': `X-AUTH-TOKEN=${Global.token}`,
       }
     })
     const data = res.data
@@ -78,7 +79,7 @@ export class MenuService {
       data: body,
       headers: {
         withCredentials: true,
-        "X-AUTH-TOKEN": Global.token
+        'Cookie': `X-AUTH-TOKEN=${Global.token}`,
       }
     })
     const data = res.data
@@ -99,7 +100,7 @@ export class MenuService {
       data: body,
       headers: {
         withCredentials: true,
-        "X-AUTH-TOKEN": Global.token
+        'Cookie': `X-AUTH-TOKEN=${Global.token}`,
       }
     })
     const data = res.data
@@ -125,7 +126,7 @@ export class MenuService {
       data: body,
       headers: {
         withCredentials: true,
-        "X-AUTH-TOKEN": Global.token
+        'Cookie': `X-AUTH-TOKEN=${Global.token}`,
       }
     })
     const data = res.data
@@ -151,7 +152,7 @@ export class MenuService {
       data: body,
       headers: {
         withCredentials: true,
-        "X-AUTH-TOKEN": Global.token
+        'Cookie': `X-AUTH-TOKEN=${Global.token}`,
       }
     })
     const data = res.data
@@ -178,7 +179,7 @@ export class MenuService {
       data: body,
       headers: {
         withCredentials: true,
-        "X-AUTH-TOKEN": Global.token
+        'Cookie': `X-AUTH-TOKEN=${Global.token}`,
       }
     })
     const data = res.data
